@@ -47,6 +47,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
@@ -65,11 +66,6 @@ import android.widget.TextView;
 public class Home extends Activity {
 	private static final String LOG_TAG = "Home";
 
-	/**
-	 * Keys during freeze/thaw.
-	 */
-	private static final String KEY_SAVE_GRID_OPENED = "grid.opened";
-
 	private static final String FAVORITES_PATH = "favourites.xml";
 
 	private static final String TAG_FAVORITES = "favorites";
@@ -84,6 +80,7 @@ public class Home extends Activity {
 	private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 
+	private DrawerLayout mDrawerLayout;
 	private GridView mGridDrawer;
 
 	private ApplicationsStackLayout mApplicationsStack;
@@ -103,6 +100,7 @@ public class Home extends Activity {
 		bindApplications();
 		bindFavorites(true);
 
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView parent, View v, int position,
@@ -110,6 +108,7 @@ public class Home extends Activity {
 				ApplicationInfo app = (ApplicationInfo) parent
 						.getItemAtPosition(position);
 				startActivity(app.intent);
+				mDrawerLayout.closeDrawer(mGridDrawer);
 			}
 		});
 	}
@@ -137,21 +136,6 @@ public class Home extends Activity {
 
 		unregisterReceiver(mWallpaperReceiver);
 		unregisterReceiver(mApplicationsReceiver);
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle state) {
-		super.onRestoreInstanceState(state);
-		if (state.getBoolean(KEY_SAVE_GRID_OPENED, false)) {
-			// mGrid.setVisibility(View.VISIBLE);
-		}
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		// outState.putBoolean(KEY_SAVE_GRID_OPENED,mGrid.getVisibility() ==
-		// View.VISIBLE);
 	}
 
 	/**
