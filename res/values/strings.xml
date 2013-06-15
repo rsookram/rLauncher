@@ -17,7 +17,6 @@
 <resources>
     <!-- Home -->
     <string name="home_title">Home Sample</string>
-    <string name="show_all_apps">All</string>
 
     <!-- Home Menus -->
     <string name="menu_wallpaper">壁紙</string>

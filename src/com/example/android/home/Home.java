@@ -56,12 +56,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -89,17 +85,9 @@ public class Home extends Activity {
 
 	private GridView mGrid;
 
-	private LayoutAnimationController mShowLayoutAnimation;
-	private LayoutAnimationController mHideLayoutAnimation;
-
-	private boolean mBlockAnimation;
-
 	private View mShowApplications;
-	private CheckBox mShowApplicationsCheck;
 
 	private ApplicationsStackLayout mApplicationsStack;
-
-	private Animation mGridExit;
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -116,8 +104,6 @@ public class Home extends Activity {
 		bindApplications();
 		bindFavorites(true);
 		bindButtons();
-
-		mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
 	}
 
 	@Override
@@ -155,7 +141,7 @@ public class Home extends Activity {
 		super.onRestoreInstanceState(state);
 		final boolean opened = state.getBoolean(KEY_SAVE_GRID_OPENED, false);
 		if (opened) {
-			showApplications(false);
+			showApplications();
 		}
 	}
 
@@ -203,7 +189,6 @@ public class Home extends Activity {
 	private void bindButtons() {
 		mShowApplications = findViewById(R.id.show_all_apps);
 		mShowApplications.setOnClickListener(new ShowApplications());
-		mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
 
 		mGrid.setOnItemClickListener(new ApplicationLauncher());
 	}
@@ -426,60 +411,10 @@ public class Home extends Activity {
 	}
 
 	/**
-	 * Shows all of the applications by playing an animation on the grid.
+	 * Shows all of the applications.
 	 */
-	private void showApplications(boolean animate) {
-		if (mBlockAnimation) {
-			return;
-		}
-		mBlockAnimation = true;
-
-		mShowApplicationsCheck.toggle();
-
-		if (mShowLayoutAnimation == null) {
-			mShowLayoutAnimation = AnimationUtils.loadLayoutAnimation(this,
-					R.anim.show_applications);
-		}
-
-		// This enables a layout animation; if you uncomment this code, you need
-		// to
-		// comment the line mGrid.startAnimation() below
-		// mGrid.setLayoutAnimationListener(new ShowGrid());
-		// mGrid.setLayoutAnimation(mShowLayoutAnimation);
-		// mGrid.startLayoutAnimation();
-
+	private void showApplications() {
 		mGrid.setVisibility(View.VISIBLE);
-
-		mBlockAnimation = false;
-	}
-
-	/**
-	 * Hides all of the applications by playing an animation on the grid.
-	 */
-	private void hideApplications() {
-		if (mBlockAnimation) {
-			return;
-		}
-		mBlockAnimation = true;
-
-		mShowApplicationsCheck.toggle();
-
-		if (mHideLayoutAnimation == null) {
-			mHideLayoutAnimation = AnimationUtils.loadLayoutAnimation(this,
-					R.anim.hide_applications);
-		}
-
-		mGridExit.setAnimationListener(new HideGrid());
-		mGrid.startAnimation(mGridExit);
-		mGrid.setVisibility(View.INVISIBLE);
-		mShowApplications.requestFocus();
-
-		// This enables a layout animation; if you uncomment this code, you need
-		// to
-		// comment the line mGrid.startAnimation() above
-		// mGrid.setLayoutAnimationListener(new HideGrid());
-		// mGrid.setLayoutAnimation(mHideLayoutAnimation);
-		// mGrid.startLayoutAnimation();
 	}
 
 	/**
@@ -530,9 +465,9 @@ public class Home extends Activity {
 
 			if (!info.filtered) {
 				// final Resources resources = getContext().getResources();
-				int width = 42;// (int)
+				int width = 64;// (int)
 								// resources.getDimension(android.R.dimen.app_icon_size);
-				int height = 42;// (int)
+				int height = 64;// (int)
 								// resources.getDimension(android.R.dimen.app_icon_size);
 
 				final int iconWidth = icon.getIntrinsicWidth();
@@ -589,40 +524,10 @@ public class Home extends Activity {
 	private class ShowApplications implements View.OnClickListener {
 		public void onClick(View v) {
 			if (mGrid.getVisibility() != View.VISIBLE) {
-				showApplications(false);
+				showApplications();
 			} else {
-				hideApplications();
+				mGrid.setVisibility(View.INVISIBLE);
 			}
-		}
-	}
-
-	/**
-	 * Hides the applications grid when the layout animation is over.
-	 */
-	private class HideGrid implements Animation.AnimationListener {
-		public void onAnimationStart(Animation animation) {
-		}
-
-		public void onAnimationEnd(Animation animation) {
-			mBlockAnimation = false;
-		}
-
-		public void onAnimationRepeat(Animation animation) {
-		}
-	}
-
-	/**
-	 * Shows the applications grid when the layout animation is over.
-	 */
-	private class ShowGrid implements Animation.AnimationListener {
-		public void onAnimationStart(Animation animation) {
-		}
-
-		public void onAnimationEnd(Animation animation) {
-			mBlockAnimation = false;
-		}
-
-		public void onAnimationRepeat(Animation animation) {
 		}
 	}
 
