@@ -21,9 +21,6 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,22 +42,13 @@ import android.widget.ImageView;
  */
 public class ApplicationsStackLayout extends ViewGroup implements
 		View.OnClickListener {
-	public static final int HORIZONTAL = 0;
-	public static final int VERTICAL = 1;
-
 	private LayoutInflater mInflater;
-
-	private int mFavoritesEnd;
-	private int mFavoritesStart;
 
 	private List<ApplicationInfo> mFavorites;
 
 	private int mMarginTop;
 	private int mMarginBottom;
 
-	private Rect mDrawRect = new Rect();
-
-	private Drawable mBackground;
 	private int mIconSize;
 
 	public ApplicationsStackLayout(Context context) {
@@ -90,30 +78,8 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	private void initLayout() {
 		mInflater = LayoutInflater.from(getContext());
 
-		mBackground = getBackground();
 		setBackgroundDrawable(null);
 		setWillNotDraw(false);
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		final Drawable background = mBackground;
-
-		final int right = getWidth();
-
-		// Draw behind recents
-		mDrawRect.set(0, 0, right, mFavoritesStart);
-		background.setBounds(mDrawRect);
-		background.draw(canvas);
-
-		// Draw behind favourites
-		if (mFavoritesStart > -1) {
-			mDrawRect.set(0, mFavoritesStart, right, mFavoritesEnd);
-			background.setBounds(mDrawRect);
-			background.draw(canvas);
-		}
-
-		super.onDraw(canvas);
 	}
 
 	@Override
@@ -121,10 +87,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-
 		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
 		if (widthMode != MeasureSpec.EXACTLY
 				|| heightMode != MeasureSpec.EXACTLY) {
@@ -132,13 +95,14 @@ public class ApplicationsStackLayout extends ViewGroup implements
 					"Can use ApplicationsStackLayout only with MeasureSpec mode=EXACTLY");
 		}
 
+		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 		setMeasuredDimension(widthSize, heightSize);
 	}
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		removeAllApplications();
-
 		layoutVertical();
 	}
 
@@ -146,18 +110,10 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		int childRight = getWidth();
 		int childTop = getHeight();
 
-		mFavoritesEnd = childTop - mMarginBottom;
-
-		int oldChildTop = childTop;
-		childTop = stackApplications(mFavorites, childRight, childTop);
-		if (childTop != oldChildTop) {
-			mFavoritesStart = childTop + mMarginTop;
-		} else {
-			mFavoritesStart = -1;
-		}
+		stackApplications(mFavorites, childRight, childTop);
 	}
 
-	private int stackApplications(List<ApplicationInfo> applications,
+	private void stackApplications(List<ApplicationInfo> applications,
 			int childRight, int childTop) {
 		LayoutParams layoutParams;
 		int widthSpec;
@@ -192,8 +148,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 			childTop -= mMarginTop;
 		}
-
-		return childTop;
 	}
 
 	private void removeAllApplications() {

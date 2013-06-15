@@ -298,7 +298,6 @@ public class Home extends Activity {
 				return true;
 			}
 		}
-
 		return super.dispatchKeyEvent(event);
 	}
 
@@ -319,9 +318,9 @@ public class Home extends Activity {
 	}
 
 	private void startWallpaper() {
-		final Intent pickWallpaper = new Intent(Intent.ACTION_SET_WALLPAPER);
-		startActivity(Intent.createChooser(pickWallpaper,
-				getString(R.string.menu_wallpaper)));
+		Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+		String wallpaperTitle = getString(R.string.menu_wallpaper);
+		startActivity(Intent.createChooser(intent, wallpaperTitle));
 	}
 
 	/**
@@ -342,16 +341,13 @@ public class Home extends Activity {
 		Collections.sort(apps, new ResolveInfo.DisplayNameComparator(manager));
 
 		if (apps != null) {
-			final int count = apps.size();
-
 			if (mApplications == null) {
-				mApplications = new ArrayList<ApplicationInfo>(count);
+				mApplications = new ArrayList<ApplicationInfo>(apps.size());
 			}
 			mApplications.clear();
 
-			for (int i = 0; i < count; i++) {
+			for (ResolveInfo info : apps) {
 				ApplicationInfo application = new ApplicationInfo();
-				ResolveInfo info = apps.get(i);
 
 				application.title = info.loadLabel(manager);
 				application.setActivity(new ComponentName(

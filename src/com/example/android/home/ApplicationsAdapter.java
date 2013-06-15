@@ -61,8 +61,7 @@ public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 				painter.setIntrinsicHeight(height);
 			}
 
-			if (width > 0 && height > 0
-					&& (width < iconWidth || height < iconHeight)) {
+			if (width < iconWidth || height < iconHeight) {
 				float ratio = (float) iconWidth / iconHeight;
 
 				if (iconWidth > iconHeight) {

@@ -17,7 +17,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:alwaysDrawnWithCache="true"
-        android:background="@drawable/application_background"
         android:columnWidth="78dp"
         android:numColumns="auto_fit"
         android:persistentDrawingCache="animation|scrolling"
