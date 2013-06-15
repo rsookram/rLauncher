@@ -3,6 +3,7 @@ package com.example.android.home;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -46,7 +47,7 @@ public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 		Drawable ic = info.icon;
 
 		if (!info.filtered) {
-			// final Resources resources = getContext().getResources();
+			final Resources resources = activity.getResources();
 			int width = 64;// (int)
 							// resources.getDimension(android.R.dimen.app_icon_size);
 			int height = 64;// (int)
@@ -85,8 +86,7 @@ public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 				ic.setBounds(0, 0, width, height);
 				ic.draw(canvas);
 				ic.setBounds(mOldBounds);
-				ic = info.icon = new BitmapDrawable(activity.getResources(),
-						thumb);
+				ic = info.icon = new BitmapDrawable(resources, thumb);
 				info.filtered = true;
 			}
 		}

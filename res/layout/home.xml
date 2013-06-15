@@ -8,19 +8,20 @@
         android:id="@+id/faves"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="0dip"
+        android:layout_marginTop="0dp"
         android:background="@drawable/application_background" />
 
     <GridView
         android:id="@+id/left_drawer"
-        android:layout_width="260dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:alwaysDrawnWithCache="true"
-        android:columnWidth="78dp"
+        android:columnWidth="64dp"
         android:numColumns="auto_fit"
         android:persistentDrawingCache="animation|scrolling"
         android:scrollbars="none"
-        android:stretchMode="spacingWidth" />
+        android:stretchMode="spacingWidth"
+        android:verticalSpacing="20dp" />
 
 </android.support.v4.widget.DrawerLayout>
