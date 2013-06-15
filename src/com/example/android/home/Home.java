@@ -290,14 +290,10 @@ public class Home extends Activity {
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
-		if (event.getAction() == KeyEvent.ACTION_DOWN) {
-			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-				return true;
-			}
-		} else if (event.getAction() == KeyEvent.ACTION_UP) {
+		if (event.getAction() == KeyEvent.ACTION_UP) {
 			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 				if (!event.isCanceled()) {
-					// Do BACK behaviour.
+					mDrawerLayout.closeDrawer(mGridDrawer);
 				}
 				return true;
 			}
