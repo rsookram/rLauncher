@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<!--
+     Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -18,25 +19,21 @@
     android:id="@+id/show_all_apps"
     android:layout_width="78dip"
     android:layout_height="65dip"
-    android:orientation="vertical"
-    android:gravity="center_vertical"
+    android:background="@drawable/all_applications_button_background"
     android:clickable="true"
-    android:focusable="true"    
-    android:background="@drawable/all_applications_button_background">
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
 
     <CheckBox
         android:id="@+id/show_all_apps_check"
-        android:focusable="false"
-        android:clickable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/all_applications_background"
         android:button="@drawable/all_applications"
-        android:text="@string/show_all_apps"
-        android:textSize="12dip"
-        android:maxLines="1"
-        android:duplicateParentState="true"            
-        android:textColor="@color/bright_text_dark_focused"
+        android:clickable="false"
+        android:duplicateParentState="true"
+        android:focusable="false"
         android:gravity="center_horizontal" />
 
 </LinearLayout>

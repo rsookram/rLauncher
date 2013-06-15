@@ -4,8 +4,5 @@
     <item
         android:id="@+id/wallpaper"
         android:title="@string/menu_wallpaper"/>
-    <item
-        android:id="@+id/settings"
-        android:title="@string/menu_settings"/>
 
 </menu>

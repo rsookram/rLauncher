@@ -21,7 +21,6 @@
 
     <!-- Home Menus -->
     <string name="menu_wallpaper">壁紙</string>
-    <string name="menu_settings">設定</string>
 
     <!-- Wallpaper -->
 </resources>

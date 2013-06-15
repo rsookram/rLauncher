@@ -16,10 +16,8 @@
 
 package com.example.android.home;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -29,7 +27,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -50,7 +47,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
@@ -77,21 +73,12 @@ public class Home extends Activity {
 	 */
 	private static final String KEY_SAVE_GRID_OPENED = "grid.opened";
 
-	private static final String DEFAULT_FAVORITES_PATH = "etc/favorites.xml";
+	private static final String FAVORITES_PATH = "favourites.xml";
 
 	private static final String TAG_FAVORITES = "favorites";
 	private static final String TAG_FAVORITE = "favorite";
 	private static final String TAG_PACKAGE = "package";
 	private static final String TAG_CLASS = "class";
-
-	// Identifiers for option menu items
-	private static final int MENU_WALLPAPER_SETTINGS = Menu.FIRST + 1;
-	private static final int MENU_SETTINGS = MENU_WALLPAPER_SETTINGS + 1;
-
-	/**
-	 * Maximum number of recent tasks to query.
-	 */
-	private static final int MAX_RECENT_TASKS = 20;
 
 	private static boolean mWallpaperChecked;
 	private static ArrayList<ApplicationInfo> mApplications;
@@ -118,8 +105,6 @@ public class Home extends Activity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-		setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
-
 		setContentView(R.layout.home);
 
 		registerIntentReceivers();
@@ -130,7 +115,6 @@ public class Home extends Activity {
 
 		bindApplications();
 		bindFavorites(true);
-		bindRecents();
 		bindButtons();
 
 		mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
@@ -164,7 +148,6 @@ public class Home extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		bindRecents();
 	}
 
 	@Override
@@ -253,25 +236,17 @@ public class Home extends Activity {
 	 */
 	private void bindFavorites(boolean isLaunching) {
 		if (!isLaunching || mFavorites == null) {
-
 			if (mFavorites == null) {
 				mFavorites = new LinkedList<ApplicationInfo>();
 			} else {
 				mFavorites.clear();
 			}
-			mApplicationsStack.setFavorites(mFavorites);
 
-			FileReader favReader;
-
-			// Environment.getRootDirectory() is a fancy way of saying
-			// ANDROID_ROOT or "/system".
-			final File favFile = new File(Environment.getRootDirectory(),
-					DEFAULT_FAVORITES_PATH);
+			InputStream is = null;
 			try {
-				favReader = new FileReader(favFile);
-			} catch (FileNotFoundException e) {
-				Log.e(LOG_TAG, "Couldn't find or open favorites file "
-						+ favFile);
+				is = getAssets().open(FAVORITES_PATH);
+			} catch (IOException e) {
+				Log.e(LOG_TAG, "Couldn't find or open favorites file ");
 				return;
 			}
 
@@ -282,15 +257,14 @@ public class Home extends Activity {
 
 			try {
 				final XmlPullParser parser = Xml.newPullParser();
-				parser.setInput(favReader);
+				parser.setInput(is, "UTF-8");
 
 				beginDocument(parser, TAG_FAVORITES);
 
-				ApplicationInfo info;
+				ApplicationInfo application;
 
 				while (true) {
 					nextElement(parser);
-
 					String name = parser.getName();
 					if (!TAG_FAVORITE.equals(name)) {
 						break;
@@ -306,10 +280,10 @@ public class Home extends Activity {
 					intent.setComponent(cn);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-					info = getApplicationInfo(packageManager, intent);
-					if (info != null) {
-						info.intent = intent;
-						mFavorites.addFirst(info);
+					application = getApplicationInfo(packageManager, intent);
+					if (application != null) {
+						application.intent = intent;
+						mFavorites.addFirst(application);
 					}
 				}
 			} catch (XmlPullParserException e) {
@@ -348,38 +322,6 @@ public class Home extends Activity {
 				&& type != XmlPullParser.END_DOCUMENT) {
 			// Empty
 		}
-	}
-
-	/**
-	 * Refreshes the recently launched applications stacked over the favorites.
-	 * The number of recents depends on how many favorites are present.
-	 */
-	private void bindRecents() {
-		final PackageManager manager = getPackageManager();
-		final ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-		final List<ActivityManager.RecentTaskInfo> recentTasks = tasksManager
-				.getRecentTasks(MAX_RECENT_TASKS, 0);
-
-		final int count = recentTasks.size();
-		final ArrayList<ApplicationInfo> recents = new ArrayList<ApplicationInfo>();
-
-		for (int i = count - 1; i >= 0; i--) {
-			final Intent intent = recentTasks.get(i).baseIntent;
-
-			if (Intent.ACTION_MAIN.equals(intent.getAction())
-					&& !intent.hasCategory(Intent.CATEGORY_HOME)) {
-
-				ApplicationInfo info = getApplicationInfo(manager, intent);
-				if (info != null) {
-					info.intent = intent;
-					if (!mFavorites.contains(info)) {
-						recents.add(info);
-					}
-				}
-			}
-		}
-
-		mApplicationsStack.setRecents(recents);
 	}
 
 	private static ApplicationInfo getApplicationInfo(PackageManager manager,
@@ -429,16 +371,11 @@ public class Home extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case (R.id.wallpaper):
+		if (item.getItemId() == R.id.wallpaper) {
 			startWallpaper();
 			return true;
-		case (R.id.settings):
-			startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void startWallpaper() {
@@ -564,7 +501,6 @@ public class Home extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			loadApplications(false);
 			bindApplications();
-			bindRecents();
 			bindFavorites(false);
 		}
 	}

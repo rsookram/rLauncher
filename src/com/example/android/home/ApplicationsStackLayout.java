@@ -68,13 +68,8 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	private int mFavoritesStart;
 
 	private List<ApplicationInfo> mFavorites;
-	private List<ApplicationInfo> mRecents;
 
-	private int mOrientation = VERTICAL;
-
-	private int mMarginLeft;
 	private int mMarginTop;
-	private int mMarginRight;
 	private int mMarginBottom;
 
 	private Rect mDrawRect = new Rect();
@@ -93,21 +88,15 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.ApplicationsStackLayout);
 
-		mOrientation = a.getInt(
-				R.styleable.ApplicationsStackLayout_stackOrientation, VERTICAL);
-
-		mMarginLeft = a.getDimensionPixelSize(
-				R.styleable.ApplicationsStackLayout_marginLeft, 0);
 		mMarginTop = a.getDimensionPixelSize(
 				R.styleable.ApplicationsStackLayout_marginTop, 0);
-		mMarginRight = a.getDimensionPixelSize(
-				R.styleable.ApplicationsStackLayout_marginRight, 0);
 		mMarginBottom = a.getDimensionPixelSize(
 				R.styleable.ApplicationsStackLayout_marginBottom, 0);
 
 		a.recycle();
 
-		mIconSize = (int) getResources().getDimension(android.R.dimen.app_icon_size);
+		mIconSize = (int) getResources().getDimension(
+				android.R.dimen.app_icon_size);
 
 		initLayout();
 	}
@@ -123,38 +112,20 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		setWillNotDraw(false);
 	}
 
-	/**
-	 * Return the current orientation, either VERTICAL (default) or HORIZONTAL.
-	 * 
-	 * @return the stack orientation
-	 */
-	public int getOrientation() {
-		return mOrientation;
-	}
-
 	@Override
 	protected void onDraw(Canvas canvas) {
 		final Drawable background = mBackground;
 
 		final int right = getWidth();
-		final int bottom = getHeight();
 
 		// Draw behind recents
-		if (mOrientation == VERTICAL) {
-			mDrawRect.set(0, 0, right, mFavoritesStart);
-		} else {
-			mDrawRect.set(0, 0, mFavoritesStart, bottom);
-		}
+		mDrawRect.set(0, 0, right, mFavoritesStart);
 		background.setBounds(mDrawRect);
 		background.draw(canvas);
 
-		// Draw behind favorites
+		// Draw behind favourites
 		if (mFavoritesStart > -1) {
-			if (mOrientation == VERTICAL) {
-				mDrawRect.set(0, mFavoritesStart, right, mFavoritesEnd);
-			} else {
-				mDrawRect.set(mFavoritesStart, 0, mFavoritesEnd, bottom);
-			}
+			mDrawRect.set(0, mFavoritesStart, right, mFavoritesEnd);
 			background.setBounds(mDrawRect);
 			background.draw(canvas);
 		}
@@ -193,11 +164,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 				MeasureSpec.EXACTLY);
 		mButton.measure(widthSpec, heightSpec);
 
-		if (mOrientation == VERTICAL) {
-			layoutVertical();
-		} else {
-			layoutHorizontal();
-		}
+		layoutVertical();
 	}
 
 	private void layoutVertical() {
@@ -220,32 +187,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		} else {
 			mFavoritesStart = -1;
 		}
-
-		stackApplications(mRecents, childLeft, childTop);
-	}
-
-	private void layoutHorizontal() {
-		int childLeft = getWidth();
-		int childTop = 0;
-
-		int childWidth = mButton.getMeasuredWidth();
-		int childHeight = mButton.getMeasuredHeight();
-
-		childLeft -= childWidth;
-		mButton.layout(childLeft, childTop, childLeft + childWidth, childTop
-				+ childHeight);
-		childLeft -= mMarginLeft;
-		mFavoritesEnd = childLeft - mMarginRight;
-
-		int oldChildLeft = childLeft;
-		childLeft = stackApplications(mFavorites, childLeft, childTop);
-		if (childLeft != oldChildLeft) {
-			mFavoritesStart = childLeft + mMarginLeft;
-		} else {
-			mFavoritesStart = -1;
-		}
-
-		stackApplications(mRecents, childLeft, childTop);
 	}
 
 	private int stackApplications(List<ApplicationInfo> applications,
@@ -255,8 +196,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		int heightSpec;
 		int childWidth;
 		int childHeight;
-
-		final boolean isVertical = mOrientation == VERTICAL;
 
 		final int count = applications.size();
 		for (int i = count - 1; i >= 0; i--) {
@@ -273,20 +212,11 @@ public class ApplicationsStackLayout extends ViewGroup implements
 			childWidth = view.getMeasuredWidth();
 			childHeight = view.getMeasuredHeight();
 
-			if (isVertical) {
-				childTop -= childHeight + mMarginBottom;
+			childTop -= childHeight + mMarginBottom;
 
-				if (childTop < 0) {
-					childTop += childHeight + mMarginBottom;
-					break;
-				}
-			} else {
-				childLeft -= childWidth + mMarginRight;
-
-				if (childLeft < 0) {
-					childLeft += childWidth + mMarginRight;
-					break;
-				}
+			if (childTop < 0) {
+				childTop += childHeight + mMarginBottom;
+				break;
 			}
 
 			addViewInLayout(view, -1, layoutParams);
@@ -294,14 +224,10 @@ public class ApplicationsStackLayout extends ViewGroup implements
 			view.layout(childLeft, childTop, childLeft + childWidth, childTop
 					+ childHeight);
 
-			if (isVertical) {
-				childTop -= mMarginTop;
-			} else {
-				childLeft -= mMarginLeft;
-			}
+			childTop -= mMarginTop;
 		}
 
-		return isVertical ? childTop : childLeft;
+		return childTop;
 	}
 
 	private void removeAllApplications() {
@@ -316,9 +242,8 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 	private View createApplicationIcon(LayoutInflater inflater,
 			ViewGroup group, ApplicationInfo info) {
-
-		ImageView iv = (ImageView) inflater.inflate(R.layout.favorite,
-				group, false);
+		ImageView iv = (ImageView) inflater.inflate(R.layout.favorite, group,
+				false);
 
 		info.icon.setBounds(0, 0, mIconSize, mIconSize);
 		iv.setImageDrawable(info.icon);
@@ -337,17 +262,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	 */
 	public void setFavorites(List<ApplicationInfo> applications) {
 		mFavorites = applications;
-		requestLayout();
-	}
-
-	/**
-	 * Sets the list of recents.
-	 * 
-	 * @param applications
-	 *            the applications to put in the recents area
-	 */
-	public void setRecents(List<ApplicationInfo> applications) {
-		mRecents = applications;
 		requestLayout();
 	}
 
