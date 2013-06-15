@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<favorites>
+
+    <favorite
+        class="com.merono.g.GActivity"
+        package="com.merono.g" />
+
+    <favorite
+        class="com.merono.notepadmm.Notepadmm"
+        package="com.merono.notepadmm" />
+
+</favorites>
