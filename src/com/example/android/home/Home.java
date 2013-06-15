@@ -36,32 +36,19 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.TextView;
 
 public class Home extends Activity {
 	private static final String LOG_TAG = "Home";
@@ -402,130 +389,6 @@ public class Home extends Activity {
 			loadApplications(false);
 			bindApplications();
 			bindFavorites(false);
-		}
-	}
-
-	/**
-	 * GridView adapter to show the list of all installed applications.
-	 */
-	private class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
-		private Rect mOldBounds = new Rect();
-
-		public ApplicationsAdapter(Context context,
-				ArrayList<ApplicationInfo> apps) {
-			super(context, 0, apps);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final ApplicationInfo info = mApplications.get(position);
-
-			if (convertView == null) {
-				final LayoutInflater inflater = getLayoutInflater();
-				convertView = inflater.inflate(R.layout.application, parent,
-						false);
-			}
-
-			Drawable icon = info.icon;
-
-			if (!info.filtered) {
-				// final Resources resources = getContext().getResources();
-				int width = 64;// (int)
-								// resources.getDimension(android.R.dimen.app_icon_size);
-				int height = 64;// (int)
-								// resources.getDimension(android.R.dimen.app_icon_size);
-
-				final int iconWidth = icon.getIntrinsicWidth();
-				final int iconHeight = icon.getIntrinsicHeight();
-
-				if (icon instanceof PaintDrawable) {
-					PaintDrawable painter = (PaintDrawable) icon;
-					painter.setIntrinsicWidth(width);
-					painter.setIntrinsicHeight(height);
-				}
-
-				if (width > 0 && height > 0
-						&& (width < iconWidth || height < iconHeight)) {
-					final float ratio = (float) iconWidth / iconHeight;
-
-					if (iconWidth > iconHeight) {
-						height = (int) (width / ratio);
-					} else if (iconHeight > iconWidth) {
-						width = (int) (height * ratio);
-					}
-
-					final Bitmap.Config c = icon.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-							: Bitmap.Config.RGB_565;
-					final Bitmap thumb = Bitmap.createBitmap(width, height, c);
-					final Canvas canvas = new Canvas(thumb);
-					canvas.setDrawFilter(new PaintFlagsDrawFilter(
-							Paint.DITHER_FLAG, 0));
-					// Copy the old bounds to restore them later
-					// If we were to do oldBounds = icon.getBounds(),
-					// the call to setBounds() that follows would
-					// change the same instance and we would lose the
-					// old bounds
-					mOldBounds.set(icon.getBounds());
-					icon.setBounds(0, 0, width, height);
-					icon.draw(canvas);
-					icon.setBounds(mOldBounds);
-					icon = info.icon = new BitmapDrawable(getResources(), thumb);
-					info.filtered = true;
-				}
-			}
-
-			TextView textView = (TextView) convertView.findViewById(R.id.label);
-			textView.setCompoundDrawablesWithIntrinsicBounds(null, icon, null,
-					null);
-			textView.setText(info.title);
-
-			return convertView;
-		}
-	}
-
-	/**
-	 * When a drawable is attached to a View, the View gives the Drawable its
-	 * dimensions by calling Drawable.setBounds(). In this application, the View
-	 * that draws the wallpaper has the same size as the screen. However, the
-	 * wallpaper might be larger that the screen which means it will be
-	 * automatically stretched. Because stretching a bitmap while drawing it is
-	 * very expensive, we use a ClippedDrawable instead. This drawable simply
-	 * draws another wallpaper but makes sure it is not stretched by always
-	 * giving it its intrinsic dimensions. If the wallpaper is larger than the
-	 * screen, it will simply get clipped but it won't impact performance.
-	 */
-	private class ClippedDrawable extends Drawable {
-		private final Drawable mWallpaper;
-
-		public ClippedDrawable(Drawable wallpaper) {
-			mWallpaper = wallpaper;
-		}
-
-		@Override
-		public void setBounds(int left, int top, int right, int bottom) {
-			super.setBounds(left, top, right, bottom);
-			// Ensure the wallpaper is as large as it really is, to avoid
-			// stretching it
-			// at drawing time
-			mWallpaper.setBounds(left, top,
-					left + mWallpaper.getIntrinsicWidth(),
-					top + mWallpaper.getIntrinsicHeight());
-		}
-
-		public void draw(Canvas canvas) {
-			mWallpaper.draw(canvas);
-		}
-
-		public void setAlpha(int alpha) {
-			mWallpaper.setAlpha(alpha);
-		}
-
-		public void setColorFilter(ColorFilter cf) {
-			mWallpaper.setColorFilter(cf);
-		}
-
-		public int getOpacity() {
-			return mWallpaper.getOpacity();
 		}
 	}
 }
