@@ -9,4 +9,8 @@
         class="com.merono.notepadmm.Notepadmm"
         package="com.merono.notepadmm" />
 
+    <favorite
+        class="org.ebookdroid.ui.library.RecentActivity"
+        package="org.ebookdroid" />
+
 </favorites>

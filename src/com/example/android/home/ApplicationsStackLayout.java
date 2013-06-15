@@ -32,28 +32,15 @@ import android.widget.ImageView;
 
 /**
  * The ApplicationsStackLayout is a specialized layout used for the purpose of
- * the home screen only. This layout stacks various icons in three distinct
- * areas: the recents, the favorites (or faves) and the button.
+ * the home screen only. This layout stacks various icons in two distinct areas:
+ * the favourites (or faves) and the button.
  * 
- * This layout supports two different orientations: vertical and horizontal.
- * When horizontal, the areas are laid out this way:
- * 
- * [RECENTS][FAVES][BUTTON]
- * 
- * When vertical, the layout is the following:
- * 
- * [RECENTS] [FAVES] [BUTTON]
- * 
- * The layout operates from the "bottom up" (or from right to left.) This means
- * that the button area will first be laid out, then the faves area, then the
- * recents. When there are too many favorites, the recents area is not
- * displayed.
+ * The layout operates from the bottom up. This means that the button area will
+ * first be laid out, then the faves area.
  * 
  * The following attributes can be set in XML:
  * 
- * orientation: horizontal or vertical marginLeft: the left margin of each
- * element in the stack marginTop: the top margin of each element in the stack
- * marginRight: the right margin of each element in the stack marginBottom: the
+ * marginTop: the top margin of each element in the stack marginBottom: the
  * bottom margin of each element in the stack
  */
 public class ApplicationsStackLayout extends ViewGroup implements
@@ -137,17 +124,16 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-		final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-		final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 
-		final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-		final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
 		if (widthMode != MeasureSpec.EXACTLY
 				|| heightMode != MeasureSpec.EXACTLY) {
 			throw new IllegalStateException(
-					"ApplicationsStackLayout can only be used with "
-							+ "measure spec mode=EXACTLY");
+					"Can use ApplicationsStackLayout only with MeasureSpec mode=EXACTLY");
 		}
 
 		setMeasuredDimension(widthSize, heightSize);
@@ -158,9 +144,9 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		removeAllApplications();
 
 		LayoutParams layoutParams = mButton.getLayoutParams();
-		final int widthSpec = MeasureSpec.makeMeasureSpec(layoutParams.width,
+		int widthSpec = MeasureSpec.makeMeasureSpec(layoutParams.width,
 				MeasureSpec.EXACTLY);
-		final int heightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height,
+		int heightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height,
 				MeasureSpec.EXACTLY);
 		mButton.measure(widthSpec, heightSpec);
 
@@ -197,9 +183,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		int childWidth;
 		int childHeight;
 
-		final int count = applications.size();
-		for (int i = count - 1; i >= 0; i--) {
-			final ApplicationInfo info = applications.get(i);
+		for (ApplicationInfo info : applications) {
 			final View view = createApplicationIcon(mInflater, this, info);
 
 			layoutParams = view.getLayoutParams();
@@ -231,8 +215,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	}
 
 	private void removeAllApplications() {
-		final int count = getChildCount();
-		for (int i = count - 1; i >= 0; i--) {
+		for (int i = getChildCount() - 1; i >= 0; i--) {
 			final View view = getChildAt(i);
 			if (view != mButton) {
 				removeViewAt(i);
@@ -254,14 +237,8 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		return iv;
 	}
 
-	/**
-	 * Sets the list of favorites.
-	 * 
-	 * @param applications
-	 *            the applications to put in the favorites area
-	 */
-	public void setFavorites(List<ApplicationInfo> applications) {
-		mFavorites = applications;
+	public void setFavorites(List<ApplicationInfo> favApplications) {
+		mFavorites = favApplications;
 		requestLayout();
 	}
 

@@ -57,6 +57,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -132,16 +133,10 @@ public class Home extends Activity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
 	protected void onRestoreInstanceState(Bundle state) {
 		super.onRestoreInstanceState(state);
-		final boolean opened = state.getBoolean(KEY_SAVE_GRID_OPENED, false);
-		if (opened) {
-			showApplications();
+		if (state.getBoolean(KEY_SAVE_GRID_OPENED, false)) {
+			mGrid.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -169,7 +164,7 @@ public class Home extends Activity {
 	}
 
 	/**
-	 * Creates a new appplications adapter for the grid view and registers it.
+	 * Creates a new applications adapter for the grid view and registers it.
 	 */
 	private void bindApplications() {
 		if (mGrid == null) {
@@ -179,7 +174,7 @@ public class Home extends Activity {
 		mGrid.setSelection(0);
 
 		if (mApplicationsStack == null) {
-			mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
+			mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves);
 		}
 	}
 
@@ -190,7 +185,15 @@ public class Home extends Activity {
 		mShowApplications = findViewById(R.id.show_all_apps);
 		mShowApplications.setOnClickListener(new ShowApplications());
 
-		mGrid.setOnItemClickListener(new ApplicationLauncher());
+		mGrid.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView parent, View v, int position,
+					long id) {
+				ApplicationInfo app = (ApplicationInfo) parent
+						.getItemAtPosition(position);
+				startActivity(app.intent);
+			}
+		});
 	}
 
 	/**
@@ -216,8 +219,8 @@ public class Home extends Activity {
 	}
 
 	/**
-	 * Refreshes the favorite applications stacked over the all apps button. The
-	 * number of favorites depends on the user.
+	 * Refreshes the favourite applications stacked over the all apps button.
+	 * The number of favourites depends on the user.
 	 */
 	private void bindFavorites(boolean isLaunching) {
 		if (!isLaunching || mFavorites == null) {
@@ -411,13 +414,6 @@ public class Home extends Activity {
 	}
 
 	/**
-	 * Shows all of the applications.
-	 */
-	private void showApplications() {
-		mGrid.setVisibility(View.VISIBLE);
-	}
-
-	/**
 	 * Receives intents from other applications to change the wallpaper.
 	 */
 	private class WallpaperIntentReceiver extends BroadcastReceiver {
@@ -523,24 +519,11 @@ public class Home extends Activity {
 	 */
 	private class ShowApplications implements View.OnClickListener {
 		public void onClick(View v) {
-			if (mGrid.getVisibility() != View.VISIBLE) {
-				showApplications();
-			} else {
+			if (mGrid.getVisibility() == View.VISIBLE) {
 				mGrid.setVisibility(View.INVISIBLE);
+			} else {
+				mGrid.setVisibility(View.VISIBLE);
 			}
-		}
-	}
-
-	/**
-	 * Starts the selected activity/application in the grid view.
-	 */
-	private class ApplicationLauncher implements
-			AdapterView.OnItemClickListener {
-		public void onItemClick(AdapterView parent, View v, int position,
-				long id) {
-			ApplicationInfo app = (ApplicationInfo) parent
-					.getItemAtPosition(position);
-			startActivity(app.intent);
 		}
 	}
 
