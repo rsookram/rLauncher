@@ -56,6 +56,7 @@ import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -421,26 +422,23 @@ public class Home extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-
-		menu.add(0, MENU_WALLPAPER_SETTINGS, 0, R.string.menu_wallpaper)
-				.setIcon(android.R.drawable.ic_menu_gallery);
-		menu.add(0, MENU_SETTINGS, 0, R.string.menu_settings)
-				.setIcon(android.R.drawable.ic_menu_preferences)
-				.setIntent(
-						new Intent(android.provider.Settings.ACTION_SETTINGS));
-
-		return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == MENU_WALLPAPER_SETTINGS) {
+		switch (item.getItemId()) {
+		case (R.id.wallpaper):
 			startWallpaper();
 			return true;
+		case (R.id.settings):
+			startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-
-		return super.onOptionsItemSelected(item);
 	}
 
 	private void startWallpaper() {
