@@ -79,14 +79,12 @@ public class Home extends Activity {
 
 	private static boolean mWallpaperChecked;
 	private static ArrayList<ApplicationInfo> mApplications;
-	private static LinkedList<ApplicationInfo> mFavorites;
+	private static List<ApplicationInfo> mFavorites;
 
 	private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 
-	private GridView mGrid;
-
-	private View mShowApplications;
+	private GridView mGridDrawer;
 
 	private ApplicationsStackLayout mApplicationsStack;
 
@@ -104,7 +102,16 @@ public class Home extends Activity {
 
 		bindApplications();
 		bindFavorites(true);
-		bindButtons();
+
+		mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView parent, View v, int position,
+					long id) {
+				ApplicationInfo app = (ApplicationInfo) parent
+						.getItemAtPosition(position);
+				startActivity(app.intent);
+			}
+		});
 	}
 
 	@Override
@@ -136,15 +143,15 @@ public class Home extends Activity {
 	protected void onRestoreInstanceState(Bundle state) {
 		super.onRestoreInstanceState(state);
 		if (state.getBoolean(KEY_SAVE_GRID_OPENED, false)) {
-			mGrid.setVisibility(View.VISIBLE);
+			// mGrid.setVisibility(View.VISIBLE);
 		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putBoolean(KEY_SAVE_GRID_OPENED,
-				mGrid.getVisibility() == View.VISIBLE);
+		// outState.putBoolean(KEY_SAVE_GRID_OPENED,mGrid.getVisibility() ==
+		// View.VISIBLE);
 	}
 
 	/**
@@ -167,33 +174,12 @@ public class Home extends Activity {
 	 * Creates a new applications adapter for the grid view and registers it.
 	 */
 	private void bindApplications() {
-		if (mGrid == null) {
-			mGrid = (GridView) findViewById(R.id.all_apps);
-		}
-		mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
-		mGrid.setSelection(0);
-
 		if (mApplicationsStack == null) {
 			mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves);
 		}
-	}
 
-	/**
-	 * Binds actions to the various buttons.
-	 */
-	private void bindButtons() {
-		mShowApplications = findViewById(R.id.show_all_apps);
-		mShowApplications.setOnClickListener(new ShowApplications());
-
-		mGrid.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView parent, View v, int position,
-					long id) {
-				ApplicationInfo app = (ApplicationInfo) parent
-						.getItemAtPosition(position);
-				startActivity(app.intent);
-			}
-		});
+		mGridDrawer = (GridView) findViewById(R.id.left_drawer);
+		mGridDrawer.setAdapter(new ApplicationsAdapter(this, mApplications));
 	}
 
 	/**
@@ -238,18 +224,13 @@ public class Home extends Activity {
 				return;
 			}
 
-			final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-			final PackageManager packageManager = getPackageManager();
-
 			try {
 				final XmlPullParser parser = Xml.newPullParser();
 				parser.setInput(is, "UTF-8");
 
 				beginDocument(parser, TAG_FAVORITES);
 
-				ApplicationInfo application;
+				final PackageManager packageManager = getPackageManager();
 
 				while (true) {
 					nextElement(parser);
@@ -258,20 +239,24 @@ public class Home extends Activity {
 						break;
 					}
 
-					final String favoritePackage = parser.getAttributeValue(
-							null, TAG_PACKAGE);
-					final String favoriteClass = parser.getAttributeValue(null,
+					String favoritePackage = parser.getAttributeValue(null,
+							TAG_PACKAGE);
+					String favoriteClass = parser.getAttributeValue(null,
 							TAG_CLASS);
-
-					final ComponentName cn = new ComponentName(favoritePackage,
+					ComponentName cn = new ComponentName(favoritePackage,
 							favoriteClass);
+
+					final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+					intent.addCategory(Intent.CATEGORY_LAUNCHER);
 					intent.setComponent(cn);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-					application = getApplicationInfo(packageManager, intent);
+					ApplicationInfo application = getApplicationInfo(
+							packageManager, intent);
 					if (application != null) {
 						application.intent = intent;
-						mFavorites.addFirst(application);
+
+						mFavorites.add(0, application);
 					}
 				}
 			} catch (XmlPullParserException e) {
@@ -511,19 +496,6 @@ public class Home extends Activity {
 			textView.setText(info.title);
 
 			return convertView;
-		}
-	}
-
-	/**
-	 * Shows and hides the applications grid view.
-	 */
-	private class ShowApplications implements View.OnClickListener {
-		public void onClick(View v) {
-			if (mGrid.getVisibility() == View.VISIBLE) {
-				mGrid.setVisibility(View.INVISIBLE);
-			} else {
-				mGrid.setVisibility(View.VISIBLE);
-			}
 		}
 	}
 

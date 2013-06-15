@@ -48,7 +48,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 1;
 
-	private View mButton;
 	private LayoutInflater mInflater;
 
 	private int mFavoritesEnd;
@@ -90,9 +89,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 	private void initLayout() {
 		mInflater = LayoutInflater.from(getContext());
-		mButton = mInflater.inflate(R.layout.all_applications_button, this,
-				false);
-		addView(mButton);
 
 		mBackground = getBackground();
 		setBackgroundDrawable(null);
@@ -143,31 +139,17 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		removeAllApplications();
 
-		LayoutParams layoutParams = mButton.getLayoutParams();
-		int widthSpec = MeasureSpec.makeMeasureSpec(layoutParams.width,
-				MeasureSpec.EXACTLY);
-		int heightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height,
-				MeasureSpec.EXACTLY);
-		mButton.measure(widthSpec, heightSpec);
-
 		layoutVertical();
 	}
 
 	private void layoutVertical() {
-		int childLeft = 0;
+		int childRight = getWidth();
 		int childTop = getHeight();
 
-		int childWidth = mButton.getMeasuredWidth();
-		int childHeight = mButton.getMeasuredHeight();
-
-		childTop -= childHeight + mMarginBottom;
-		mButton.layout(childLeft, childTop, childLeft + childWidth, childTop
-				+ childHeight);
-		childTop -= mMarginTop;
 		mFavoritesEnd = childTop - mMarginBottom;
 
 		int oldChildTop = childTop;
-		childTop = stackApplications(mFavorites, childLeft, childTop);
+		childTop = stackApplications(mFavorites, childRight, childTop);
 		if (childTop != oldChildTop) {
 			mFavoritesStart = childTop + mMarginTop;
 		} else {
@@ -176,7 +158,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	}
 
 	private int stackApplications(List<ApplicationInfo> applications,
-			int childLeft, int childTop) {
+			int childRight, int childTop) {
 		LayoutParams layoutParams;
 		int widthSpec;
 		int heightSpec;
@@ -205,7 +187,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 			addViewInLayout(view, -1, layoutParams);
 
-			view.layout(childLeft, childTop, childLeft + childWidth, childTop
+			view.layout(childRight - childWidth, childTop, childRight, childTop
 					+ childHeight);
 
 			childTop -= mMarginTop;
@@ -216,10 +198,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 	private void removeAllApplications() {
 		for (int i = getChildCount() - 1; i >= 0; i--) {
-			final View view = getChildAt(i);
-			if (view != mButton) {
-				removeViewAt(i);
-			}
+			removeViewAt(i);
 		}
 	}
 

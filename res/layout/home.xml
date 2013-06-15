@@ -14,18 +14,23 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:orientation="horizontal" >
+    android:layout_height="match_parent" >
+
+    <com.example.android.home.ApplicationsStackLayout
+        android:id="@+id/faves"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dip"
+        android:background="@drawable/application_background" />
 
     <GridView
-        android:id="@+id/all_apps"
-        android:layout_width="0dip"
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_gravity="start"
         android:alwaysDrawnWithCache="true"
         android:background="@drawable/application_background"
         android:columnWidth="78dp"
@@ -37,13 +42,4 @@
         android:stretchMode="spacingWidth"
         android:visibility="invisible" />
 
-    <!-- Favourites -->
-
-    <com.example.android.home.ApplicationsStackLayout
-        android:id="@+id/faves"
-        android:layout_width="65dip"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dip"
-        android:background="@drawable/application_background" />
-
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>
