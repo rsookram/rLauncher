@@ -16,6 +16,8 @@
 
 package com.example.android.home;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -23,12 +25,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
-import android.widget.TextView;
-
-import java.util.List;
+import android.widget.ImageView;
 
 /**
  * The ApplicationsStackLayout is a specialized layout used for the purpose of
@@ -107,8 +107,7 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 		a.recycle();
 
-		mIconSize = 64; // (int)
-						// getResources().getDimension(android.R.dimen.app_icon_size);
+		mIconSize = (int) getResources().getDimension(android.R.dimen.app_icon_size);
 
 		initLayout();
 	}
@@ -318,17 +317,16 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	private View createApplicationIcon(LayoutInflater inflater,
 			ViewGroup group, ApplicationInfo info) {
 
-		TextView textView = (TextView) inflater.inflate(R.layout.favorite,
+		ImageView iv = (ImageView) inflater.inflate(R.layout.favorite,
 				group, false);
 
 		info.icon.setBounds(0, 0, mIconSize, mIconSize);
-		textView.setCompoundDrawables(null, info.icon, null, null);
-		textView.setText(info.title);
+		iv.setImageDrawable(info.icon);
 
-		textView.setTag(info.intent);
-		textView.setOnClickListener(this);
+		iv.setTag(info.intent);
+		iv.setOnClickListener(this);
 
-		return textView;
+		return iv;
 	}
 
 	/**

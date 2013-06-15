@@ -106,15 +106,11 @@ public class Home extends Activity {
 
 	private boolean mBlockAnimation;
 
-	private boolean mHomeDown;
-	private boolean mBackDown;
-
 	private View mShowApplications;
 	private CheckBox mShowApplicationsCheck;
 
 	private ApplicationsStackLayout mApplicationsStack;
 
-	private Animation mGridEntry;
 	private Animation mGridExit;
 
 	@Override
@@ -136,7 +132,6 @@ public class Home extends Activity {
 		bindRecents();
 		bindButtons();
 
-		mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
 		mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
 	}
 
@@ -407,37 +402,16 @@ public class Home extends Activity {
 	}
 
 	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		if (!hasFocus) {
-			mBackDown = mHomeDown = false;
-		}
-	}
-
-	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
-			switch (event.getKeyCode()) {
-			case KeyEvent.KEYCODE_BACK:
-				mBackDown = true;
-				return true;
-			case KeyEvent.KEYCODE_HOME:
-				mHomeDown = true;
+			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 				return true;
 			}
 		} else if (event.getAction() == KeyEvent.ACTION_UP) {
-			switch (event.getKeyCode()) {
-			case KeyEvent.KEYCODE_BACK:
+			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 				if (!event.isCanceled()) {
-					// Do BACK behavior.
+					// Do BACK behaviour.
 				}
-				mBackDown = true;
-				return true;
-			case KeyEvent.KEYCODE_HOME:
-				if (!event.isCanceled()) {
-					// Do HOME behavior.
-				}
-				mHomeDown = true;
 				return true;
 			}
 		}

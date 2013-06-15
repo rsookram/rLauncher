@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="78dip"
     android:layout_height="65dip"
     android:paddingTop="3dip"
@@ -22,8 +22,4 @@
     android:clickable="true"
     android:focusable="true"
     android:background="@drawable/favorite_background"
-    android:textSize="12dip"
-    android:maxLines="1"
-    android:ellipsize="end"
-    android:textColor="@color/bright_text_dark_focused"
     android:gravity="center_horizontal|bottom" />
