@@ -29,7 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-public class Home extends Activity {
+public class Home extends Activity implements OnItemClickListener {
 	private static final String LOG_TAG = "Home";
 
 	private static final String FAVORITES_PATH = "favourites.xml";
@@ -63,40 +63,7 @@ public class Home extends Activity {
 		bindFavorites(true);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView parent, View v, int position,
-					long id) {
-				ApplicationInfo app = (ApplicationInfo) parent
-						.getItemAtPosition(position);
-				startActivity(app.intent);
-				mDrawerLayout.closeDrawer(mGridDrawer);
-			}
-		});
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-
-		// Remove the callback for the cached drawables or we leak the previous
-		// Home screen on orientation change
-		for (int i = 0; i < mApplications.size(); i++) {
-			mApplications.get(i).icon.setCallback(null);
-		}
-
-		unregisterReceiver(mApplicationsReceiver);
-	}
-
-	/**
-	 * Registers intent receiver for when apps are (un)installed
-	 */
-	private void registerIntentReceiver() {
-		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
-		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-		filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
-		filter.addDataScheme("package");
-		registerReceiver(mApplicationsReceiver, filter);
+		mGridDrawer.setOnItemClickListener(this);
 	}
 
 	/**
@@ -223,19 +190,6 @@ public class Home extends Activity {
 		return info;
 	}
 
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		if (event.getAction() == KeyEvent.ACTION_UP) {
-			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-				if (!event.isCanceled()) {
-					mDrawerLayout.closeDrawer(mGridDrawer);
-				}
-				return true;
-			}
-		}
-		return super.dispatchKeyEvent(event);
-	}
-
 	/**
 	 * Loads the list of installed applications in mApplications.
 	 */
@@ -249,8 +203,7 @@ public class Home extends Activity {
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-		final List<ResolveInfo> apps = manager.queryIntentActivities(
-				mainIntent, 0);
+		List<ResolveInfo> apps = manager.queryIntentActivities(mainIntent, 0);
 		Collections.sort(apps, new ResolveInfo.DisplayNameComparator(manager));
 
 		if (apps != null) {
@@ -275,6 +228,17 @@ public class Home extends Activity {
 	}
 
 	/**
+	 * Registers intent receiver for when apps are (un)installed
+	 */
+	private void registerIntentReceiver() {
+		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+		filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+		filter.addDataScheme("package");
+		registerReceiver(mApplicationsReceiver, filter);
+	}
+
+	/**
 	 * Receives notifications when applications are added/removed.
 	 */
 	private class ApplicationsIntentReceiver extends BroadcastReceiver {
@@ -284,5 +248,38 @@ public class Home extends Activity {
 			bindApplications();
 			bindFavorites(false);
 		}
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getAction() == KeyEvent.ACTION_UP) {
+			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+				if (!event.isCanceled()) {
+					mDrawerLayout.closeDrawer(mGridDrawer);
+				}
+				return true;
+			}
+		}
+		return super.dispatchKeyEvent(event);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		// Remove the callback for the cached drawables or we leak the previous
+		// Home screen on orientation change
+		for (int i = 0; i < mApplications.size(); i++) {
+			mApplications.get(i).icon.setCallback(null);
+		}
+
+		unregisterReceiver(mApplicationsReceiver);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
+		ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
+		startActivity(app.intent);
+		mDrawerLayout.closeDrawer(mGridDrawer);
 	}
 }

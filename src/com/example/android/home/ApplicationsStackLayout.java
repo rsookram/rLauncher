@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +16,6 @@ import android.widget.ImageView;
  * the home screen only. This layout stacks various icons, the favourites.
  * 
  * The layout operates from the bottom up.
- * 
- * The following attributes can be set in XML:
- * 
- * marginTop: the top margin of each element in the stack marginBottom: the
- * bottom margin of each element in the stack
  */
 public class ApplicationsStackLayout extends ViewGroup implements
 		View.OnClickListener {
@@ -32,8 +26,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 	private int mMarginTop;
 	private int mMarginBottom;
 
-	private int mIconSize;
-
 	public ApplicationsStackLayout(Context context) {
 		super(context);
 		initLayout();
@@ -41,20 +33,6 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 	public ApplicationsStackLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
-		TypedArray a = context.obtainStyledAttributes(attrs,
-				R.styleable.ApplicationsStackLayout);
-
-		mMarginTop = a.getDimensionPixelSize(
-				R.styleable.ApplicationsStackLayout_marginTop, 0);
-		mMarginBottom = a.getDimensionPixelSize(
-				R.styleable.ApplicationsStackLayout_marginBottom, 0);
-
-		a.recycle();
-
-		Resources res = getResources();
-		mIconSize = (int) res.getDimension(android.R.dimen.app_icon_size);
-
 		initLayout();
 	}
 
@@ -137,7 +115,9 @@ public class ApplicationsStackLayout extends ViewGroup implements
 		ImageView iv = (ImageView) inflater.inflate(R.layout.favorite, group,
 				false);
 
-		info.icon.setBounds(0, 0, mIconSize, mIconSize);
+		Resources res = getResources();
+		int iconSize = (int) res.getDimension(android.R.dimen.app_icon_size);
+		info.icon.setBounds(0, 0, iconSize, iconSize);
 		iv.setImageDrawable(info.icon);
 
 		iv.setTag(info.intent);
