@@ -11,7 +11,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,7 +19,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -41,8 +39,7 @@ public class Home extends Activity {
 	private static final String TAG_PACKAGE = "package";
 	private static final String TAG_CLASS = "class";
 
-	private static boolean mWallpaperChecked;
-	private static ArrayList<ApplicationInfo> mApplications;
+	private static List<ApplicationInfo> mApplications;
 	private static List<ApplicationInfo> mFavorites;
 
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
@@ -53,14 +50,12 @@ public class Home extends Activity {
 	private ApplicationsStackLayout mApplicationsStack;
 
 	@Override
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
+	public void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
 
 		setContentView(R.layout.home);
 
 		registerIntentReceiver();
-
-		setDefaultWallpaper();
 
 		loadApplications(true);
 
@@ -114,28 +109,6 @@ public class Home extends Activity {
 
 		mGridDrawer = (GridView) findViewById(R.id.left_drawer);
 		mGridDrawer.setAdapter(new ApplicationsAdapter(this, mApplications));
-	}
-
-	/**
-	 * When no wallpaper was manually set, a default wallpaper is used instead.
-	 */
-	private void setDefaultWallpaper() {
-		if (!mWallpaperChecked) {
-			WallpaperManager wallpaperManager = WallpaperManager
-					.getInstance(this);
-			Drawable wallpaper = wallpaperManager.peekDrawable();
-			if (wallpaper == null) {
-				try {
-					wallpaperManager.clear();
-				} catch (IOException e) {
-					Log.e(LOG_TAG, "Failed to clear wallpaper " + e);
-				}
-			} else {
-				getWindow().setBackgroundDrawable(
-						new ClippedDrawable(wallpaper));
-			}
-			mWallpaperChecked = true;
-		}
 	}
 
 	/**

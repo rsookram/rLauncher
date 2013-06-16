@@ -1,6 +1,6 @@
 package com.example.android.home;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
@@ -15,10 +15,10 @@ import android.widget.ImageView;
  */
 public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 	private Activity activity;
-	private ArrayList<ApplicationInfo> mApplications;
+	private List<ApplicationInfo> mApplications;
 
 	public ApplicationsAdapter(Activity activity,
-			ArrayList<ApplicationInfo> apps) {
+			List<ApplicationInfo> apps) {
 		super(activity, 0, apps);
 		this.activity = activity;
 		this.mApplications = apps;
