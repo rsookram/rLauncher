@@ -58,7 +58,7 @@ public class Home extends Activity {
 
 		setContentView(R.layout.home);
 
-		registerIntentReceivers();
+		registerIntentReceiver();
 
 		setDefaultWallpaper();
 
@@ -86,8 +86,7 @@ public class Home extends Activity {
 
 		// Remove the callback for the cached drawables or we leak the previous
 		// Home screen on orientation change
-		final int count = mApplications.size();
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < mApplications.size(); i++) {
 			mApplications.get(i).icon.setCallback(null);
 		}
 
@@ -95,11 +94,9 @@ public class Home extends Activity {
 	}
 
 	/**
-	 * Registers various intent receivers. The current implementation registers
-	 * only a wallpaper intent receiver to let other applications change the
-	 * wallpaper.
+	 * Registers intent receiver for when apps are (un)installed
 	 */
-	private void registerIntentReceivers() {
+	private void registerIntentReceiver() {
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 		filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
