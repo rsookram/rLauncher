@@ -101,21 +101,11 @@ public class Home extends Activity {
 	}
 
 	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-
-		// Close the menu
-		if (Intent.ACTION_MAIN.equals(intent.getAction())) {
-			getWindow().closeAllPanels();
-		}
-	}
-
-	@Override
 	public void onDestroy() {
 		super.onDestroy();
 
-		// Remove the callback for the cached drawables or we leak
-		// the previous Home screen on orientation change
+		// Remove the callback for the cached drawables or we leak the previous
+		// Home screen on orientation change
 		final int count = mApplications.size();
 		for (int i = 0; i < count; i++) {
 			mApplications.get(i).icon.setCallback(null);
@@ -176,8 +166,8 @@ public class Home extends Activity {
 	}
 
 	/**
-	 * Refreshes the favourite applications stacked over the all apps button.
-	 * The number of favourites depends on the user.
+	 * Refreshes the favourite applications stacked. The number of favourites
+	 * depends on the user.
 	 */
 	private void bindFavorites(boolean isLaunching) {
 		if (!isLaunching || mFavorites == null) {
@@ -299,28 +289,6 @@ public class Home extends Activity {
 			}
 		}
 		return super.dispatchKeyEvent(event);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.wallpaper) {
-			startWallpaper();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	private void startWallpaper() {
-		Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
-		String wallpaperTitle = getString(R.string.menu_wallpaper);
-		startActivity(Intent.createChooser(intent, wallpaperTitle));
 	}
 
 	/**
