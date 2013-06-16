@@ -64,7 +64,6 @@ public class Home extends Activity {
 	private static ArrayList<ApplicationInfo> mApplications;
 	private static List<ApplicationInfo> mFavorites;
 
-	private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 
 	private DrawerLayout mDrawerLayout;
@@ -111,7 +110,6 @@ public class Home extends Activity {
 			mApplications.get(i).icon.setCallback(null);
 		}
 
-		unregisterReceiver(mWallpaperReceiver);
 		unregisterReceiver(mApplicationsReceiver);
 	}
 
@@ -121,10 +119,7 @@ public class Home extends Activity {
 	 * wallpaper.
 	 */
 	private void registerIntentReceivers() {
-		IntentFilter filter = new IntentFilter(Intent.ACTION_WALLPAPER_CHANGED);
-		registerReceiver(mWallpaperReceiver, filter);
-
-		filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 		filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
 		filter.addDataScheme("package");
@@ -326,17 +321,6 @@ public class Home extends Activity {
 
 				mApplications.add(application);
 			}
-		}
-	}
-
-	/**
-	 * Receives intents from other applications to change the wallpaper.
-	 */
-	private class WallpaperIntentReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			getWindow().setBackgroundDrawable(
-					new ClippedDrawable(getWallpaper()));
 		}
 	}
 
