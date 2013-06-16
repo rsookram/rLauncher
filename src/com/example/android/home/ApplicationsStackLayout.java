@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,11 +14,10 @@ import android.widget.ImageView;
 
 /**
  * The ApplicationsStackLayout is a specialized layout used for the purpose of
- * the home screen only. This layout stacks various icons in two distinct areas:
- * the favourites (or faves) and the button.
+ * the home screen only. This layout stacks various icons, the favourites (or
+ * faves).
  * 
- * The layout operates from the bottom up. This means that the button area will
- * first be laid out, then the faves area.
+ * The layout operates from the bottom up.
  * 
  * The following attributes can be set in XML:
  * 
@@ -53,8 +53,8 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 		a.recycle();
 
-		mIconSize = (int) getResources().getDimension(
-				android.R.dimen.app_icon_size);
+		Resources res = getResources();
+		mIconSize = (int) res.getDimension(android.R.dimen.app_icon_size);
 
 		initLayout();
 	}
@@ -75,8 +75,8 @@ public class ApplicationsStackLayout extends ViewGroup implements
 
 		if (widthMode != MeasureSpec.EXACTLY
 				|| heightMode != MeasureSpec.EXACTLY) {
-			throw new IllegalStateException(
-					"Can use ApplicationsStackLayout only with MeasureSpec mode=EXACTLY");
+			String exMsg = "Can use ApplicationsStackLayout only with MeasureSpec mode=EXACTLY";
+			throw new IllegalStateException(exMsg);
 		}
 
 		int widthSize = MeasureSpec.getSize(widthMeasureSpec);

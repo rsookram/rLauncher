@@ -47,11 +47,9 @@ public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 		Drawable ic = info.icon;
 
 		if (!info.filtered) {
-			final Resources resources = activity.getResources();
-			int width = 64;// (int)
-							// resources.getDimension(android.R.dimen.app_icon_size);
-			int height = 64;// (int)
-							// resources.getDimension(android.R.dimen.app_icon_size);
+			final Resources res = activity.getResources();
+			int width = (int) res.getDimension(android.R.dimen.app_icon_size);
+			int height = (int) res.getDimension(android.R.dimen.app_icon_size);
 
 			final int iconWidth = ic.getIntrinsicWidth();
 			final int iconHeight = ic.getIntrinsicHeight();
@@ -86,7 +84,7 @@ public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 				ic.setBounds(0, 0, width, height);
 				ic.draw(canvas);
 				ic.setBounds(mOldBounds);
-				ic = info.icon = new BitmapDrawable(resources, thumb);
+				ic = info.icon = new BitmapDrawable(res, thumb);
 				info.filtered = true;
 			}
 		}

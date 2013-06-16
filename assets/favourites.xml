@@ -2,6 +2,10 @@
 <favorites>
 
     <favorite
+        class="wp.wattpad.ui.activities.LoginActivity"
+        package="wp.wpinternal" />
+
+    <favorite
         class="com.merono.g.GActivity"
         package="com.merono.g" />
 
@@ -12,5 +16,13 @@
     <favorite
         class="org.ebookdroid.ui.library.RecentActivity"
         package="org.ebookdroid" />
+
+    <favorite
+        class="com.android.mms.ui.ConversationList"
+        package="com.android.mms" />
+
+    <favorite
+        class="com.android.browser.BrowserActivity"
+        package="com.android.browser" />
 
 </favorites>
