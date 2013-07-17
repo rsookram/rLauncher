@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 /**
  * The ApplicationsStackLayout is a specialized layout used for the purpose of
- * the home screen only. This layout stacks various icons, the favourites.
+ * the home screen only. This layout stacks the favourites.
  * 
  * The layout operates from the bottom up.
  */

@@ -6,7 +6,7 @@
         package="wp.wpinternal" />
 
     <favorite
-        class="com.merono.g.GActivity"
+        class="com.merono.g.BoardActivity"
         package="com.merono.g" />
 
     <favorite
