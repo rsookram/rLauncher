@@ -21,24 +21,14 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 /**
- * Represents a launchable application. An application is made of a name (or
- * title), an intent and an icon.
+ * Represents a launchable application.
  */
-class ApplicationInfo {
-	/**
-	 * The application name.
-	 */
-	CharSequence title;
+public class ApplicationInfo {
+	public CharSequence title;
 
-	/**
-	 * The intent used to start the application.
-	 */
-	Intent intent;
+	public Intent intent;
 
-	/**
-	 * The application icon.
-	 */
-	Drawable icon;
+	public Drawable icon;
 
 	/**
 	 * When set to true, indicates that the icon has been resized.
@@ -80,7 +70,6 @@ class ApplicationInfo {
 	public int hashCode() {
 		int result = (title != null) ? title.hashCode() : 0;
 		final String name = intent.getComponent().getClassName();
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		return result;
+		return 31 * result + ((name != null) ? name.hashCode() : 0);
 	}
 }

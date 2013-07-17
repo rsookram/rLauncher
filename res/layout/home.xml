@@ -17,11 +17,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:alwaysDrawnWithCache="true"
-        android:columnWidth="64dp"
+        android:columnWidth="74dp"
         android:numColumns="auto_fit"
         android:persistentDrawingCache="animation|scrolling"
         android:scrollbars="none"
-        android:stretchMode="spacingWidth"
-        android:verticalSpacing="20dp" />
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" />
 
 </android.support.v4.widget.DrawerLayout>
