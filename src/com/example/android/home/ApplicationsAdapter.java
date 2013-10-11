@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-/**
- * GridView adapter to show the list of all installed applications.
- */
+/** GridView adapter to show the list of all installed applications. */
 public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 	private Activity activity;
 	private List<ApplicationInfo> mApplications;

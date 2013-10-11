@@ -1,15 +1,5 @@
 package com.example.android.home;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -28,6 +18,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Home extends Activity implements OnItemClickListener {
 	private static final String LOG_TAG = "Home";
@@ -269,9 +269,9 @@ public class Home extends Activity implements OnItemClickListener {
 
 		// Remove the callback for the cached drawables or we leak the previous
 		// Home screen on orientation change
-		for (int i = 0; i < mApplications.size(); i++) {
-			mApplications.get(i).icon.setCallback(null);
-		}
+        for (ApplicationInfo application : mApplications) {
+            application.icon.setCallback(null);
+        }
 
 		unregisterReceiver(mApplicationsReceiver);
 	}

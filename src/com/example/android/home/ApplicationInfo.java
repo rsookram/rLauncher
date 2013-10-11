@@ -20,9 +20,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-/**
- * Represents a launchable application.
- */
+/** Represents a launchable application. */
 public class ApplicationInfo {
 	public CharSequence title;
 
@@ -30,9 +28,7 @@ public class ApplicationInfo {
 
 	public Drawable icon;
 
-	/**
-	 * When set to true, indicates that the icon has been resized.
-	 */
+	/** When set to true, indicates that the icon has been resized. */
 	boolean filtered;
 
 	/**
