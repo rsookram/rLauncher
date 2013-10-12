@@ -1,0 +1,8 @@
+[
+    { "class":"wp.wattpad.ui.activities.LoginActivity",   "package":"wp.wattpad"           },
+    { "class":"com.merono.g.BoardActivity",               "package":"com.merono.g"         },
+    { "class":"com.merono.notepadmm.Notepadmm",           "package":"com.merono.notepadmm" },
+    { "class":"org.ebookdroid.ui.library.RecentActivity", "package":"org.ebookdroid"       },
+    { "class":"com.android.mms.ui.ConversationList",      "package":"com.android.mms"      },
+    { "class":"com.android.browser.BrowserActivity",      "package":"com.android.browser"  }
+]

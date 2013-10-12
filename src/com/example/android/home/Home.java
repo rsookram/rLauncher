@@ -13,7 +13,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.util.Xml;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,11 +20,16 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -35,12 +39,7 @@ public class Home extends Activity {
 
     private static final String LOG_TAG = "Home";
 
-    private static final String FAVORITES_PATH = "favourites.xml";
-
-    private static final String TAG_FAVORITES = "favorites";
-    private static final String TAG_FAVORITE = "favorite";
-    private static final String TAG_PACKAGE = "package";
-    private static final String TAG_CLASS = "class";
+    private static final String FAVORITES_PATH = "favourites.json";
 
     /** Width and height of bounds of favourite icons in px */
     private int iconSize;
@@ -112,33 +111,25 @@ public class Home extends Activity {
                 mFavorites.clear();
             }
 
-            InputStream is = null;
+            InputStream is;
+            String appsString;
             try {
                 is = getAssets().open(FAVORITES_PATH);
+                appsString = convertStreamToString(is);
             } catch (IOException e) {
-                Log.e(LOG_TAG, "Couldn't find or open favourites file");
+                Log.e(LOG_TAG, "Couldn't find or open favourites file", e);
                 return;
             }
 
             try {
-                final XmlPullParser parser = Xml.newPullParser();
-                parser.setInput(is, "UTF-8");
-
-                beginDocument(parser, TAG_FAVORITES);
+                JSONArray array = new JSONArray(appsString);
 
                 final PackageManager packageManager = getPackageManager();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    String packageName = object.getString("package");
+                    String className = object.getString("class");
 
-                while (true) {
-                    nextElement(parser);
-                    String name = parser.getName();
-                    if (!TAG_FAVORITE.equals(name)) {
-                        break;
-                    }
-
-                    String packageName = parser.getAttributeValue(null,
-                            TAG_PACKAGE);
-                    String className = parser
-                            .getAttributeValue(null, TAG_CLASS);
                     ComponentName cn = new ComponentName(packageName, className);
 
                     final Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -150,14 +141,11 @@ public class Home extends Activity {
                             packageManager, intent);
                     if (application != null) {
                         application.intent = intent;
-
                         mFavorites.add(0, application);
                     }
                 }
-            } catch (XmlPullParserException e) {
-                Log.w(LOG_TAG, "Got exception parsing favorites.", e);
-            } catch (IOException e) {
-                Log.w(LOG_TAG, "Got exception parsing favorites.", e);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
@@ -176,34 +164,6 @@ public class Home extends Activity {
                 }
             });
             mApplicationsStack.addView(iv, 0);
-        }
-    }
-
-    private static void beginDocument(XmlPullParser parser,
-                                      String firstElementName) throws XmlPullParserException, IOException {
-
-        int type;
-        while ((type = parser.next()) != XmlPullParser.START_TAG
-                && type != XmlPullParser.END_DOCUMENT) {
-            // Empty
-        }
-
-        if (type != XmlPullParser.START_TAG) {
-            throw new XmlPullParserException("No start tag found");
-        }
-
-        if (!parser.getName().equals(firstElementName)) {
-            throw new XmlPullParserException("Unexpected start tag: found "
-                    + parser.getName() + ", expected " + firstElementName);
-        }
-    }
-
-    private static void nextElement(XmlPullParser parser)
-            throws XmlPullParserException, IOException {
-        int type;
-        while ((type = parser.next()) != XmlPullParser.START_TAG
-                && type != XmlPullParser.END_DOCUMENT) {
-            // Empty
         }
     }
 
@@ -281,5 +241,24 @@ public class Home extends Activity {
         }
 
         unregisterReceiver(mApplicationsReceiver);
+    }
+
+    public static String convertStreamToString(InputStream is)
+            throws IOException {
+        StringWriter writer = new StringWriter();
+
+        char[] buffer = new char[2048];
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(is,
+                    "UTF-8"));
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+        } finally {
+            is.close();
+        }
+
+        return writer.toString();
     }
 }
