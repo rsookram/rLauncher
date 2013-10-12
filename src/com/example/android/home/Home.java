@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -29,7 +32,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Home extends Activity implements OnItemClickListener {
+public class Home extends Activity implements OnItemClickListener, View.OnClickListener {
 	private static final String LOG_TAG = "Home";
 
 	private static final String FAVORITES_PATH = "favourites.xml";
@@ -39,6 +42,8 @@ public class Home extends Activity implements OnItemClickListener {
 	private static final String TAG_PACKAGE = "package";
 	private static final String TAG_CLASS = "class";
 
+    private int iconSize;
+
 	private static List<ApplicationInfo> mApplications;
 	private static List<ApplicationInfo> mFavorites;
 
@@ -47,13 +52,15 @@ public class Home extends Activity implements OnItemClickListener {
 	private DrawerLayout mDrawerLayout;
 	private GridView mGridDrawer;
 
-	private ApplicationsStackLayout mApplicationsStack;
+	private LinearLayout mApplicationsStack;
 
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
-
 		setContentView(R.layout.home);
+
+        Resources res = getResources();
+        iconSize = (int) res.getDimension(android.R.dimen.app_icon_size);
 
 		registerIntentReceiver();
 
@@ -71,7 +78,7 @@ public class Home extends Activity implements OnItemClickListener {
 	 */
 	private void bindApplications() {
 		if (mApplicationsStack == null) {
-			mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves);
+			mApplicationsStack = (LinearLayout) findViewById(R.id.faves);
 		}
 
 		mGridDrawer = (GridView) findViewById(R.id.left_drawer);
@@ -139,7 +146,17 @@ public class Home extends Activity implements OnItemClickListener {
 			}
 		}
 
-		mApplicationsStack.setFavorites(mFavorites);
+        for (ApplicationInfo info : mFavorites) {
+            ImageView iv = (ImageView) getLayoutInflater().inflate(
+                    R.layout.favorite, mApplicationsStack, false);
+
+            info.icon.setBounds(0, 0, iconSize, iconSize);
+            iv.setImageDrawable(info.icon);
+
+            iv.setTag(info.intent);
+            iv.setOnClickListener(this);
+            mApplicationsStack.addView(iv, 0);
+        }
 	}
 
 	private static void beginDocument(XmlPullParser parser,
@@ -238,9 +255,7 @@ public class Home extends Activity implements OnItemClickListener {
 		registerReceiver(mApplicationsReceiver, filter);
 	}
 
-	/**
-	 * Receives notifications when applications are added/removed.
-	 */
+    /** Receives notifications when applications are added/removed. */
 	private class ApplicationsIntentReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -275,6 +290,11 @@ public class Home extends Activity implements OnItemClickListener {
 
 		unregisterReceiver(mApplicationsReceiver);
 	}
+
+    @Override
+    public void onClick(View view) {
+        startActivity((Intent) view.getTag());
+    }
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
