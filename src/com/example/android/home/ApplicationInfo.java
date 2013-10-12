@@ -39,7 +39,8 @@ public class ApplicationInfo {
     public ApplicationInfo() {
     }
 
-    public ApplicationInfo(JSONObject obj, PackageManager manager, int launchFlags) throws JSONException {
+    public ApplicationInfo(JSONObject obj, PackageManager manager, int launchFlags)
+            throws JSONException {
         String packageName = obj.getString(KEY_PACKAGE);
         String className = obj.getString(KEY_CLASS);
 
@@ -54,14 +55,24 @@ public class ApplicationInfo {
      * Creates the application intent based on a component name and various
      * launch flags.
      *
-     * @param className   the class name of the component representing the intent
-     * @param launchFlags the launch flags
+     * @param className class name of the component representing the intent
      */
     final void setActivity(ComponentName className, int launchFlags) {
         intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(className);
         intent.setFlags(launchFlags);
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        String packageName = intent.getComponent().getPackageName();
+        String className = intent.getComponent().getClassName();
+
+        JSONObject obj = new JSONObject();
+        obj.put(KEY_PACKAGE, packageName);
+        obj.put(KEY_CLASS, className);
+
+        return obj;
     }
 
     @Override
