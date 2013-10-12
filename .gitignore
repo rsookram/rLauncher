@@ -1,0 +1,7 @@
+*.class
+bin/
+build/
+gen/
+.idea/
+out/
+Home.iml
