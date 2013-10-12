@@ -82,8 +82,27 @@ public class Home extends Activity {
         mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
-                ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
-                startActivity(app.intent);
+                final ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
+
+                mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        super.onDrawerStateChanged(newState);
+                        // This is here rather than in onDrawerClosed to handle
+                        // the case where the drawer is "caught" while closing
+                        // and is brought to the opened state. This is
+                        // interpreted as canceling the item selection.
+                        if (newState == DrawerLayout.STATE_IDLE) {
+                            mDrawerLayout.setDrawerListener(null);
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        super.onDrawerClosed(drawerView);
+                        startActivity(app.intent);
+                    }
+                });
                 mDrawerLayout.closeDrawer(mGridDrawer);
             }
         });
