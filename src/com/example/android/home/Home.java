@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -40,6 +39,8 @@ public class Home extends Activity {
     private static final String LOG_TAG = "Home";
 
     private static final String FAVORITES_PATH = "favourites.json";
+    public static final int APP_LAUNCH_FLAGS = Intent.FLAG_ACTIVITY_NEW_TASK
+            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
 
     /** Width and height of bounds of favourite icons in px */
     private int iconSize;
@@ -146,31 +147,23 @@ public class Home extends Activity {
                 return;
             }
 
+            JSONArray array;
             try {
-                JSONArray array = new JSONArray(appsString);
-
-                final PackageManager packageManager = getPackageManager();
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject object = array.getJSONObject(i);
-                    String packageName = object.getString("package");
-                    String className = object.getString("class");
-
-                    ComponentName cn = new ComponentName(packageName, className);
-
-                    final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    intent.setComponent(cn);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    ApplicationInfo application = getApplicationInfo(
-                            packageManager, intent);
-                    if (application != null) {
-                        application.intent = intent;
-                        mFavorites.add(0, application);
-                    }
-                }
+                array = new JSONArray(appsString);
             } catch (JSONException e) {
                 e.printStackTrace();
+                return;
+            }
+
+            final PackageManager pm = getPackageManager();
+            for (int i = 0; i < array.length(); i++) {
+                try {
+                    JSONObject object = array.getJSONObject(i);
+                    ApplicationInfo app = new ApplicationInfo(object, pm, APP_LAUNCH_FLAGS);
+                    mFavorites.add(0, app);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -192,20 +185,6 @@ public class Home extends Activity {
         }
     }
 
-    private static ApplicationInfo getApplicationInfo(PackageManager manager,
-                                                      Intent intent) {
-        final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
-
-        if (resolveInfo == null) {
-            return null;
-        }
-
-        final ApplicationInfo info = new ApplicationInfo();
-        final ActivityInfo activityInfo = resolveInfo.activityInfo;
-        info.icon = activityInfo.loadIcon(manager);
-        return info;
-    }
-
     /** Loads the list of installed applications in mApplications. */
     private void loadApplications(boolean isLaunching) {
         if (isLaunching && mApplications != null) {
@@ -214,13 +193,13 @@ public class Home extends Activity {
 
         PackageManager manager = getPackageManager();
 
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
         List<ResolveInfo> apps = manager.queryIntentActivities(mainIntent, 0);
-        Collections.sort(apps, new ResolveInfo.DisplayNameComparator(manager));
 
         if (apps != null) {
+            Collections.sort(apps, new ResolveInfo.DisplayNameComparator(manager));
             if (mApplications == null) {
                 mApplications = new ArrayList<ApplicationInfo>(apps.size());
             }
@@ -231,8 +210,7 @@ public class Home extends Activity {
 
                 application.setActivity(new ComponentName(
                         info.activityInfo.applicationInfo.packageName,
-                        info.activityInfo.name), Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                        info.activityInfo.name), APP_LAUNCH_FLAGS);
                 application.icon = info.activityInfo.loadIcon(manager);
 
                 mApplications.add(application);
