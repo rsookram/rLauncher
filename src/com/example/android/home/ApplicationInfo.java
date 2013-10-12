@@ -22,7 +22,6 @@ import android.graphics.drawable.Drawable;
 
 /** Represents a launchable application. */
 public class ApplicationInfo {
-	public CharSequence title;
 
 	public Intent intent;
 
@@ -57,15 +56,13 @@ public class ApplicationInfo {
 		}
 
 		ApplicationInfo that = (ApplicationInfo) o;
-		return title.equals(that.title)
-				&& intent.getComponent().getClassName()
-						.equals(that.intent.getComponent().getClassName());
+		return intent.getComponent().getClassName()
+                .equals(that.intent.getComponent().getClassName());
 	}
 
 	@Override
 	public int hashCode() {
-		int result = (title != null) ? title.hashCode() : 0;
 		final String name = intent.getComponent().getClassName();
-		return 31 * result + ((name != null) ? name.hashCode() : 0);
+		return ((name != null) ? name.hashCode() : 0);
 	}
 }

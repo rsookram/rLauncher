@@ -198,12 +198,6 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
 		final ApplicationInfo info = new ApplicationInfo();
 		final ActivityInfo activityInfo = resolveInfo.activityInfo;
 		info.icon = activityInfo.loadIcon(manager);
-		if (info.title == null || info.title.length() == 0) {
-			info.title = activityInfo.loadLabel(manager);
-		}
-		if (info.title == null) {
-			info.title = "";
-		}
 		return info;
 	}
 
@@ -232,7 +226,6 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
 			for (ResolveInfo info : apps) {
 				ApplicationInfo application = new ApplicationInfo();
 
-				application.title = info.loadLabel(manager);
 				application.setActivity(new ComponentName(
 						info.activityInfo.applicationInfo.packageName,
 						info.activityInfo.name), Intent.FLAG_ACTIVITY_NEW_TASK
