@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.Xml;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,7 +31,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Home extends Activity implements OnItemClickListener, View.OnClickListener {
+public class Home extends Activity {
 
     private static final String LOG_TAG = "Home";
 
@@ -43,17 +42,27 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
     private static final String TAG_PACKAGE = "package";
     private static final String TAG_CLASS = "class";
 
+    /** Width and height of bounds of favourite icons in px */
     private int iconSize;
 
     private static List<ApplicationInfo> mApplications;
     private static List<ApplicationInfo> mFavorites;
 
-    private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
-
+    // UI components
     private DrawerLayout mDrawerLayout;
     private GridView mGridDrawer;
 
     private LinearLayout mApplicationsStack;
+
+    /** Receives notifications when applications are added/removed. */
+    private final BroadcastReceiver mApplicationsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadApplications(false);
+            bindApplications();
+            bindFavorites(false);
+        }
+    };
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -71,7 +80,14 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
         bindFavorites(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mGridDrawer.setOnItemClickListener(this);
+        mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
+                ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
+                startActivity(app.intent);
+                mDrawerLayout.closeDrawer(mGridDrawer);
+            }
+        });
     }
 
     /** Creates a new applications adapter for the grid view and registers it. */
@@ -153,7 +169,12 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
             iv.setImageDrawable(info.icon);
 
             iv.setTag(info.intent);
-            iv.setOnClickListener(this);
+            iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity((Intent) view.getTag());
+                }
+            });
             mApplicationsStack.addView(iv, 0);
         }
     }
@@ -243,27 +264,10 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
         registerReceiver(mApplicationsReceiver, filter);
     }
 
-    /** Receives notifications when applications are added/removed. */
-    private class ApplicationsIntentReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            loadApplications(false);
-            bindApplications();
-            bindFavorites(false);
-        }
-    }
-
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                if (!event.isCanceled()) {
-                    mDrawerLayout.closeDrawer(mGridDrawer);
-                }
-                return true;
-            }
-        }
-        return super.dispatchKeyEvent(event);
+    public void onBackPressed() {
+        super.onBackPressed();
+        mDrawerLayout.closeDrawer(mGridDrawer);
     }
 
     @Override
@@ -277,17 +281,5 @@ public class Home extends Activity implements OnItemClickListener, View.OnClickL
         }
 
         unregisterReceiver(mApplicationsReceiver);
-    }
-
-    @Override
-    public void onClick(View view) {
-        startActivity((Intent) view.getTag());
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
-        ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
-        startActivity(app.intent);
-        mDrawerLayout.closeDrawer(mGridDrawer);
     }
 }
