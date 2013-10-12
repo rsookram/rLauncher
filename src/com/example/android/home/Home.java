@@ -245,7 +245,8 @@ public class Home extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        // intentionally don't call super so that the launcher isn't closed
+        // when back is pressed
         mDrawerLayout.closeDrawer(mGridDrawer);
     }
 
