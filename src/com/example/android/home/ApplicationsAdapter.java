@@ -1,7 +1,5 @@
 package com.example.android.home;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -10,28 +8,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import java.util.List;
+
 /** GridView adapter to show the list of all installed applications. */
 public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
-	private Activity activity;
-	private List<ApplicationInfo> mApplications;
 
-	public ApplicationsAdapter(Activity activity,
-			List<ApplicationInfo> apps) {
-		super(activity, 0, apps);
-		this.activity = activity;
-		this.mApplications = apps;
-	}
+    private Activity activity;
+    private List<ApplicationInfo> mApplications;
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater inflater = activity.getLayoutInflater();
-			convertView = inflater.inflate(R.layout.application, parent, false);
-		}
+    public ApplicationsAdapter(Activity activity,
+                               List<ApplicationInfo> apps) {
+        super(activity, 0, apps);
+        this.activity = activity;
+        this.mApplications = apps;
+    }
 
-		Drawable ic = mApplications.get(position).icon;
-		((ImageView) convertView.findViewById(R.id.img)).setImageDrawable(ic);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            LayoutInflater inflater = activity.getLayoutInflater();
+            convertView = inflater.inflate(R.layout.application, parent, false);
+        }
 
-		return convertView;
-	}
+        Drawable ic = mApplications.get(position).icon;
+        ((ImageView) convertView.findViewById(R.id.img)).setImageDrawable(ic);
+
+        return convertView;
+    }
 }
