@@ -27,9 +27,6 @@ public class ApplicationInfo {
 
     public Drawable icon;
 
-    /** When set to true, indicates that the icon has been resized. */
-    boolean filtered;
-
     /**
      * Creates the application intent based on a component name and various
      * launch flags.
