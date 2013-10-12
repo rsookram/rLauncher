@@ -20,6 +20,7 @@
         android:columnWidth="74dp"
         android:numColumns="auto_fit"
         android:persistentDrawingCache="animation|scrolling"
+        android:listSelector="@drawable/favourite_selector"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp" />
