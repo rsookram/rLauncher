@@ -53,6 +53,8 @@ public class Home extends Activity {
 
     private LinearLayout mApplicationsStack;
 
+    private DrawerLayout.DrawerListener mDrawerListener;
+
     /** Receives notifications when applications are added/removed. */
     private final BroadcastReceiver mApplicationsReceiver = new BroadcastReceiver() {
         @Override
@@ -78,13 +80,17 @@ public class Home extends Activity {
         bindApplications();
         bindFavorites(true);
 
+        mDrawerListener = new TranslateViewDrawerListener(mApplicationsStack, iconSize);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(mDrawerListener);
+
         mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
                 final ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
 
-                mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                mDrawerLayout.setDrawerListener(new TranslateViewDrawerListener(mApplicationsStack, iconSize) {
                     @Override
                     public void onDrawerStateChanged(int newState) {
                         super.onDrawerStateChanged(newState);
@@ -93,7 +99,7 @@ public class Home extends Activity {
                         // and is brought to the opened state. This is
                         // interpreted as canceling the item selection.
                         if (newState == DrawerLayout.STATE_IDLE) {
-                            mDrawerLayout.setDrawerListener(null);
+                            mDrawerLayout.setDrawerListener(mDrawerListener);
                         }
                     }
 
