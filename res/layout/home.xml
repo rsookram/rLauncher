@@ -2,12 +2,14 @@
 <com.merono.rlauncher.FixedOpenDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:id="@+id/faves"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
         android:gravity="end|bottom"
         android:orientation="vertical" />
 
@@ -18,9 +20,9 @@
         android:layout_gravity="start"
         android:alwaysDrawnWithCache="true"
         android:columnWidth="74dp"
+        android:listSelector="@drawable/favourite_selector"
         android:numColumns="auto_fit"
         android:persistentDrawingCache="animation|scrolling"
-        android:listSelector="@drawable/favourite_selector"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp" />
