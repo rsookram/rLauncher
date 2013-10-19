@@ -934,6 +934,17 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                 break;
             }
 
+            // Hack added to prevent the drawer from getting stuck when opening
+            // http://stackoverflow.com/questions/17896052/why-does-drawerlayout-sometimes-glitch-upon-opening
+            case MotionEvent.ACTION_MOVE: {
+                // If we cross the touch slop, don't perform the delayed peek for an edge touch.
+                if (mLeftDragger.checkTouchSlop(ViewDragHelper.DIRECTION_ALL)) {
+                    mLeftCallback.removeCallbacks();
+                    mRightCallback.removeCallbacks();
+                }
+                break;
+            }
+
             case MotionEvent.ACTION_CANCEL: {
                 closeDrawers(true);
                 mDisallowInterceptRequested = false;
