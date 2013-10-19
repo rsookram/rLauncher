@@ -23,7 +23,7 @@ public class SavedAppsHelper {
 	private static final String LOG_TAG = "SavedAppsHelper";
 	private static final String FAVORITES_PATH = "favourites.json";
 
-	public static List<ApplicationInfo> getSavedApps(Context context) {
+	public static List<AppInfo> getSavedApps(Context context) {
 		String appsString = getAppsString(context);
 		if (TextUtils.isEmpty(appsString)) {
 			Log.e(LOG_TAG, "appsString is empty: " + appsString);
@@ -38,7 +38,7 @@ public class SavedAppsHelper {
         }
 
         PackageManager pm = context.getPackageManager();
-        return SavedAppsHelper.JSONtoApplicationInfo(pm, array);
+        return SavedAppsHelper.jsonToAppInfo(pm, array);
 	}
 
 	private static String getAppsString(Context context) {
@@ -52,13 +52,13 @@ public class SavedAppsHelper {
         }
 	}
 	
-	private static List<ApplicationInfo> JSONtoApplicationInfo(
-			PackageManager pm, JSONArray array) {
-		List<ApplicationInfo> apps = new LinkedList<ApplicationInfo>();
+	private static List<AppInfo> jsonToAppInfo(PackageManager pm,
+                                               JSONArray array) {
+		List<AppInfo> apps = new LinkedList<AppInfo>();
 		for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject object = array.getJSONObject(i);
-                ApplicationInfo app = new ApplicationInfo(object, pm, Home.APP_LAUNCH_FLAGS);
+                AppInfo app = new AppInfo(object, pm, Home.APP_LAUNCH_FLAGS);
                 apps.add(app);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -12,11 +12,11 @@ import com.merono.rlauncher.R;
 import java.util.List;
 
 /** GridView adapter to show the list of all installed applications. */
-public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
+public class ApplicationsAdapter extends ArrayAdapter<AppInfo> {
 
     private LayoutInflater mInflater;
 
-    public ApplicationsAdapter(Context context, List<ApplicationInfo> apps) {
+    public ApplicationsAdapter(Context context, List<AppInfo> apps) {
         super(context, 0, apps);
         mInflater = LayoutInflater.from(context);
     }

@@ -33,8 +33,8 @@ public class Home extends Activity {
     /** Width and height of bounds of favourite icons in px */
     private int iconSize;
 
-    private static List<ApplicationInfo> mApplications;
-    private static List<ApplicationInfo> mFavorites;
+    private static List<AppInfo> mApplications;
+    private static List<AppInfo> mFavorites;
 
     // UI components
     private FixedOpenDrawerLayout mDrawerLayout;
@@ -77,7 +77,7 @@ public class Home extends Activity {
         mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
-                final ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(pos);
+                final AppInfo app = (AppInfo) parent.getItemAtPosition(pos);
 
                 mDrawerLayout.setDrawerListener(new TranslateViewDrawerListener(mApplicationsStack, iconSize) {
                     @Override
@@ -116,19 +116,19 @@ public class Home extends Activity {
     /** Refreshes the favourite applications stacked. */
     private void bindFavorites() {
         if (mFavorites == null) {
-            mFavorites = new LinkedList<ApplicationInfo>();
+            mFavorites = new LinkedList<AppInfo>();
         } else {
             mFavorites.clear();
             mApplicationsStack.removeAllViews();
         }
 
-        List<ApplicationInfo> savedApps = SavedAppsHelper.getSavedApps(this);
+        List<AppInfo> savedApps = SavedAppsHelper.getSavedApps(this);
         if (savedApps != null) {
         	mFavorites.addAll(savedApps);
         }
 
         LayoutInflater inflater = getLayoutInflater();
-        for (ApplicationInfo info : mFavorites) {
+        for (AppInfo info : mFavorites) {
             ImageView iv = (ImageView) inflater.inflate(R.layout.favorite,
             		mApplicationsStack, false);
 
@@ -162,12 +162,12 @@ public class Home extends Activity {
         if (apps != null) {
             Collections.sort(apps, new ResolveInfo.DisplayNameComparator(manager));
             if (mApplications == null) {
-                mApplications = new ArrayList<ApplicationInfo>(apps.size());
+                mApplications = new ArrayList<AppInfo>(apps.size());
             }
             mApplications.clear();
 
             for (ResolveInfo info : apps) {
-                ApplicationInfo application = new ApplicationInfo();
+                AppInfo application = new AppInfo();
 
                 application.setActivity(new ComponentName(
                         info.activityInfo.applicationInfo.packageName,
@@ -201,7 +201,7 @@ public class Home extends Activity {
 
         // Remove the callback for the cached drawables or we leak the previous
         // Home screen on orientation change
-        for (ApplicationInfo application : mApplications) {
+        for (AppInfo application : mApplications) {
             application.icon.setCallback(null);
         }
 

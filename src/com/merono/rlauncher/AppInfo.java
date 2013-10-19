@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /** Represents a launchable application. */
-public class ApplicationInfo {
+public class AppInfo {
 
     // Keys used in the JSON representation of this class
     private static final String KEY_PACKAGE = "package";
@@ -20,10 +20,10 @@ public class ApplicationInfo {
 
     public Drawable icon;
 
-    public ApplicationInfo() {
+    public AppInfo() {
     }
 
-    public ApplicationInfo(JSONObject obj, PackageManager manager, int launchFlags)
+    public AppInfo(JSONObject obj, PackageManager manager, int launchFlags)
             throws JSONException {
         String packageName = obj.getString(KEY_PACKAGE);
         String className = obj.getString(KEY_CLASS);
@@ -64,11 +64,11 @@ public class ApplicationInfo {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ApplicationInfo)) {
+        if (!(o instanceof AppInfo)) {
             return false;
         }
 
-        ApplicationInfo that = (ApplicationInfo) o;
+        AppInfo that = (AppInfo) o;
         return intent.getComponent().getClassName()
                 .equals(that.intent.getComponent().getClassName());
     }
