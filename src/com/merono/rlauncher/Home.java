@@ -33,14 +33,14 @@ public class Home extends Activity {
     /** Width and height of bounds of favourite icons in px */
     private int iconSize;
 
-    private static List<AppInfo> mApplications;
+    private static List<AppInfo> mAllApps;
     private static List<AppInfo> mFavorites;
 
     // UI components
     private FixedOpenDrawerLayout mDrawerLayout;
     private GridView mGridDrawer;
 
-    private LinearLayout mApplicationsStack;
+    private LinearLayout mAppsStack;
 
     private FixedOpenDrawerLayout.DrawerListener mDrawerListener;
 
@@ -69,7 +69,7 @@ public class Home extends Activity {
         bindApplications();
         bindFavorites();
 
-        mDrawerListener = new TranslateViewDrawerListener(mApplicationsStack, iconSize);
+        mDrawerListener = new TranslateViewDrawerListener(mAppsStack, iconSize);
 
         mDrawerLayout = (FixedOpenDrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(mDrawerListener);
@@ -79,7 +79,7 @@ public class Home extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
                 final AppInfo app = (AppInfo) parent.getItemAtPosition(pos);
 
-                mDrawerLayout.setDrawerListener(new TranslateViewDrawerListener(mApplicationsStack, iconSize) {
+                mDrawerLayout.setDrawerListener(new TranslateViewDrawerListener(mAppsStack, iconSize) {
                     @Override
                     public void onDrawerStateChanged(int newState) {
                         super.onDrawerStateChanged(newState);
@@ -105,12 +105,12 @@ public class Home extends Activity {
 
     /** Creates a new applications adapter for the grid view and registers it. */
     private void bindApplications() {
-        if (mApplicationsStack == null) {
-            mApplicationsStack = (LinearLayout) findViewById(R.id.faves);
+        if (mAppsStack == null) {
+            mAppsStack = (LinearLayout) findViewById(R.id.faves);
         }
 
         mGridDrawer = (GridView) findViewById(R.id.left_drawer);
-        mGridDrawer.setAdapter(new ApplicationsAdapter(this, mApplications));
+        mGridDrawer.setAdapter(new AppAdapter(this, mAllApps));
     }
 
     /** Refreshes the favourite applications stacked. */
@@ -119,7 +119,7 @@ public class Home extends Activity {
             mFavorites = new LinkedList<AppInfo>();
         } else {
             mFavorites.clear();
-            mApplicationsStack.removeAllViews();
+            mAppsStack.removeAllViews();
         }
 
         List<AppInfo> savedApps = SavedAppsHelper.getSavedApps(this);
@@ -130,7 +130,7 @@ public class Home extends Activity {
         LayoutInflater inflater = getLayoutInflater();
         for (AppInfo info : mFavorites) {
             ImageView iv = (ImageView) inflater.inflate(R.layout.favorite,
-            		mApplicationsStack, false);
+            		mAppsStack, false);
 
             info.icon.setBounds(0, 0, iconSize, iconSize);
             iv.setImageDrawable(info.icon);
@@ -142,13 +142,13 @@ public class Home extends Activity {
                     startActivity((Intent) view.getTag());
                 }
             });
-            mApplicationsStack.addView(iv);
+            mAppsStack.addView(iv);
         }
     }
 
     /** Loads the list of installed applications in mApplications. */
     private void loadApplications(boolean isLaunching) {
-        if (isLaunching && mApplications != null) {
+        if (isLaunching && mAllApps != null) {
             return;
         }
 
@@ -161,10 +161,10 @@ public class Home extends Activity {
 
         if (apps != null) {
             Collections.sort(apps, new ResolveInfo.DisplayNameComparator(manager));
-            if (mApplications == null) {
-                mApplications = new ArrayList<AppInfo>(apps.size());
+            if (mAllApps == null) {
+                mAllApps = new ArrayList<AppInfo>(apps.size());
             }
-            mApplications.clear();
+            mAllApps.clear();
 
             for (ResolveInfo info : apps) {
                 AppInfo application = new AppInfo();
@@ -174,7 +174,7 @@ public class Home extends Activity {
                         info.activityInfo.name), APP_LAUNCH_FLAGS);
                 application.icon = info.activityInfo.loadIcon(manager);
 
-                mApplications.add(application);
+                mAllApps.add(application);
             }
         }
     }
@@ -201,7 +201,7 @@ public class Home extends Activity {
 
         // Remove the callback for the cached drawables or we leak the previous
         // Home screen on orientation change
-        for (AppInfo application : mApplications) {
+        for (AppInfo application : mAllApps) {
             application.icon.setCallback(null);
         }
 
