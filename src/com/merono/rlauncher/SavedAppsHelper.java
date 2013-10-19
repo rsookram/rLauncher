@@ -1,11 +1,5 @@
 package com.merono.rlauncher;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,19 +8,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 public class SavedAppsHelper {
 
 	private static final String LOG_TAG = "SavedAppsHelper";
-	private static final String FAVORITES_PATH = "favourites.json";
+	private static final String APPS_KEY = "apps";
 
 	public static List<AppInfo> getSavedApps(Context context) {
 		String appsString = getAppsString(context);
 		if (TextUtils.isEmpty(appsString)) {
-			Log.e(LOG_TAG, "appsString is empty: " + appsString);
+			Log.d(LOG_TAG, "appsString is empty: " + appsString);
+			return null;
 		}
 
         JSONArray array;
@@ -41,17 +38,17 @@ public class SavedAppsHelper {
         return SavedAppsHelper.jsonToAppInfo(pm, array);
 	}
 
-	private static String getAppsString(Context context) {
-		InputStream is;
-        try {
-            is = context.getAssets().open(FAVORITES_PATH);
-            return SavedAppsHelper.convertStreamToString(is);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Couldn't find or open favourites file", e);
-            return null;
-        }
+	public static void saveApps(Context context, List<AppInfo> apps) {
+		String appsString = appsToJSON(apps).toString();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		prefs.edit().putString(APPS_KEY, appsString).apply();
 	}
-	
+
+	private static String getAppsString(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getString(APPS_KEY, null);
+	}
+
 	private static List<AppInfo> jsonToAppInfo(PackageManager pm,
                                                JSONArray array) {
 		List<AppInfo> apps = new LinkedList<AppInfo>();
@@ -67,22 +64,15 @@ public class SavedAppsHelper {
 		return apps;
 	}
 
-    private static String convertStreamToString(InputStream is)
-            throws IOException {
-        StringWriter writer = new StringWriter();
-
-        char[] buffer = new char[2048];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is,
-                    "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } finally {
-            is.close();
-        }
-
-        return writer.toString();
-    }
+	private static JSONArray appsToJSON(List<AppInfo> apps) {
+		JSONArray array = new JSONArray();
+		for (AppInfo app : apps) {
+			try {
+				array.put(app.toJSON());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return array;
+	}
 }

@@ -2,6 +2,7 @@ package com.merono.rlauncher;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Home extends Activity {
 
@@ -101,6 +106,42 @@ public class Home extends Activity {
                 mDrawerLayout.closeDrawer(mGridDrawer);
             }
         });
+
+        mGridDrawer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AppInfo app = (AppInfo) parent.getItemAtPosition(position);
+                try {
+                    String appString = app.toJSON().toString();
+                    ClipData data = ClipData.newPlainText("info", appString);
+                    view.startDrag(data, new View.DragShadowBuilder(view), null, 0);
+                    mDrawerLayout.closeDrawer(mGridDrawer);
+                    return true;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        });
+
+        mAppsStack.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                if (event.getAction() == DragEvent.ACTION_DROP) {
+                    ClipData data = event.getClipData();
+                    ClipData.Item item = data.getItemAt(0);
+                    String jsonString = item.getText().toString();
+                    try {
+                        mFavorites.add(new AppInfo(new JSONObject(jsonString), getPackageManager(), APP_LAUNCH_FLAGS));
+                        SavedAppsHelper.saveApps(Home.this, mFavorites);
+                        bindFavorites();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     /** Creates a new applications adapter for the grid view and registers it. */
@@ -142,7 +183,7 @@ public class Home extends Activity {
                     startActivity((Intent) view.getTag());
                 }
             });
-            mAppsStack.addView(iv);
+            mAppsStack.addView(iv, 0);
         }
     }
 
