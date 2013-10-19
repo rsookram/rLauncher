@@ -1,4 +1,4 @@
-package com.example.android.home;
+package com.merono.rlauncher;
 
 import android.view.View;
 

@@ -1,4 +1,4 @@
-package com.example.android.home;
+package com.merono.rlauncher;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.merono.rlauncher.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

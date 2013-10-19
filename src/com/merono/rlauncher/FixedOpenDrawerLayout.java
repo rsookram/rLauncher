@@ -15,7 +15,7 @@
  */
 
 
-package com.example.android.home;
+package com.merono.rlauncher;
 
 import android.content.Context;
 import android.content.res.TypedArray;
