@@ -11,7 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -20,16 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.merono.rlauncher.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -37,9 +27,6 @@ import java.util.List;
 
 public class Home extends Activity {
 
-    private static final String LOG_TAG = "Home";
-
-    private static final String FAVORITES_PATH = "favourites.json";
     public static final int APP_LAUNCH_FLAGS = Intent.FLAG_ACTIVITY_NEW_TASK
             | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
 
@@ -63,7 +50,7 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            bindFavorites(false);
+            bindFavorites();
         }
     };
 
@@ -80,7 +67,7 @@ public class Home extends Activity {
         loadApplications(true);
 
         bindApplications();
-        bindFavorites(true);
+        bindFavorites();
 
         mDrawerListener = new TranslateViewDrawerListener(mApplicationsStack, iconSize);
 
@@ -126,51 +113,24 @@ public class Home extends Activity {
         mGridDrawer.setAdapter(new ApplicationsAdapter(this, mApplications));
     }
 
-    /**
-     * Refreshes the favourite applications stacked. The number of favourites
-     * depends on the user.
-     */
-    private void bindFavorites(boolean isLaunching) {
-        if (!isLaunching || mFavorites == null) {
-            if (mFavorites == null) {
-                mFavorites = new LinkedList<ApplicationInfo>();
-            } else {
-                mFavorites.clear();
-            }
-
-            InputStream is;
-            String appsString;
-            try {
-                is = getAssets().open(FAVORITES_PATH);
-                appsString = convertStreamToString(is);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Couldn't find or open favourites file", e);
-                return;
-            }
-
-            JSONArray array;
-            try {
-                array = new JSONArray(appsString);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return;
-            }
-
-            final PackageManager pm = getPackageManager();
-            for (int i = 0; i < array.length(); i++) {
-                try {
-                    JSONObject object = array.getJSONObject(i);
-                    ApplicationInfo app = new ApplicationInfo(object, pm, APP_LAUNCH_FLAGS);
-                    mFavorites.add(0, app);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+    /** Refreshes the favourite applications stacked. */
+    private void bindFavorites() {
+        if (mFavorites == null) {
+            mFavorites = new LinkedList<ApplicationInfo>();
+        } else {
+            mFavorites.clear();
+            mApplicationsStack.removeAllViews();
         }
 
+        List<ApplicationInfo> savedApps = SavedAppsHelper.getSavedApps(this);
+        if (savedApps != null) {
+        	mFavorites.addAll(savedApps);
+        }
+
+        LayoutInflater inflater = getLayoutInflater();
         for (ApplicationInfo info : mFavorites) {
-            ImageView iv = (ImageView) getLayoutInflater().inflate(
-                    R.layout.favorite, mApplicationsStack, false);
+            ImageView iv = (ImageView) inflater.inflate(R.layout.favorite,
+            		mApplicationsStack, false);
 
             info.icon.setBounds(0, 0, iconSize, iconSize);
             iv.setImageDrawable(info.icon);
@@ -182,7 +142,7 @@ public class Home extends Activity {
                     startActivity((Intent) view.getTag());
                 }
             });
-            mApplicationsStack.addView(iv, 0);
+            mApplicationsStack.addView(iv);
         }
     }
 
@@ -246,24 +206,5 @@ public class Home extends Activity {
         }
 
         unregisterReceiver(mApplicationsReceiver);
-    }
-
-    public static String convertStreamToString(InputStream is)
-            throws IOException {
-        StringWriter writer = new StringWriter();
-
-        char[] buffer = new char[2048];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is,
-                    "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } finally {
-            is.close();
-        }
-
-        return writer.toString();
     }
 }
