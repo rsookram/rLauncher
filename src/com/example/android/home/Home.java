@@ -49,12 +49,12 @@ public class Home extends Activity {
     private static List<ApplicationInfo> mFavorites;
 
     // UI components
-    private DrawerLayout mDrawerLayout;
+    private FixedOpenDrawerLayout mDrawerLayout;
     private GridView mGridDrawer;
 
     private LinearLayout mApplicationsStack;
 
-    private DrawerLayout.DrawerListener mDrawerListener;
+    private FixedOpenDrawerLayout.DrawerListener mDrawerListener;
 
     /** Receives notifications when applications are added/removed. */
     private final BroadcastReceiver mApplicationsReceiver = new BroadcastReceiver() {
@@ -83,7 +83,7 @@ public class Home extends Activity {
 
         mDrawerListener = new TranslateViewDrawerListener(mApplicationsStack, iconSize);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (FixedOpenDrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(mDrawerListener);
 
         mGridDrawer.setOnItemClickListener(new OnItemClickListener() {

@@ -1,9 +1,8 @@
 package com.example.android.home;
 
-import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
-public class TranslateViewDrawerListener extends DrawerLayout.SimpleDrawerListener {
+public class TranslateViewDrawerListener extends FixedOpenDrawerLayout.SimpleDrawerListener {
 
     private final View mTranslateView;
     private final int mTranslateOffset;
