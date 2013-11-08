@@ -32,7 +32,11 @@ public class AppInfo {
         setActivity(cn, launchFlags);
 
         ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
-        icon = resolveInfo.activityInfo.loadIcon(manager);
+        if (resolveInfo == null) {
+        	icon = null;
+        } else {
+        	icon = resolveInfo.activityInfo.loadIcon(manager);
+        }
     }
 
     /**

@@ -56,7 +56,9 @@ public class SavedAppsHelper {
             try {
                 JSONObject object = array.getJSONObject(i);
                 AppInfo app = new AppInfo(object, pm, Home.APP_LAUNCH_FLAGS);
-                apps.add(app);
+                if (app.icon != null) {
+                	apps.add(app);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
