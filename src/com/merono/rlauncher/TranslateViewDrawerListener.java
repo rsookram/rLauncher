@@ -16,7 +16,7 @@ public class TranslateViewDrawerListener extends FixedOpenDrawerLayout.SimpleDra
     public void onDrawerSlide(View drawerView, float slideOffset) {
         super.onDrawerSlide(drawerView, slideOffset);
         if (mTranslateView != null) {
-            mTranslateView.animate().x(slideOffset * mTranslateOffset).start();
+            mTranslateView.animate().translationX(slideOffset * mTranslateOffset).start();
         }
     }
 }
