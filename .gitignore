@@ -5,3 +5,6 @@ gen/
 .idea/
 out/
 Home.iml
+.classpath
+.project
+project.properties
