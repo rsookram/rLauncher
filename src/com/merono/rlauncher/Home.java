@@ -20,15 +20,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.merono.rlauncher.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Home extends Activity {
 
@@ -146,9 +145,7 @@ public class Home extends Activity {
 
     /** Creates a new applications adapter for the grid view and registers it. */
     private void bindApplications() {
-        if (mAppsStack == null) {
-            mAppsStack = (LinearLayout) findViewById(R.id.faves);
-        }
+        mAppsStack = (LinearLayout) findViewById(R.id.faves);
 
         mGridDrawer = (GridView) findViewById(R.id.left_drawer);
         mGridDrawer.setAdapter(new AppAdapter(this, mAllApps));

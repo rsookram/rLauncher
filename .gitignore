@@ -8,3 +8,5 @@ Home.iml
 .classpath
 .project
 project.properties
+local.properties
+.gradle/
