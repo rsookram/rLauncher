@@ -15,11 +15,10 @@ public class TranslateViewDrawerListener extends FixedOpenDrawerLayout.SimpleDra
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
         super.onDrawerSlide(drawerView, slideOffset);
-        if (mTranslateView != null) {
-            mTranslateView.animate()
-            .translationX(slideOffset * mTranslateOffset)
-            .setDuration(0L)
-            .start();
+        if (mTranslateView == null) {
+            return;
         }
+
+        mTranslateView.setX(slideOffset * mTranslateOffset);
     }
 }
