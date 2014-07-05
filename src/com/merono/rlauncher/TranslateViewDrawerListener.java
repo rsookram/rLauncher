@@ -1,8 +1,9 @@
 package com.merono.rlauncher;
 
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
-public class TranslateViewDrawerListener extends FixedOpenDrawerLayout.SimpleDrawerListener {
+public class TranslateViewDrawerListener extends DrawerLayout.SimpleDrawerListener {
 
     private final View mTranslateView;
     private final int mTranslateOffset;

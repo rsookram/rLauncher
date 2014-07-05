@@ -31,6 +31,7 @@ import android.support.v4.view.KeyEventCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewGroupCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -54,10 +55,10 @@ import android.view.accessibility.AccessibilityEvent;
  * content view and set the {@code layout_gravity} appropriately. Drawers commonly use
  * {@code match_parent} for height with a fixed width.</p>
  *
- * <p>{@link DrawerListener} can be used to monitor the state and motion of drawer views.
+ * <p>{@link DrawerLayout.DrawerListener} can be used to monitor the state and motion of drawer views.
  * Avoid performing expensive operations such as layout during animation as it can cause
  * stuttering; try to perform expensive operations during the {@link #STATE_IDLE} state.
- * {@link SimpleDrawerListener} offers default/no-op implementations of each callback method.</p>
+ * {@link DrawerLayout.SimpleDrawerListener} offers default/no-op implementations of each callback method.</p>
  *
  * <p>As per the Android Design guide, any drawers positioned to the left/start should
  * always contain content for navigating around the application, whereas any drawers
@@ -120,69 +121,12 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     private boolean mDisallowInterceptRequested;
     private boolean mChildrenCanceledTouch;
 
-    private DrawerListener mListener;
+    private DrawerLayout.DrawerListener mListener;
 
     private float mInitialMotionX;
     private float mInitialMotionY;
 
     private Drawable mShadowLeft;
-
-    /**
-     * Listener for monitoring events about drawers.
-     */
-    public interface DrawerListener {
-        /**
-         * Called when a drawer's position changes.
-         * @param drawerView The child view that was moved
-         * @param slideOffset The new offset of this drawer within its range, from 0-1
-         */
-        public void onDrawerSlide(View drawerView, float slideOffset);
-
-        /**
-         * Called when a drawer has settled in a completely open state.
-         * The drawer is interactive at this point.
-         *
-         * @param drawerView Drawer view that is now open
-         */
-        public void onDrawerOpened(View drawerView);
-
-        /**
-         * Called when a drawer has settled in a completely closed state.
-         *
-         * @param drawerView Drawer view that is now closed
-         */
-        public void onDrawerClosed(View drawerView);
-
-        /**
-         * Called when the drawer motion state changes. The new state will
-         * be one of {@link #STATE_IDLE}, {@link #STATE_DRAGGING} or {@link #STATE_SETTLING}.
-         *
-         * @param newState The new drawer motion state
-         */
-        public void onDrawerStateChanged(int newState);
-    }
-
-    /**
-     * Stub/no-op implementations of all methods of {@link DrawerListener}.
-     * Override this if you only care about a few of the available callback methods.
-     */
-    public abstract static class SimpleDrawerListener implements DrawerListener {
-        @Override
-        public void onDrawerSlide(View drawerView, float slideOffset) {
-        }
-
-        @Override
-        public void onDrawerOpened(View drawerView) {
-        }
-
-        @Override
-        public void onDrawerClosed(View drawerView) {
-        }
-
-        @Override
-        public void onDrawerStateChanged(int newState) {
-        }
-    }
 
     public FixedOpenDrawerLayout(Context context) {
         this(context, null);
@@ -249,9 +193,9 @@ public class FixedOpenDrawerLayout extends ViewGroup {
      * Set a listener to be notified of drawer events.
      *
      * @param listener Listener to notify when drawer events occur
-     * @see DrawerListener
+     * @see DrawerLayout.DrawerListener
      */
-    public void setDrawerListener(DrawerListener listener) {
+    public void setDrawerListener(DrawerLayout.DrawerListener listener) {
         mListener = listener;
     }
 

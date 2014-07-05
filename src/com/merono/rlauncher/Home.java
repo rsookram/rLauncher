@@ -44,7 +44,7 @@ public class Home extends Activity {
 
     private LinearLayout mAppsStack;
 
-    private FixedOpenDrawerLayout.DrawerListener mDrawerListener;
+    private DrawerLayout.DrawerListener mDrawerListener;
 
     /** Receives notifications when applications are added/removed. */
     private final BroadcastReceiver mApplicationsReceiver = new BroadcastReceiver() {
