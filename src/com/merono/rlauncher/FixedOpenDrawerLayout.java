@@ -124,11 +124,10 @@ public class FixedOpenDrawerLayout extends ViewGroup {
 
     private static final int[] LAYOUT_ATTRS = { android.R.attr.layout_gravity };
 
-    private int mMinDrawerMargin;
+    private final int mMinDrawerMargin;
 
-    private int mScrimColor = DEFAULT_SCRIM_COLOR;
     private float mScrimOpacity;
-    private Paint mScrimPaint = new Paint();
+    private final Paint mScrimPaint = new Paint();
 
     private final ViewDragHelper mLeftDragger;
     private final ViewDragCallback mLeftCallback;
@@ -407,7 +406,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
      * Resolve the shared state of all drawers from the component ViewDragHelpers.
      * Should be called whenever a ViewDragHelper's state changes.
      */
-    void updateDrawerState(int forGravity, int activeState, View activeDrawer) {
+    void updateDrawerState(int activeState, View activeDrawer) {
         int state = mLeftDragger.getViewDragState();
 
         if (activeDrawer != null && activeState == STATE_IDLE) {
@@ -466,11 +465,11 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         dispatchOnDrawerSlide(drawerView, slideOffset);
     }
 
-    float getDrawerViewOffset(View drawerView) {
+    static float getDrawerViewOffset(View drawerView) {
         return ((LayoutParams) drawerView.getLayoutParams()).onScreen;
     }
 
-    int getDrawerViewGravity(View drawerView) {
+    static int getDrawerViewGravity(View drawerView) {
         int gravity = ((LayoutParams) drawerView.getLayoutParams()).gravity;
         return GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(drawerView));
     }
@@ -489,17 +488,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
             }
         }
         return null;
-    }
-
-    void moveDrawerToOffset(View drawerView, float slideOffset) {
-        float oldOffset = getDrawerViewOffset(drawerView);
-        int width = drawerView.getWidth();
-        int oldPos = (int) (width * oldOffset);
-        int newPos = (int) (width * slideOffset);
-        int dx = newPos - oldPos;
-
-        drawerView.offsetLeftAndRight(checkDrawerViewGravity(drawerView, Gravity.LEFT) ? dx : -dx);
-        setDrawerViewOffset(drawerView, slideOffset);
     }
 
     View findDrawerWithGravity(int gravity) {
@@ -690,7 +678,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                     setDrawerViewOffset(child, newOffset);
                 }
 
-                int newVisibility = lp.onScreen > 0 ? VISIBLE : INVISIBLE;
+                int newVisibility = lp.onScreen > 0.0f ? VISIBLE : INVISIBLE;
                 if (child.getVisibility() != newVisibility) {
                     child.setVisibility(newVisibility);
                 }
@@ -710,7 +698,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     @Override
     public void computeScroll() {
         int childCount = getChildCount();
-        float scrimOpacity = 0;
+        float scrimOpacity = 0.0f;
         for (int i = 0; i < childCount; i++) {
             float onscreen = ((LayoutParams) getChildAt(i).getLayoutParams()).onScreen;
             scrimOpacity = Math.max(scrimOpacity, onscreen);
@@ -765,19 +753,20 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         boolean result = super.drawChild(canvas, child, drawingTime);
         canvas.restoreToCount(restoreCount);
 
-        if (mScrimOpacity > 0 && drawingContent) {
+        if (mScrimOpacity > 0.0f && drawingContent) {
+            int mScrimColor = DEFAULT_SCRIM_COLOR;
             int baseAlpha = (mScrimColor & 0xff000000) >>> 24;
             int imag = (int) (baseAlpha * mScrimOpacity);
             int color = imag << 24 | (mScrimColor & 0xffffff);
             mScrimPaint.setColor(color);
 
-            canvas.drawRect(clipLeft, 0, clipRight, getHeight(), mScrimPaint);
+            canvas.drawRect(clipLeft, 0.0f, clipRight, getHeight(), mScrimPaint);
         } else if (mShadowLeft != null && checkDrawerViewGravity(child, Gravity.LEFT)) {
             int shadowWidth = mShadowLeft.getIntrinsicWidth();
             int childRight = child.getRight();
             int drawerPeekDistance = mLeftDragger.getEdgeSize();
             float alpha =
-                    Math.max(0, Math.min((float) childRight / drawerPeekDistance, 1.f));
+                    Math.max(0.0f, Math.min((float) childRight / drawerPeekDistance, 1.0f));
             mShadowLeft.setBounds(childRight, child.getTop(),
                     childRight + shadowWidth, child.getBottom());
             mShadowLeft.setAlpha((int) (0xff * alpha));
@@ -1253,6 +1242,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     }
 
     private class ViewDragCallback extends ViewDragHelper.Callback {
+
         private final int mGravity;
         private ViewDragHelper mDragger;
 
@@ -1284,7 +1274,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
 
         @Override
         public void onViewDragStateChanged(int state) {
-            updateDrawerState(mGravity, state, mDragger.getCapturedView());
+            updateDrawerState(state, mDragger.getCapturedView());
         }
 
         @Override
@@ -1329,10 +1319,10 @@ public class FixedOpenDrawerLayout extends ViewGroup {
 
             int left;
             if (checkDrawerViewGravity(releasedChild, Gravity.LEFT)) {
-                left = xvel > 0 || xvel == 0 && offset > 0.5f ? 0 : -childWidth;
+                left = xvel > 0.0f || xvel == 0 && offset > 0.5f ? 0 : -childWidth;
             } else {
                 int width = getWidth();
-                left = xvel < 0 || xvel == 0 && offset < 0.5f ? width - childWidth : width;
+                left = xvel < 0.0f || xvel == 0 && offset < 0.5f ? width - childWidth : width;
             }
 
             mDragger.settleCapturedViewAt(left, releasedChild.getTop());
