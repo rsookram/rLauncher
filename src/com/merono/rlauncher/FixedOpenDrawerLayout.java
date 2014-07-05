@@ -70,6 +70,7 @@ import android.view.accessibility.AccessibilityEvent;
  * and elsewhere.</p>
  */
 public class FixedOpenDrawerLayout extends ViewGroup {
+
     private static final String TAG = "DrawerLayout";
 
     /**
@@ -125,11 +126,9 @@ public class FixedOpenDrawerLayout extends ViewGroup {
 
     private static final boolean CHILDREN_DISALLOW_INTERCEPT = true;
 
-    private static final float TOUCH_SLOP_SENSITIVITY = 1.f;
+    private static final float TOUCH_SLOP_SENSITIVITY = 1.0f;
 
-    private static final int[] LAYOUT_ATTRS = new int[] {
-            android.R.attr.layout_gravity
-    };
+    private static final int[] LAYOUT_ATTRS = { android.R.attr.layout_gravity };
 
     private int mMinDrawerMargin;
 
@@ -138,9 +137,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     private Paint mScrimPaint = new Paint();
 
     private final ViewDragHelper mLeftDragger;
-    private final ViewDragHelper mRightDragger;
     private final ViewDragCallback mLeftCallback;
-    private final ViewDragCallback mRightCallback;
     private int mDrawerState;
     private boolean mInLayout;
     private boolean mFirstLayout = true;
@@ -155,7 +152,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     private float mInitialMotionY;
 
     private Drawable mShadowLeft;
-    private Drawable mShadowRight;
 
     /**
      * Listener for monitoring events about drawers.
@@ -230,17 +226,11 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         final float minVel = MIN_FLING_VELOCITY * density;
 
         mLeftCallback = new ViewDragCallback(Gravity.LEFT);
-        mRightCallback = new ViewDragCallback(Gravity.RIGHT);
 
         mLeftDragger = ViewDragHelper.create(this, TOUCH_SLOP_SENSITIVITY, mLeftCallback);
         mLeftDragger.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
         mLeftDragger.setMinVelocity(minVel);
         mLeftCallback.setDragger(mLeftDragger);
-
-        mRightDragger = ViewDragHelper.create(this, TOUCH_SLOP_SENSITIVITY, mRightCallback);
-        mRightDragger.setEdgeTrackingEnabled(ViewDragHelper.EDGE_RIGHT);
-        mRightDragger.setMinVelocity(minVel);
-        mRightCallback.setDragger(mRightDragger);
 
         // So that we can catch the back button
         setFocusableInTouchMode(true);
@@ -267,10 +257,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                 ViewCompat.getLayoutDirection(this));
         if ((absGravity & Gravity.LEFT) == Gravity.LEFT) {
             mShadowLeft = shadowDrawable;
-            invalidate();
-        }
-        if ((absGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-            mShadowRight = shadowDrawable;
             invalidate();
         }
     }
@@ -353,8 +339,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         }
         if (lockMode != LOCK_MODE_UNLOCKED) {
             // Cancel interaction in progress
-            final ViewDragHelper helper = absGrav == Gravity.LEFT ? mLeftDragger : mRightDragger;
-            helper.cancel();
+            mLeftDragger.cancel();
         }
         switch (lockMode) {
             case LOCK_MODE_LOCKED_OPEN:
@@ -440,17 +425,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
      * Should be called whenever a ViewDragHelper's state changes.
      */
     void updateDrawerState(int forGravity, int activeState, View activeDrawer) {
-        final int leftState = mLeftDragger.getViewDragState();
-        final int rightState = mRightDragger.getViewDragState();
-
-        final int state;
-        if (leftState == STATE_DRAGGING || rightState == STATE_DRAGGING) {
-            state = STATE_DRAGGING;
-        } else if (leftState == STATE_SETTLING || rightState == STATE_SETTLING) {
-            state = STATE_SETTLING;
-        } else {
-            state = STATE_IDLE;
-        }
+        final int state = mLeftDragger.getViewDragState();
 
         if (activeDrawer != null && activeState == STATE_IDLE) {
             final LayoutParams lp = (LayoutParams) activeDrawer.getLayoutParams();
@@ -761,8 +736,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         }
         mScrimOpacity = scrimOpacity;
 
-        // "|" used on purpose; both need to run.
-        if (mLeftDragger.continueSettling(true) | mRightDragger.continueSettling(true)) {
+        if (mLeftDragger.continueSettling(true)) {
             ViewCompat.postInvalidateOnAnimation(this);
         }
     }
@@ -822,17 +796,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                     childRight + shadowWidth, child.getBottom());
             mShadowLeft.setAlpha((int) (0xff * alpha));
             mShadowLeft.draw(canvas);
-        } else if (mShadowRight != null && checkDrawerViewGravity(child, Gravity.RIGHT)) {
-            final int shadowWidth = mShadowRight.getIntrinsicWidth();
-            final int childLeft = child.getLeft();
-            final int showing = getWidth() - childLeft;
-            final int drawerPeekDistance = mRightDragger.getEdgeSize();
-            final float alpha =
-                    Math.max(0, Math.min((float) showing / drawerPeekDistance, 1.f));
-            mShadowRight.setBounds(childLeft - shadowWidth, child.getTop(),
-                    childLeft, child.getBottom());
-            mShadowRight.setAlpha((int) (0xff * alpha));
-            mShadowRight.draw(canvas);
         }
         return result;
     }
@@ -855,9 +818,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
 
-        // "|" used deliberately here; both methods should be invoked.
-        final boolean interceptForDrag = mLeftDragger.shouldInterceptTouchEvent(ev) |
-                mRightDragger.shouldInterceptTouchEvent(ev);
+        final boolean interceptForDrag = mLeftDragger.shouldInterceptTouchEvent(ev);
 
         boolean interceptForTap = false;
 
@@ -880,7 +841,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                 // If we cross the touch slop, don't perform the delayed peek for an edge touch.
                 if (mLeftDragger.checkTouchSlop(ViewDragHelper.DIRECTION_ALL)) {
                     mLeftCallback.removeCallbacks();
-                    mRightCallback.removeCallbacks();
                 }
                 break;
             }
@@ -899,7 +859,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         mLeftDragger.processTouchEvent(ev);
-        mRightDragger.processTouchEvent(ev);
 
         final int action = ev.getAction();
         boolean wantTouchEvents = true;
@@ -943,7 +902,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                 // If we cross the touch slop, don't perform the delayed peek for an edge touch.
                 if (mLeftDragger.checkTouchSlop(ViewDragHelper.DIRECTION_ALL)) {
                     mLeftCallback.removeCallbacks();
-                    mRightCallback.removeCallbacks();
                 }
                 break;
             }
@@ -960,9 +918,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     }
 
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        if (CHILDREN_DISALLOW_INTERCEPT ||
-                (!mLeftDragger.isEdgeTouched(ViewDragHelper.EDGE_LEFT) &&
-                        !mRightDragger.isEdgeTouched(ViewDragHelper.EDGE_RIGHT))) {
+        if (CHILDREN_DISALLOW_INTERCEPT || (!mLeftDragger.isEdgeTouched(ViewDragHelper.EDGE_LEFT))) {
             // If we have an edge touch we want to skip this and track it for later instead.
             super.requestDisallowInterceptTouchEvent(disallowIntercept);
         }
@@ -995,16 +951,12 @@ public class FixedOpenDrawerLayout extends ViewGroup {
             if (checkDrawerViewGravity(child, Gravity.LEFT)) {
                 needsInvalidate |= mLeftDragger.smoothSlideViewTo(child,
                         -childWidth, child.getTop());
-            } else {
-                needsInvalidate |= mRightDragger.smoothSlideViewTo(child,
-                        getWidth(), child.getTop());
             }
 
             lp.isPeeking = false;
         }
 
         mLeftCallback.removeCallbacks();
-        mRightCallback.removeCallbacks();
 
         if (needsInvalidate) {
             invalidate();
@@ -1028,9 +980,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         } else {
             if (checkDrawerViewGravity(drawerView, Gravity.LEFT)) {
                 mLeftDragger.smoothSlideViewTo(drawerView, 0, drawerView.getTop());
-            } else {
-                mRightDragger.smoothSlideViewTo(drawerView, getWidth() - drawerView.getWidth(),
-                        drawerView.getTop());
             }
         }
         invalidate();
@@ -1072,8 +1021,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
             if (checkDrawerViewGravity(drawerView, Gravity.LEFT)) {
                 mLeftDragger.smoothSlideViewTo(drawerView, -drawerView.getWidth(),
                         drawerView.getTop());
-            } else {
-                mRightDragger.smoothSlideViewTo(drawerView, getWidth(), drawerView.getTop());
             }
         }
         invalidate();
