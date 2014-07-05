@@ -44,15 +44,15 @@ import android.view.accessibility.AccessibilityEvent;
  * DrawerLayout acts as a top-level container for window content that allows for
  * interactive "drawer" views to be pulled out from the edge of the window.
  *
- * <p>Drawer positioning and layout is controlled using the <code>android:layout_gravity</code>
+ * <p>Drawer positioning and layout is controlled using the {@code android:layout_gravity}
  * attribute on child views corresponding to which side of the view you want the drawer
  * to emerge from: left or right. (Or start/end on platform versions that support layout direction.)
  * </p>
  *
  * <p>To use a DrawerLayout, position your primary content view as the first child with
- * a width and height of <code>match_parent</code>. Add drawers as child views after the main
- * content view and set the <code>layout_gravity</code> appropriately. Drawers commonly use
- * <code>match_parent</code> for height with a fixed width.</p>
+ * a width and height of {@code match_parent}. Add drawers as child views after the main
+ * content view and set the {@code layout_gravity} appropriately. Drawers commonly use
+ * {@code match_parent} for height with a fixed width.</p>
  *
  * <p>{@link DrawerListener} can be used to monitor the state and motion of drawer views.
  * Avoid performing expensive operations such as layout during animation as it can cause
@@ -83,23 +83,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
      * Indicates that a drawer is in the process of settling to a final position.
      */
     public static final int STATE_SETTLING = ViewDragHelper.STATE_SETTLING;
-
-    /**
-     * The drawer is unlocked.
-     */
-    public static final int LOCK_MODE_UNLOCKED = 0;
-
-    /**
-     * The drawer is locked closed. The user may not open it, though
-     * the app may open it programmatically.
-     */
-    public static final int LOCK_MODE_LOCKED_CLOSED = 1;
-
-    /**
-     * The drawer is locked open. The user may not close it, though the app
-     * may close it programmatically.
-     */
-    public static final int LOCK_MODE_LOCKED_OPEN = 2;
 
     private static final int MIN_DRAWER_MARGIN = 64; // dp
 
@@ -134,8 +117,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     private int mDrawerState;
     private boolean mInLayout;
     private boolean mFirstLayout = true;
-    private int mLockModeLeft;
-    private int mLockModeRight;
     private boolean mDisallowInterceptRequested;
     private boolean mChildrenCanceledTouch;
 
@@ -272,134 +253,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
      */
     public void setDrawerListener(DrawerListener listener) {
         mListener = listener;
-    }
-
-    /**
-     * Enable or disable interaction with all drawers.
-     *
-     * <p>This allows the application to restrict the user's ability to open or close
-     * any drawer within this layout. DrawerLayout will still respond to calls to
-     * {@link #openDrawer(int)}, {@link #closeDrawer(int)} and friends if a drawer is locked.</p>
-     *
-     * <p>Locking drawers open or closed will implicitly open or close
-     * any drawers as appropriate.</p>
-     *
-     * @param lockMode The new lock mode for the given drawer. One of {@link #LOCK_MODE_UNLOCKED},
-     *                 {@link #LOCK_MODE_LOCKED_CLOSED} or {@link #LOCK_MODE_LOCKED_OPEN}.
-     */
-    public void setDrawerLockMode(int lockMode) {
-        setDrawerLockMode(lockMode, Gravity.LEFT);
-        setDrawerLockMode(lockMode, Gravity.RIGHT);
-    }
-
-    /**
-     * Enable or disable interaction with the given drawer.
-     *
-     * <p>This allows the application to restrict the user's ability to open or close
-     * the given drawer. DrawerLayout will still respond to calls to {@link #openDrawer(int)},
-     * {@link #closeDrawer(int)} and friends if a drawer is locked.</p>
-     *
-     * <p>Locking a drawer open or closed will implicitly open or close
-     * that drawer as appropriate.</p>
-     *
-     * @param lockMode The new lock mode for the given drawer. One of {@link #LOCK_MODE_UNLOCKED},
-     *                 {@link #LOCK_MODE_LOCKED_CLOSED} or {@link #LOCK_MODE_LOCKED_OPEN}.
-     * @param edgeGravity Gravity.LEFT, RIGHT, START or END.
-     *                    Expresses which drawer to change the mode for.
-     *
-     * @see #LOCK_MODE_UNLOCKED
-     * @see #LOCK_MODE_LOCKED_CLOSED
-     * @see #LOCK_MODE_LOCKED_OPEN
-     */
-    public void setDrawerLockMode(int lockMode, int edgeGravity) {
-        int absGrav = GravityCompat.getAbsoluteGravity(edgeGravity,
-                ViewCompat.getLayoutDirection(this));
-        if (absGrav == Gravity.LEFT) {
-            mLockModeLeft = lockMode;
-        } else if (absGrav == Gravity.RIGHT) {
-            mLockModeRight = lockMode;
-        }
-        if (lockMode != LOCK_MODE_UNLOCKED) {
-            // Cancel interaction in progress
-            mLeftDragger.cancel();
-        }
-        switch (lockMode) {
-            case LOCK_MODE_LOCKED_OPEN:
-                View toOpen = findDrawerWithGravity(absGrav);
-                if (toOpen != null) {
-                    openDrawer(toOpen);
-                }
-                break;
-            case LOCK_MODE_LOCKED_CLOSED:
-                View toClose = findDrawerWithGravity(absGrav);
-                if (toClose != null) {
-                    closeDrawer(toClose);
-                }
-                break;
-            // default: do nothing
-        }
-    }
-
-    /**
-     * Enable or disable interaction with the given drawer.
-     *
-     * <p>This allows the application to restrict the user's ability to open or close
-     * the given drawer. DrawerLayout will still respond to calls to {@link #openDrawer(int)},
-     * {@link #closeDrawer(int)} and friends if a drawer is locked.</p>
-     *
-     * <p>Locking a drawer open or closed will implicitly open or close
-     * that drawer as appropriate.</p>
-     *
-     * @param lockMode The new lock mode for the given drawer. One of {@link #LOCK_MODE_UNLOCKED},
-     *                 {@link #LOCK_MODE_LOCKED_CLOSED} or {@link #LOCK_MODE_LOCKED_OPEN}.
-     * @param drawerView The drawer view to change the lock mode for
-     *
-     * @see #LOCK_MODE_UNLOCKED
-     * @see #LOCK_MODE_LOCKED_CLOSED
-     * @see #LOCK_MODE_LOCKED_OPEN
-     */
-    public void setDrawerLockMode(int lockMode, View drawerView) {
-        if (!isDrawerView(drawerView)) {
-            throw new IllegalArgumentException("View " + drawerView + " is not a " +
-                    "drawer with appropriate layout_gravity");
-        }
-        setDrawerLockMode(lockMode, getDrawerViewGravity(drawerView));
-    }
-
-    /**
-     * Check the lock mode of the drawer with the given gravity.
-     *
-     * @param edgeGravity Gravity of the drawer to check
-     * @return one of {@link #LOCK_MODE_UNLOCKED}, {@link #LOCK_MODE_LOCKED_CLOSED} or
-     *         {@link #LOCK_MODE_LOCKED_OPEN}.
-     */
-    public int getDrawerLockMode(int edgeGravity) {
-        int absGrav = GravityCompat.getAbsoluteGravity(edgeGravity,
-                ViewCompat.getLayoutDirection(this));
-        if (absGrav == Gravity.LEFT) {
-            return mLockModeLeft;
-        } else if (absGrav == Gravity.RIGHT) {
-            return mLockModeRight;
-        }
-        return LOCK_MODE_UNLOCKED;
-    }
-
-    /**
-     * Check the lock mode of the given drawer view.
-     *
-     * @param drawerView Drawer view to check lock mode
-     * @return one of {@link #LOCK_MODE_UNLOCKED}, {@link #LOCK_MODE_LOCKED_CLOSED} or
-     *         {@link #LOCK_MODE_LOCKED_OPEN}.
-     */
-    public int getDrawerLockMode(View drawerView) {
-        int gravity = getDrawerViewGravity(drawerView);
-        if (gravity == Gravity.LEFT) {
-            return mLockModeLeft;
-        } else if (gravity == Gravity.RIGHT) {
-            return mLockModeRight;
-        }
-
-        return LOCK_MODE_UNLOCKED;
     }
 
     /**
@@ -858,7 +711,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                         // Taps close a dimmed open drawer but only if it isn't locked open.
                         View openDrawer = findOpenDrawer();
                         if (openDrawer != null) {
-                            peekingOnly = getDrawerLockMode(openDrawer) == LOCK_MODE_LOCKED_OPEN;
+                            peekingOnly = false;
                         }
                     }
                 }
@@ -1153,7 +1006,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             View visibleDrawer = findVisibleDrawer();
-            if (visibleDrawer != null && getDrawerLockMode(visibleDrawer) == LOCK_MODE_UNLOCKED) {
+            if (visibleDrawer != null) {
                 closeDrawers();
             }
             return visibleDrawer != null;
@@ -1172,9 +1025,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                 openDrawer(toOpen);
             }
         }
-
-        setDrawerLockMode(ss.lockModeLeft, Gravity.LEFT);
-        setDrawerLockMode(ss.lockModeRight, Gravity.RIGHT);
     }
 
     @Override
@@ -1198,9 +1048,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
             }
         }
 
-        ss.lockModeLeft = mLockModeLeft;
-        ss.lockModeRight = mLockModeRight;
-
         return ss;
     }
 
@@ -1209,8 +1056,6 @@ public class FixedOpenDrawerLayout extends ViewGroup {
      */
     protected static class SavedState extends BaseSavedState {
         int openDrawerGravity = Gravity.NO_GRAVITY;
-        int lockModeLeft = LOCK_MODE_UNLOCKED;
-        int lockModeRight = LOCK_MODE_UNLOCKED;
 
         public SavedState(Parcel in) {
             super(in);
@@ -1268,8 +1113,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
         public boolean tryCaptureView(View child, int pointerId) {
             // Only capture views where the gravity matches what we're looking for.
             // This lets us use two ViewDragHelpers, one for each side drawer.
-            return isDrawerView(child) && checkDrawerViewGravity(child, mGravity) &&
-                    getDrawerLockMode(child) == LOCK_MODE_UNLOCKED;
+            return isDrawerView(child) && checkDrawerViewGravity(child, mGravity);
         }
 
         @Override
@@ -1348,8 +1192,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
             }
             // Only peek if it would mean making the drawer more visible and the drawer isn't locked
             if (toCapture != null && ((leftEdge && toCapture.getLeft() < childLeft) ||
-                    (!leftEdge && toCapture.getLeft() > childLeft)) &&
-                    getDrawerLockMode(toCapture) == LOCK_MODE_UNLOCKED) {
+                    (!leftEdge && toCapture.getLeft() > childLeft))) {
                 LayoutParams lp = (LayoutParams) toCapture.getLayoutParams();
                 mDragger.smoothSlideViewTo(toCapture, childLeft, toCapture.getTop());
                 lp.isPeeking = true;
@@ -1375,14 +1218,8 @@ public class FixedOpenDrawerLayout extends ViewGroup {
 
         @Override
         public void onEdgeDragStarted(int edgeFlags, int pointerId) {
-            View toCapture;
             if ((edgeFlags & ViewDragHelper.EDGE_LEFT) == ViewDragHelper.EDGE_LEFT) {
-                toCapture = findDrawerWithGravity(Gravity.LEFT);
-            } else {
-                toCapture = findDrawerWithGravity(Gravity.RIGHT);
-            }
-
-            if (toCapture != null && getDrawerLockMode(toCapture) == LOCK_MODE_UNLOCKED) {
+                View toCapture = findDrawerWithGravity(Gravity.LEFT);
                 mDragger.captureChildView(toCapture, pointerId);
             }
         }
