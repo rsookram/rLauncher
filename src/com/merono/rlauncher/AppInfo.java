@@ -79,7 +79,7 @@ public class AppInfo {
 
     @Override
     public int hashCode() {
-        final String name = intent.getComponent().getClassName();
-        return ((name != null) ? name.hashCode() : 0);
+        String name = intent.getComponent().getClassName();
+        return name != null ? name.hashCode() : 0;
     }
 }

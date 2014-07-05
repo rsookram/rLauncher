@@ -7,17 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import com.merono.rlauncher.R;
 
 import java.util.List;
 
 /** GridView adapter to show the list of all installed applications. */
 public class AppAdapter extends ArrayAdapter<AppInfo> {
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public AppAdapter(Context context, List<AppInfo> apps) {
-        super(context, 0, apps);
+        super(context, /* Not used */ -1, apps);
         mInflater = LayoutInflater.from(context);
     }
 

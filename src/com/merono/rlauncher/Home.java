@@ -31,8 +31,7 @@ import java.util.List;
 
 public class Home extends Activity {
 
-    public static final int APP_LAUNCH_FLAGS = Intent.FLAG_ACTIVITY_NEW_TASK
-            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
+    public static final int APP_LAUNCH_FLAGS = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
 
     /** Width and height of bounds of favourite icons in px */
     private int iconSize;
@@ -59,8 +58,8 @@ public class Home extends Activity {
     };
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
         Resources res = getResources();
@@ -167,8 +166,7 @@ public class Home extends Activity {
 
         LayoutInflater inflater = getLayoutInflater();
         for (AppInfo info : mFavorites) {
-            ImageView iv = (ImageView) inflater.inflate(R.layout.favorite,
-            		mAppsStack, false);
+            ImageView iv = (ImageView) inflater.inflate(R.layout.favorite, mAppsStack, false);
 
             info.icon.setBounds(0, 0, iconSize, iconSize);
             iv.setImageDrawable(info.icon);
@@ -228,7 +226,7 @@ public class Home extends Activity {
 
     @Override
     public void onBackPressed() {
-        // intentionally don't call super so that the launcher isn't closed
+        // Intentionally don't call super so that the launcher isn't closed
         // when back is pressed
         mDrawerLayout.closeDrawer(mGridDrawer);
     }
