@@ -39,7 +39,6 @@ public class Home extends Activity {
     private static List<AppInfo> mAllApps;
     private static List<AppInfo> mFavorites;
 
-    // UI components
     private FixedOpenDrawerLayout mDrawerLayout;
     private GridView mGridDrawer;
 
