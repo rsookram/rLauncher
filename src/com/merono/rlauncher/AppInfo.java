@@ -23,8 +23,7 @@ public class AppInfo {
     public AppInfo() {
     }
 
-    public AppInfo(JSONObject obj, PackageManager manager, int launchFlags)
-            throws JSONException {
+    public AppInfo(JSONObject obj, PackageManager manager, int launchFlags) throws JSONException {
         String packageName = obj.getString(KEY_PACKAGE);
         String className = obj.getString(KEY_CLASS);
 
@@ -33,9 +32,9 @@ public class AppInfo {
 
         ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
         if (resolveInfo == null) {
-        	icon = null;
+            icon = null;
         } else {
-        	icon = resolveInfo.activityInfo.loadIcon(manager);
+            icon = resolveInfo.activityInfo.loadIcon(manager);
         }
     }
 

@@ -160,7 +160,7 @@ public class Home extends Activity {
 
         List<AppInfo> savedApps = SavedAppsHelper.getSavedApps(this);
         if (savedApps != null) {
-        	mFavorites.addAll(savedApps);
+            mFavorites.addAll(savedApps);
         }
 
         LayoutInflater inflater = getLayoutInflater();
