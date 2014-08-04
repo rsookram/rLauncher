@@ -27,7 +27,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
         }
 
         Drawable ic = getItem(position).icon;
-        ((ImageView) convertView.findViewById(R.id.img)).setImageDrawable(ic);
+        ((ImageView) convertView).setImageDrawable(ic);
 
         return convertView;
     }

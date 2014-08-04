@@ -2,8 +2,8 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="64dp"
     android:layout_height="64dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="12dp"
     android:background="@drawable/favourite_selector"
     android:clickable="true"
     android:gravity="center"
-    android:padding="5dp" />
+    android:padding="4dp" />

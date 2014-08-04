@@ -25,6 +25,6 @@
         android:persistentDrawingCache="animation|scrolling"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+        android:verticalSpacing="16dp" />
 
 </com.merono.rlauncher.FixedOpenDrawerLayout>
