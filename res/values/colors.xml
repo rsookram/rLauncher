@@ -4,4 +4,6 @@
     <color name="accent">#E82624</color>
     <color name="accent_dark">#BA1A22</color>
 
+    <color name="item_selected">#AAFFFFFF</color>
+
 </resources>
