@@ -87,7 +87,7 @@ public class FixedOpenDrawerLayout extends ViewGroup {
 
     private static final int MIN_DRAWER_MARGIN = 64; // dp
 
-    private static final int DEFAULT_SCRIM_COLOR = 0x99000000;
+    private static final int DEFAULT_SCRIM_COLOR = 0x00000000;
 
     /**
      * Length of time to delay before peeking the drawer.

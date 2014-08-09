@@ -71,17 +71,30 @@ public class Home extends Activity {
         bindApplications();
         bindFavorites();
 
-        mDrawerListener = new TranslateViewDrawerListener(mAppsStack, iconSize);
+        final View fab = findViewById(R.id.fab);
+
+        mDrawerListener = new TranslateViewDrawerListener(fab, mAppsStack, iconSize);
 
         mDrawerLayout = (FixedOpenDrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(mDrawerListener);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDrawerLayout.isDrawerOpen(mGridDrawer)) {
+                    mDrawerLayout.closeDrawer(mGridDrawer);
+                } else {
+                    mDrawerLayout.openDrawer(mGridDrawer);
+                }
+            }
+        });
 
         mGridDrawer.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
                 final AppInfo app = (AppInfo) parent.getItemAtPosition(pos);
 
-                mDrawerLayout.setDrawerListener(new TranslateViewDrawerListener(mAppsStack, iconSize) {
+                mDrawerLayout.setDrawerListener(new TranslateViewDrawerListener(fab, mAppsStack, iconSize) {
                     @Override
                     public void onDrawerStateChanged(int newState) {
                         super.onDrawerStateChanged(newState);

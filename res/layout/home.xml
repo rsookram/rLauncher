@@ -4,20 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/faves"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="end|bottom"
-        android:orientation="vertical" />
+        android:layout_height="match_parent" >
+        <LinearLayout
+            android:id="@+id/faves"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="end|bottom"
+            android:orientation="vertical" />
+        <View
+            android:id="@+id/fab"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="156dp"
+            android:layout_marginLeft="@dimen/side_margin"
+            android:layout_marginStart="@dimen/side_margin"
+            android:background="@drawable/fab_action_all" />
+    </FrameLayout>
 
     <GridView
         android:id="@+id/left_drawer"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="start|bottom"
+        android:layout_marginTop="80dp"
+        android:paddingTop="@dimen/side_margin"
+        android:background="#99000000"
         android:alwaysDrawnWithCache="true"
         android:columnWidth="74dp"
         android:listSelector="@drawable/favourite_selector"
