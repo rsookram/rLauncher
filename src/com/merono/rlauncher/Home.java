@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -71,7 +72,7 @@ public class Home extends Activity {
         bindApplications();
         bindFavorites();
 
-        final View fab = findViewById(R.id.fab);
+        final ViewGroup fab = (ViewGroup) findViewById(R.id.fab);
 
         mDrawerListener = new TranslateViewDrawerListener(fab, mAppsStack, iconSize);
 
