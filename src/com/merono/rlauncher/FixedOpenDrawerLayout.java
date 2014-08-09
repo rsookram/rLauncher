@@ -580,7 +580,9 @@ public class FixedOpenDrawerLayout extends ViewGroup {
                 float y = ev.getY();
                 mInitialMotionX = x;
                 mInitialMotionY = y;
+                // Check y so that the pressed state of Views above the drawer are handled properly
                 if (mScrimOpacity > 0 &&
+                        y > findDrawerWithGravity(Gravity.START).getTop() &&
                         isContentView(mDragger.findTopChildUnder((int) x, (int) y))) {
                     interceptForTap = true;
                 }
