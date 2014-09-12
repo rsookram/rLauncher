@@ -23,7 +23,12 @@ public class TranslateViewDrawerListener extends DrawerLayout.SimpleDrawerListen
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
         super.onDrawerSlide(drawerView, slideOffset);
+
         mFab.setY(((mFab.getTop() - mFabTopOffset) * (1.0F - slideOffset)) + mFabTopOffset);
+
+        float shiftedX = (slideOffset - 0.5F);
+        float fabAlpha = 4.0F * shiftedX * shiftedX;
+        mFab.setAlpha(fabAlpha);
 
         mFab.getChildAt(0).setAlpha(1.0F - slideOffset);
         mFab.getChildAt(1).setAlpha(slideOffset);
