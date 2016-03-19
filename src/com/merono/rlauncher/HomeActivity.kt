@@ -1,12 +1,17 @@
 package com.merono.rlauncher
 
-import android.app.Activity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import rx.subjects.PublishSubject
 
-class HomeActivity : Activity() {
+class HomeActivity : AppCompatActivity() {
 
   private val destroys = PublishSubject.create<Unit>()
+
+  init {
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
