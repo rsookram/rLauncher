@@ -22,7 +22,8 @@ private fun loadInstalledApps(pm: PackageManager): List<App> {
 
   return apps.map {
     val info = it.activityInfo
-    App(info.applicationInfo.packageName, info.name)
+    val packageName = info.applicationInfo.packageName
+    App(packageName, info.name, getAppName(pm, packageName))
   }
 }
 
@@ -36,3 +37,8 @@ private fun newIntentFilter(): IntentFilter =
       addAction(Intent.ACTION_PACKAGE_CHANGED)
       addDataScheme("package")
     }
+
+private fun getAppName(pm: PackageManager, packageName: String): CharSequence {
+  val info = pm.getApplicationInfo(packageName, 0)
+  return pm.getApplicationLabel(info)
+}

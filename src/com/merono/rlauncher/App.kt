@@ -1,3 +1,5 @@
 package com.merono.rlauncher
 
-data class App(val packageName: String, val className: String)
+data class App(val packageName: String,
+               val className: String,
+               val displayName: CharSequence)

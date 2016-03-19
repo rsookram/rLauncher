@@ -11,7 +11,7 @@ class HomeActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val view = LauncherView(this)
+    val view = SearchableLauncherView(this)
     setContentView(view)
 
     LauncherPresenter(

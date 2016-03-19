@@ -28,14 +28,14 @@ class AppAdapter() : RecyclerView.Adapter<Holder>() {
     val pm = context.packageManager
 
     val app = apps[position]
-    val info = pm.getApplicationInfo(app.packageName, 0)
 
+    val info = pm.getApplicationInfo(app.packageName, 0)
     val icon = info.loadIcon(pm)
     val size = context.resources.getDimensionPixelSize(android.R.dimen.app_icon_size)
     icon.setBounds(0, 0, size, size)
     holder.text.setCompoundDrawables(icon, null, null, null) // TODO: RTL?
 
-    holder.text.text = pm.getApplicationLabel(info)
+    holder.text.text = app.displayName
 
     holder.itemView.setOnClickListener {
       selectSubject.onNext(app)
