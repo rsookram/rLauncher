@@ -9,13 +9,13 @@ import rx.lang.kotlin.PublishSubject
 
 class AppAdapter() : RecyclerView.Adapter<Holder>() {
 
-  var apps = emptyList<AppInfo>()
+  var apps = emptyList<App>()
     set(value) {
       field = value
       notifyDataSetChanged()
     }
 
-  private val selectSubject = PublishSubject<AppInfo>()
+  private val selectSubject = PublishSubject<App>()
   val selects = selectSubject.asObservable()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
