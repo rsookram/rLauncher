@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.merono.rlauncher">
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="21" />
-
     <application
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher_home"
@@ -14,7 +10,6 @@
         <activity
             android:name=".Home"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
             android:stateNotNeeded="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
