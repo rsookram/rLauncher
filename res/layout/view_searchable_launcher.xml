@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- TODO: Scrollbar -->
     <com.merono.rlauncher.LauncherView
         android:id="@+id/launcher"
         android:layout_width="match_parent"
@@ -9,20 +8,26 @@
         android:layout_weight="1"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="?android:windowBackground"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:elevation="4dp">
 
         <EditText
             android:id="@+id/search_box"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp" />
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
     </FrameLayout>
 
 </merge>

@@ -2,12 +2,11 @@ package com.merono.rlauncher
 
 import android.content.Context
 import android.widget.EditText
-import android.widget.LinearLayout
 import com.jakewharton.rxbinding.widget.textChanges
 import rx.Observable
 
 class SearchableLauncherView(context: Context) :
-    LinearLayout(context), SearchableLauncher {
+    InsetLinearLayout(context), SearchableLauncher {
 
   private val launcher by lazy { findViewById(R.id.launcher) as Launcher }
 
@@ -25,6 +24,8 @@ class SearchableLauncherView(context: Context) :
 
   init {
     orientation = VERTICAL
+    clipToPadding = false
+    clipChildren = false
 
     inflate(context, R.layout.view_searchable_launcher, this)
   }
