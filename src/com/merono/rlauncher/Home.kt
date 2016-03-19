@@ -1,19 +1,18 @@
 package com.merono.rlauncher
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.GridView
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import rx.subjects.PublishSubject
 import java.util.*
 
-// android.R.dimen.app_icon_size
-
 class Home : Activity() {
 
-  private val grid by lazy { findViewById(R.id.left_drawer) as GridView }
+  private val appsList by lazy { findViewById(R.id.apps_list) as RecyclerView }
 
   private val destroys = PublishSubject.create<Void>()
 
@@ -22,23 +21,23 @@ class Home : Activity() {
 
     setContentView(R.layout.home)
 
+    appsList.layoutManager = LinearLayoutManager(this)
+    // TODO: stack from end? or reverse layout?
+
+    val adapter = AppAdapter()
+    appsList.adapter = adapter
+
     installedAppChanges().takeUntil(destroys).subscribe {
       val apps = loadApplications()
-      bindApplications(apps)
+      adapter.apps = apps
     }
 
     val apps = loadApplications()
-    bindApplications(apps)
+    adapter.apps = apps
 
-    grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-      val app = parent.getItemAtPosition(position) as AppInfo
-      startActivity(app.intent)
+    adapter.selects.subscribe {
+      startActivity(newIntent(it))
     }
-  }
-
-  /** Creates a new applications adapter for the grid view and registers it. */
-  private fun bindApplications(apps: List<AppInfo>) {
-    grid.adapter = AppAdapter(this, apps)
   }
 
   /** Loads the list of installed applications in mApplications. */
@@ -52,7 +51,8 @@ class Home : Activity() {
     Collections.sort(apps, ResolveInfo.DisplayNameComparator(packageManager))
 
     return apps.map {
-      AppInfo(it, packageManager)
+      val info = it.activityInfo
+      AppInfo(info.applicationInfo.packageName, info.name)
     }
   }
 
@@ -66,3 +66,12 @@ class Home : Activity() {
     destroys.onNext(null)
   }
 }
+
+private fun newIntent(appInfo: AppInfo): Intent =
+    Intent(Intent.ACTION_MAIN).apply {
+      addCategory(Intent.CATEGORY_LAUNCHER)
+      component = ComponentName(appInfo.packageName, appInfo.className)
+      flags =
+          Intent.FLAG_ACTIVITY_NEW_TASK or
+          Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+    }
