@@ -1,55 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.merono.rlauncher.FixedOpenDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/left_drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        <LinearLayout
-            android:id="@+id/faves"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="end|bottom"
-            android:orientation="vertical" />
-        <FrameLayout
-            android:id="@+id/fab"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="start"
-            android:layout_marginTop="156dp"
-            android:layout_marginLeft="@dimen/side_margin"
-            android:layout_marginStart="@dimen/side_margin">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/fab_action_all" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/fab_action_home" />
-        </FrameLayout>
-    </FrameLayout>
-
-    <GridView
-        android:id="@+id/left_drawer"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start|bottom"
-        android:layout_marginTop="80dp"
-        android:paddingTop="@dimen/side_margin"
-        android:background="#99000000"
-        android:alwaysDrawnWithCache="true"
-        android:columnWidth="74dp"
-        android:listSelector="@drawable/favourite_selector"
-        android:numColumns="auto_fit"
-        android:persistentDrawingCache="animation|scrolling"
-        android:scrollbars="none"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="16dp" />
-
-</com.merono.rlauncher.FixedOpenDrawerLayout>
+    android:layout_height="match_parent"
+    android:layout_gravity="start|bottom"
+    android:layout_marginTop="80dp"
+    android:background="#99000000"
+    android:alwaysDrawnWithCache="true"
+    android:columnWidth="74dp"
+    android:listSelector="@drawable/favourite_selector"
+    android:numColumns="auto_fit"
+    android:persistentDrawingCache="animation|scrolling"
+    android:scrollbars="none"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="16dp" />
