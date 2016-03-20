@@ -1,9 +1,10 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.view
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import com.merono.rlauncher.entity.App
 
 class LauncherView(context: Context, attrs: AttributeSet) :
     RecyclerView(context, attrs), Launcher {

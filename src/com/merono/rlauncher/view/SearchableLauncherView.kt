@@ -1,8 +1,10 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.view
 
 import android.content.Context
 import android.widget.TextView
 import com.jakewharton.rxbinding.widget.textChanges
+import com.merono.rlauncher.R
+import com.merono.rlauncher.entity.App
 import rx.Observable
 
 class SearchableLauncherView(context: Context) :

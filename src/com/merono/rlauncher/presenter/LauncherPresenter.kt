@@ -1,5 +1,9 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.presenter
 
+import com.merono.rlauncher.entity.App
+import com.merono.rlauncher.interactor.searchFilter
+import com.merono.rlauncher.router.Router
+import com.merono.rlauncher.view.SearchableLauncher
 import rx.Observable
 
 class LauncherPresenter(launcher: SearchableLauncher,

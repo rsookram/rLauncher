@@ -1,10 +1,11 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.interactor
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import com.merono.rlauncher.entity.App
 import rx.Observable
 import java.util.*
 

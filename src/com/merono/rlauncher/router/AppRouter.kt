@@ -1,8 +1,9 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.router
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import com.merono.rlauncher.entity.App
 
 class AppRouter(private val context: Context) : Router {
 

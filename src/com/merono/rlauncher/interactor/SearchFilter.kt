@@ -1,4 +1,6 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.interactor
+
+import com.merono.rlauncher.entity.App
 
 fun searchFilter(apps: List<App>, query: CharSequence): List<App> {
   return apps.filter {

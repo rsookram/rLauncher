@@ -3,6 +3,10 @@ package com.merono.rlauncher
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
+import com.merono.rlauncher.interactor.installedApps
+import com.merono.rlauncher.presenter.LauncherPresenter
+import com.merono.rlauncher.router.AppRouter
+import com.merono.rlauncher.view.SearchableLauncherView
 import rx.subjects.PublishSubject
 
 class HomeActivity : AppCompatActivity() {

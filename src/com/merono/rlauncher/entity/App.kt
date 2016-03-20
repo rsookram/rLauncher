@@ -1,4 +1,4 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.entity
 
 data class App(val packageName: String,
                val className: String,

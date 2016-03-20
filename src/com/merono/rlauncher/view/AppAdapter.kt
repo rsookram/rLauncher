@@ -1,10 +1,12 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.merono.rlauncher.R
+import com.merono.rlauncher.entity.App
 import rx.lang.kotlin.PublishSubject
 
 class AppAdapter() : RecyclerView.Adapter<Holder>() {

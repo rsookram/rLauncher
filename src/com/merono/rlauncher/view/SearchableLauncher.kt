@@ -1,4 +1,4 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.view
 
 import rx.Observable
 

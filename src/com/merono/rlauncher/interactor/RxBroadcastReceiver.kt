@@ -1,4 +1,4 @@
-package com.merono.rlauncher
+package com.merono.rlauncher.interactor
 
 import android.content.BroadcastReceiver
 import android.content.Context
