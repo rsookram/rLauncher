@@ -27,6 +27,14 @@ class HomeActivity : AppCompatActivity() {
     )
   }
 
+  override fun onRestart() {
+    super.onRestart()
+
+    if (delegate.applyDayNight()) {
+      recreate()
+    }
+  }
+
   override fun onBackPressed() {
     // Intentionally don't call super so that the launcher isn't closed
     // when back is pressed
