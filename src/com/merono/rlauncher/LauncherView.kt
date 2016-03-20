@@ -19,8 +19,7 @@ class LauncherView(context: Context, attrs: AttributeSet) :
   override val selects = appAdapter.selects
 
   init {
-    // TODO: stack from end? or reverse layout?
-    layoutManager = LinearLayoutManager(context)
+    layoutManager = LinearLayoutManager(context, VERTICAL, true)
     adapter = appAdapter
   }
 }
