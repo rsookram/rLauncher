@@ -33,7 +33,7 @@ class AppAdapter() : RecyclerView.Adapter<Holder>() {
     val icon = info.loadIcon(pm)
     val size = context.resources.getDimensionPixelSize(android.R.dimen.app_icon_size)
     icon.setBounds(0, 0, size, size)
-    holder.text.setCompoundDrawables(icon, null, null, null) // TODO: RTL?
+    holder.text.setCompoundDrawables(icon, null, null, null)
 
     holder.text.text = app.displayName
 

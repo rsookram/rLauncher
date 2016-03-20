@@ -11,13 +11,21 @@ class LauncherPresenter(launcher: SearchableLauncher,
   init {
     launcher.selects
         .takeUntil(destroys)
-        .subscribe {
-          router.start(it)
-          launcher.clearQuery()
-        }
+        .subscribe { launchApp(it, launcher, router) }
 
     Observable.combineLatest(installedApps, launcher.searches, search)
         .takeUntil(destroys)
-        .subscribe { launcher.apps = it }
+        .subscribe {
+          launcher.apps = it
+
+          if (it.size == 1) {
+            launchApp(it[0], launcher, router)
+          }
+        }
+  }
+
+  private fun launchApp(app: App, launcher: SearchableLauncher, router: Router) {
+    router.start(app)
+    launcher.clearQuery()
   }
 }
