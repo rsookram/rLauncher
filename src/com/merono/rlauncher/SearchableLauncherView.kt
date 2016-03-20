@@ -32,4 +32,8 @@ class SearchableLauncherView(context: Context) :
 
     searchBox.requestFocus()
   }
+
+  override fun clearQuery() {
+    searchBox.text = ""
+  }
 }
