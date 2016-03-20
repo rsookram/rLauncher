@@ -1,7 +1,7 @@
 package com.merono.rlauncher
 
 import android.content.Context
-import android.widget.EditText
+import android.widget.TextView
 import com.jakewharton.rxbinding.widget.textChanges
 import rx.Observable
 
@@ -9,6 +9,7 @@ class SearchableLauncherView(context: Context) :
     InsetLinearLayout(context), SearchableLauncher {
 
   private val launcher by lazy { findViewById(R.id.launcher) as Launcher }
+  private val searchBox by lazy { findViewById(R.id.search_box) as TextView }
 
   override var apps: List<App>
     get() = launcher.apps
@@ -20,7 +21,7 @@ class SearchableLauncherView(context: Context) :
     get() = launcher.selects
 
   override val searches: Observable<CharSequence>
-    get() = (findViewById(R.id.search_box) as EditText).textChanges()
+    get() = searchBox.textChanges()
 
   init {
     orientation = VERTICAL
@@ -28,5 +29,7 @@ class SearchableLauncherView(context: Context) :
     clipChildren = false
 
     inflate(context, R.layout.view_searchable_launcher, this)
+
+    searchBox.requestFocus()
   }
 }
