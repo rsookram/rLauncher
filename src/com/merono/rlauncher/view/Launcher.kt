@@ -1,7 +1,7 @@
 package com.merono.rlauncher.view
 
 import com.merono.rlauncher.entity.App
-import rx.Observable
+import io.reactivex.Observable
 
 interface Launcher {
 

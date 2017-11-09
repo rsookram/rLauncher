@@ -4,25 +4,25 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import rx.Observable
-import rx.android.MainThreadSubscription
+import io.reactivex.Observable
+import io.reactivex.android.MainThreadDisposable
 
 data class Broadcast(val context: Context, val intent: Intent)
 
 fun Context.broadcasts(filter: IntentFilter): Observable<Broadcast> {
-  return Observable.create { subscriber ->
-    MainThreadSubscription.verifyMainThread()
+  return Observable.create { emitter ->
+    MainThreadDisposable.verifyMainThread()
 
     val receiver = object : BroadcastReceiver() {
       override fun onReceive(context: Context, intent: Intent) {
-        subscriber.onNext(Broadcast(context, intent))
+        emitter.onNext(Broadcast(context, intent))
       }
     }
 
     registerReceiver(receiver, filter)
 
-    subscriber.add(object : MainThreadSubscription() {
-      override fun onUnsubscribe() {
+    emitter.setDisposable(object : MainThreadDisposable() {
+      override fun onDispose() {
         unregisterReceiver(receiver)
       }
     })

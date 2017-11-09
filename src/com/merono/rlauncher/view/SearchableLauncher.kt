@@ -1,10 +1,10 @@
 package com.merono.rlauncher.view
 
-import rx.Observable
+import io.reactivex.Observable
 
 interface SearchableLauncher : Launcher {
 
   val searches: Observable<CharSequence>
 
-  fun clearQuery(): Unit
+  fun clearQuery()
 }

@@ -4,7 +4,8 @@ import com.merono.rlauncher.entity.App
 import com.merono.rlauncher.interactor.searchFilter
 import com.merono.rlauncher.router.Router
 import com.merono.rlauncher.view.SearchableLauncher
-import rx.Observable
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 
 class LauncherPresenter(launcher: SearchableLauncher,
                         installedApps: Observable<List<App>>,
@@ -17,7 +18,8 @@ class LauncherPresenter(launcher: SearchableLauncher,
         .takeUntil(destroys)
         .subscribe { launchApp(it, launcher, router) }
 
-    Observable.combineLatest(installedApps, launcher.searches, search)
+    Observable
+        .combineLatest(installedApps, launcher.searches, BiFunction(search))
         .takeUntil(destroys)
         .subscribe {
           launcher.apps = it

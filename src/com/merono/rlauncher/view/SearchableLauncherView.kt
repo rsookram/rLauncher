@@ -1,17 +1,14 @@
 package com.merono.rlauncher.view
 
 import android.content.Context
-import android.widget.TextView
-import com.jakewharton.rxbinding.widget.textChanges
+import com.jakewharton.rxbinding2.widget.textChanges
 import com.merono.rlauncher.R
 import com.merono.rlauncher.entity.App
-import rx.Observable
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.view_searchable_launcher.view.*
 
 class SearchableLauncherView(context: Context) :
     InsetLinearLayout(context), SearchableLauncher {
-
-  private val launcher by lazy { findViewById(R.id.launcher) as Launcher }
-  private val searchBox by lazy { findViewById(R.id.search_box) as TextView }
 
   override var apps: List<App>
     get() = launcher.apps
@@ -23,7 +20,7 @@ class SearchableLauncherView(context: Context) :
     get() = launcher.selects
 
   override val searches: Observable<CharSequence>
-    get() = searchBox.textChanges()
+    get() = search_box.textChanges()
 
   init {
     orientation = VERTICAL
@@ -32,10 +29,10 @@ class SearchableLauncherView(context: Context) :
 
     inflate(context, R.layout.view_searchable_launcher, this)
 
-    searchBox.requestFocus()
+    search_box.requestFocus()
   }
 
   override fun clearQuery() {
-    searchBox.text = ""
+    search_box.setText("")
   }
 }

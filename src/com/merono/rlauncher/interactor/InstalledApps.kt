@@ -6,7 +6,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import com.merono.rlauncher.entity.App
-import rx.Observable
+import io.reactivex.Observable
 import java.util.*
 
 fun installedApps(context: Context): Observable<List<App>> =

@@ -7,7 +7,7 @@ import com.merono.rlauncher.interactor.installedApps
 import com.merono.rlauncher.presenter.LauncherPresenter
 import com.merono.rlauncher.router.AppRouter
 import com.merono.rlauncher.view.SearchableLauncherView
-import rx.subjects.PublishSubject
+import io.reactivex.subjects.PublishSubject
 
 class HomeActivity : AppCompatActivity() {
 
@@ -26,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
     LauncherPresenter(
         view,
         installedApps(this),
-        destroys.asObservable(),
+        destroys.hide(),
         AppRouter(this)
     )
   }
@@ -46,6 +46,6 @@ class HomeActivity : AppCompatActivity() {
 
   override fun onDestroy() {
     super.onDestroy()
-    destroys.onNext(null)
+    destroys.onNext(Unit)
   }
 }

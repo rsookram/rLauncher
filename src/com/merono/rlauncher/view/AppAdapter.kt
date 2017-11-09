@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.merono.rlauncher.R
 import com.merono.rlauncher.entity.App
-import rx.lang.kotlin.PublishSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
-class AppAdapter() : RecyclerView.Adapter<Holder>() {
+class AppAdapter : RecyclerView.Adapter<Holder>() {
 
   var apps = emptyList<App>()
     set(value) {
@@ -17,8 +18,8 @@ class AppAdapter() : RecyclerView.Adapter<Holder>() {
       notifyDataSetChanged()
     }
 
-  private val selectSubject = PublishSubject<App>()
-  val selects = selectSubject.asObservable()
+  private val selectSubject = PublishSubject.create<App>()
+  val selects: Observable<App> = selectSubject.hide()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
     val inflater = LayoutInflater.from(parent.context)
