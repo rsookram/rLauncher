@@ -22,5 +22,16 @@ class LauncherView(context: Context, attrs: AttributeSet) :
   init {
     layoutManager = LinearLayoutManager(context, VERTICAL, true)
     adapter = appAdapter
+
+    setOnApplyWindowInsetsListener { v, insets ->
+      v.setPadding(
+          paddingLeft,
+          insets.systemWindowInsetTop,
+          paddingRight,
+          paddingBottom
+      )
+
+      insets.consumeSystemWindowInsets()
+    }
   }
 }
