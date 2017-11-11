@@ -16,7 +16,7 @@ fun installedApps(context: Context): Observable<List<App>> =
 
 private fun loadInstalledApps(pm: PackageManager): List<App> {
     val mainIntent = Intent(Intent.ACTION_MAIN)
-    mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+            .addCategory(Intent.CATEGORY_LAUNCHER)
 
     val apps = pm.queryIntentActivities(mainIntent, 0)
     Collections.sort(apps, ResolveInfo.DisplayNameComparator(pm))
