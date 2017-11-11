@@ -34,7 +34,9 @@ class AppAdapter : RecyclerView.Adapter<Holder>() {
 
     val info = pm.getApplicationInfo(app.packageName, 0)
     val icon = info.loadIcon(pm)
-    val size = context.resources.getDimensionPixelSize(android.R.dimen.app_icon_size)
+    val size = context.resources.getDimensionPixelSize(
+        android.R.dimen.app_icon_size
+    )
     icon.setBounds(0, 0, size, size)
     holder.text.setCompoundDrawables(icon, null, null, null)
 

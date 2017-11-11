@@ -29,7 +29,7 @@ private fun loadInstalledApps(pm: PackageManager): List<App> {
 }
 
 private fun Context.installedAppChanges(): Observable<Unit> =
-    broadcasts(newIntentFilter()).map { }
+    broadcasts(newIntentFilter()).map {}
 
 /** Creates intent filter for when apps are (un)installed */
 private fun newIntentFilter(): IntentFilter =

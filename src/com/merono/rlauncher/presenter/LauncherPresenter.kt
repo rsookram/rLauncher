@@ -7,11 +7,13 @@ import com.merono.rlauncher.view.SearchableLauncher
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 
-class LauncherPresenter(launcher: SearchableLauncher,
-                        installedApps: Observable<List<App>>,
-                        destroys: Observable<Unit>,
-                        router: Router,
-                        search: (List<App>, CharSequence) -> List<App> = ::searchFilter) {
+class LauncherPresenter(
+    launcher: SearchableLauncher,
+    installedApps: Observable<List<App>>,
+    destroys: Observable<Unit>,
+    router: Router,
+    search: (List<App>, CharSequence) -> List<App> = ::searchFilter
+) {
 
   init {
     launcher.selects
@@ -30,7 +32,11 @@ class LauncherPresenter(launcher: SearchableLauncher,
         }
   }
 
-  private fun launchApp(app: App, launcher: SearchableLauncher, router: Router) {
+  private fun launchApp(
+      app: App,
+      launcher: SearchableLauncher,
+      router: Router
+  ) {
     router.start(app)
     launcher.clearQuery()
   }
