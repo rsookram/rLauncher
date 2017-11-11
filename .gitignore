@@ -4,7 +4,7 @@ build/
 gen/
 .idea/
 out/
-Home.iml
+*.iml
 .classpath
 .project
 project.properties
