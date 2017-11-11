@@ -11,41 +11,41 @@ import io.reactivex.subjects.PublishSubject
 
 class HomeActivity : AppCompatActivity() {
 
-  private val destroys = PublishSubject.create<Unit>()
+    private val destroys = PublishSubject.create<Unit>()
 
-  init {
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    val view = SearchableLauncherView(this)
-    setContentView(view)
-
-    LauncherPresenter(
-        view,
-        installedApps(this),
-        destroys.hide(),
-        AppRouter(this)
-    )
-  }
-
-  override fun onRestart() {
-    super.onRestart()
-
-    if (delegate.applyDayNight()) {
-      recreate()
+    init {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
     }
-  }
 
-  override fun onBackPressed() {
-    // Intentionally don't call super so that the launcher isn't closed
-    // when back is pressed
-  }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-  override fun onDestroy() {
-    super.onDestroy()
-    destroys.onNext(Unit)
-  }
+        val view = SearchableLauncherView(this)
+        setContentView(view)
+
+        LauncherPresenter(
+                view,
+                installedApps(this),
+                destroys.hide(),
+                AppRouter(this)
+        )
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        if (delegate.applyDayNight()) {
+            recreate()
+        }
+    }
+
+    override fun onBackPressed() {
+        // Intentionally don't call super so that the launcher isn't closed
+        // when back is pressed
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroys.onNext(Unit)
+    }
 }

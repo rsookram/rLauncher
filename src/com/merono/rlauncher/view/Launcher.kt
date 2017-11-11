@@ -5,7 +5,7 @@ import io.reactivex.Observable
 
 interface Launcher {
 
-  var apps: List<App>
+    var apps: List<App>
 
-  val selects: Observable<App>
+    val selects: Observable<App>
 }

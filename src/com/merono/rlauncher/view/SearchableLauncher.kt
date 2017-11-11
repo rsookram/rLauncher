@@ -4,7 +4,7 @@ import io.reactivex.Observable
 
 interface SearchableLauncher : Launcher {
 
-  val searches: Observable<CharSequence>
+    val searches: Observable<CharSequence>
 
-  fun clearQuery()
+    fun clearQuery()
 }
