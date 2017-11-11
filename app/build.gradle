@@ -27,6 +27,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles 'proguard-android.txt', 'proguard-rules.pro'
 
