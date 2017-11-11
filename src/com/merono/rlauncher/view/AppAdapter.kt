@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.jakewharton.rxbinding2.view.clicks
 import com.merono.rlauncher.R
 import com.merono.rlauncher.entity.App
 import io.reactivex.Observable
@@ -42,9 +43,8 @@ class AppAdapter : RecyclerView.Adapter<Holder>() {
 
         holder.text.text = app.displayName
 
-        holder.itemView.setOnClickListener {
-            selectSubject.onNext(app)
-        }
+        holder.itemView.clicks()
+                .subscribe { selectSubject.onNext(app) }
     }
 
     override fun getItemCount(): Int = apps.size
