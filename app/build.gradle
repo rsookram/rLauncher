@@ -27,7 +27,8 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles 'proguard-android.txt', 'proguard-rules.pro'
 
             // Just for testing release builds. Not actually distributed.
             signingConfig signingConfigs.debug
