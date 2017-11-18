@@ -2,7 +2,6 @@ package com.merono.rlauncher
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
 import com.merono.rlauncher.interactor.installedApps
 import com.merono.rlauncher.presenter.LauncherPresenter
 import com.merono.rlauncher.router.AppRouter
@@ -12,10 +11,6 @@ import io.reactivex.subjects.PublishSubject
 class HomeActivity : AppCompatActivity() {
 
     private val destroys = PublishSubject.create<Unit>()
-
-    init {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
