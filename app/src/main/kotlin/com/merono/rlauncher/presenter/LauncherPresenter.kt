@@ -7,6 +7,9 @@ import com.merono.rlauncher.view.SearchableLauncher
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 
+/**
+ * Presenter for the given [SearchableLauncher]
+ */
 class LauncherPresenter(
         launcher: SearchableLauncher,
         installedApps: Observable<List<App>>,
@@ -17,7 +20,6 @@ class LauncherPresenter(
 
     init {
         launcher.selects
-                .takeUntil(destroys)
                 .subscribe { launchApp(it, launcher, router) }
 
         Observable
@@ -27,7 +29,7 @@ class LauncherPresenter(
                     launcher.apps = it
 
                     if (it.size == 1) {
-                        launchApp(it[0], launcher, router)
+                        launchApp(it.first(), launcher, router)
                     }
                 }
     }
