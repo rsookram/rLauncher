@@ -9,6 +9,9 @@ import com.merono.rlauncher.entity.App
 import io.reactivex.Observable
 import java.util.Collections
 
+/**
+ * Returns an [Observable] of the launchable apps installed on the device
+ */
 fun installedApps(context: Context): Observable<List<App>> =
         context.installedAppChanges()
                 .startWith(Unit)
@@ -39,7 +42,7 @@ private fun newIntentFilter(): IntentFilter =
             addDataScheme("package")
         }
 
-private fun getAppName(pm: PackageManager, packageName: String): CharSequence {
+private fun getAppName(pm: PackageManager, packageName: String): String {
     val info = pm.getApplicationInfo(packageName, 0)
-    return pm.getApplicationLabel(info)
+    return pm.getApplicationLabel(info).toString()
 }
