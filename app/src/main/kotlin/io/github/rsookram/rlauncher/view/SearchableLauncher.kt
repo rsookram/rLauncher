@@ -1,4 +1,4 @@
-package com.merono.rlauncher.view
+package io.github.rsookram.rlauncher.view
 
 import io.reactivex.Observable
 

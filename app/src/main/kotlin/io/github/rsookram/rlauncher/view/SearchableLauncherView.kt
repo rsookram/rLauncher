@@ -1,10 +1,10 @@
-package com.merono.rlauncher.view
+package io.github.rsookram.rlauncher.view
 
 import android.content.Context
 import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.textChanges
-import com.merono.rlauncher.R
-import com.merono.rlauncher.entity.App
+import io.github.rsookram.rlauncher.R
+import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.view_searchable_launcher.view.*
 

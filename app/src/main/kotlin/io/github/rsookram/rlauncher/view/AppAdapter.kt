@@ -1,4 +1,4 @@
-package com.merono.rlauncher.view
+package io.github.rsookram.rlauncher.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.clicks
-import com.merono.rlauncher.R
-import com.merono.rlauncher.entity.App
+import io.github.rsookram.rlauncher.R
+import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 

@@ -1,4 +1,4 @@
-package com.merono.rlauncher.entity
+package io.github.rsookram.rlauncher.entity
 
 /**
  * Represents an app installed on the device and an Activity contained which

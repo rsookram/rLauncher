@@ -1,11 +1,11 @@
-package com.merono.rlauncher
+package io.github.rsookram.rlauncher
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.merono.rlauncher.interactor.installedApps
-import com.merono.rlauncher.presenter.LauncherPresenter
-import com.merono.rlauncher.router.AppRouter
-import com.merono.rlauncher.view.SearchableLauncherView
+import io.github.rsookram.rlauncher.interactor.installedApps
+import io.github.rsookram.rlauncher.presenter.LauncherPresenter
+import io.github.rsookram.rlauncher.router.AppRouter
+import io.github.rsookram.rlauncher.view.SearchableLauncherView
 import io.reactivex.subjects.PublishSubject
 
 class HomeActivity : AppCompatActivity() {

@@ -1,6 +1,6 @@
-package com.merono.rlauncher.view
+package io.github.rsookram.rlauncher.view
 
-import com.merono.rlauncher.entity.App
+import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
 
 interface Launcher {

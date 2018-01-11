@@ -1,6 +1,6 @@
-package com.merono.rlauncher.interactor
+package io.github.rsookram.rlauncher.interactor
 
-import com.merono.rlauncher.entity.App
+import io.github.rsookram.rlauncher.entity.App
 
 /**
  * Returns a filtered version of the given list of apps which contain the given

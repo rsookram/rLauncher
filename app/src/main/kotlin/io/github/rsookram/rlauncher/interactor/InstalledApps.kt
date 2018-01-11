@@ -1,11 +1,11 @@
-package com.merono.rlauncher.interactor
+package io.github.rsookram.rlauncher.interactor
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import com.merono.rlauncher.entity.App
+import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
 import java.util.Collections
 
