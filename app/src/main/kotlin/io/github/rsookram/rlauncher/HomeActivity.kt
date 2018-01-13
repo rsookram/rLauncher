@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import io.github.rsookram.rlauncher.interactor.installedApps
 import io.github.rsookram.rlauncher.presenter.LauncherPresenter
 import io.github.rsookram.rlauncher.router.AppRouter
-import io.github.rsookram.rlauncher.view.SearchableLauncherView
+import io.github.rsookram.rlauncher.view.AppAdapter
+import io.github.rsookram.rlauncher.view.LauncherView
 import io.reactivex.subjects.PublishSubject
 
 class HomeActivity : AppCompatActivity() {
@@ -15,7 +16,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val view = SearchableLauncherView(this)
+        val view = LauncherView(this, AppAdapter())
         setContentView(view)
 
         LauncherPresenter(

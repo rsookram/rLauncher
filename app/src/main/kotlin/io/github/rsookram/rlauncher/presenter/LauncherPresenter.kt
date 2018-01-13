@@ -3,15 +3,13 @@ package io.github.rsookram.rlauncher.presenter
 import io.github.rsookram.rlauncher.entity.App
 import io.github.rsookram.rlauncher.interactor.searchFilter
 import io.github.rsookram.rlauncher.router.Router
-import io.github.rsookram.rlauncher.view.SearchableLauncher
+import io.github.rsookram.rlauncher.view.LauncherUi
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 
-/**
- * Presenter for the given [SearchableLauncher]
- */
+/** Presenter for the given [LauncherUi] */
 class LauncherPresenter(
-        launcher: SearchableLauncher,
+        ui: LauncherUi,
         installedApps: Observable<List<App>>,
         destroys: Observable<Unit>,
         router: Router,
@@ -19,27 +17,27 @@ class LauncherPresenter(
 ) {
 
     init {
-        launcher.selects
-                .subscribe { launchApp(it, launcher, router) }
+        ui.selects
+                .subscribe { launchApp(it, ui, router) }
 
         Observable
-                .combineLatest(installedApps, launcher.searches, BiFunction(search))
+                .combineLatest(installedApps, ui.searches, BiFunction(search))
                 .takeUntil(destroys)
                 .subscribe {
-                    launcher.apps = it
+                    ui.apps = it
 
                     if (it.size == 1) {
-                        launchApp(it.first(), launcher, router)
+                        launchApp(it.first(), ui, router)
                     }
                 }
     }
 
     private fun launchApp(
             app: App,
-            launcher: SearchableLauncher,
+            ui: LauncherUi,
             router: Router
     ) {
         router.start(app)
-        launcher.clearQuery()
+        ui.clearQuery()
     }
 }

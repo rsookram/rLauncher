@@ -3,13 +3,17 @@ package io.github.rsookram.rlauncher.view
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.AttributeSet
+import android.widget.LinearLayout
+import com.jakewharton.rxbinding2.widget.textChanges
+import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.view_searchable_launcher.view.*
 
-class LauncherView(context: Context, attrs: AttributeSet) :
-        RecyclerView(context, attrs), Launcher {
-
-    private val appAdapter = AppAdapter()
+class LauncherView(
+        context: Context,
+        private val appAdapter: AppAdapter
+) : LinearLayout(context), LauncherUi {
 
     override var apps: List<App>
         get() = appAdapter.apps
@@ -19,19 +23,45 @@ class LauncherView(context: Context, attrs: AttributeSet) :
 
     override val selects = appAdapter.selects
 
+    override val searches: Observable<CharSequence>
+        get() = search_box.textChanges()
+
     init {
-        layoutManager = LinearLayoutManager(context, VERTICAL, true)
-        adapter = appAdapter
+        orientation = VERTICAL
 
         setOnApplyWindowInsetsListener { v, insets ->
             v.setPadding(
                     paddingLeft,
-                    insets.systemWindowInsetTop,
+                    paddingTop,
                     paddingRight,
-                    paddingBottom
+                    insets.systemWindowInsetBottom
             )
 
-            insets.consumeSystemWindowInsets()
+            insets
         }
+
+        inflate(context, R.layout.view_searchable_launcher, this)
+
+        launcher.apply {
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+            adapter = appAdapter
+
+            setOnApplyWindowInsetsListener { v, insets ->
+                v.setPadding(
+                        paddingLeft,
+                        insets.systemWindowInsetTop,
+                        paddingRight,
+                        paddingBottom
+                )
+
+                insets.consumeSystemWindowInsets()
+            }
+        }
+
+        search_box.requestFocus()
+    }
+
+    override fun clearQuery() {
+        search_box.setText("")
     }
 }
