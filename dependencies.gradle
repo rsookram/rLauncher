@@ -1,0 +1,25 @@
+def versions = [
+        supportLibs: '27.0.2',
+        kotlin: '1.2.10',
+]
+
+ext.sdkVersion = [
+        min: 23,
+        target: 27,
+]
+
+ext.gradlePlugins = [
+        android: 'com.android.tools.build:gradle:3.0.1',
+        kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+]
+
+ext.libraries = [
+        appCompat: "com.android.support:appcompat-v7:${versions.supportLibs}",
+        recyclerView: "com.android.support:recyclerview-v7:${versions.supportLibs}",
+
+        rxJava: 'io.reactivex.rxjava2:rxjava:2.1.8',
+        rxAndroid: 'io.reactivex.rxjava2:rxandroid:2.0.1',
+        rxBindingKotlin: 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0',
+
+        kotlin: "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+]

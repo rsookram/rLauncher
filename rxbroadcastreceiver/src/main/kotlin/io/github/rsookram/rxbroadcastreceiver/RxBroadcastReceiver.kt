@@ -1,4 +1,4 @@
-package io.github.rsookram.rlauncher.interactor
+package io.github.rsookram.rxbroadcastreceiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

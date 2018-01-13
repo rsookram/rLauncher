@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion sdkVersion.target
+
+    defaultConfig {
+        minSdkVersion sdkVersion.min
+        targetSdkVersion sdkVersion.target
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    api libraries.rxJava
+    implementation libraries.rxAndroid
+
+    implementation libraries.kotlin
+}

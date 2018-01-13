@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import io.github.rsookram.rlauncher.entity.App
+import io.github.rsookram.rxbroadcastreceiver.broadcasts
 import io.reactivex.Observable
 import java.util.Collections
 
