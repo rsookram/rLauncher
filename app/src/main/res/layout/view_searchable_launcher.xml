@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_width="match_parent"
+    tools:layout_height="match_parent"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/launcher"
@@ -10,7 +16,8 @@
         android:paddingBottom="8dp"
         android:clipToPadding="false"
         android:scrollbars="vertical"
-        android:fadeScrollbars="true" />
+        android:fadeScrollbars="true"
+        tools:listitem="@layout/item_app"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,7 +34,7 @@
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
+            android:paddingEnd="8dp"/>
     </FrameLayout>
 
 </merge>

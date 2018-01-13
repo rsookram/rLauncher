@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:background="?selectableItemBackground"
@@ -7,4 +9,7 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:drawablePadding="16dp"
-    android:textAppearance="?textAppearanceListItem" />
+    android:textAppearance="?textAppearanceListItem"
+    tools:text="Dialer"
+    tools:drawableStart="@android:drawable/ic_menu_call"
+    tools:drawableTint="@android:color/holo_blue_dark"/>
