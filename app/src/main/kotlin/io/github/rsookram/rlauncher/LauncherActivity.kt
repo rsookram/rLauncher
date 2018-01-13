@@ -9,7 +9,7 @@ import io.github.rsookram.rlauncher.view.AppAdapter
 import io.github.rsookram.rlauncher.view.LauncherView
 import io.reactivex.subjects.PublishSubject
 
-class HomeActivity : AppCompatActivity() {
+class LauncherActivity : AppCompatActivity() {
 
     private val destroys = PublishSubject.create<Unit>()
 

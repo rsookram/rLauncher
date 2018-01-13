@@ -8,7 +8,7 @@
         android:theme="@style/Theme"
         android:label="@string/home_title">
         <activity
-            android:name=".HomeActivity"
+            android:name=".LauncherActivity"
             android:launchMode="singleInstance"
             android:stateNotNeeded="true">
             <intent-filter>
