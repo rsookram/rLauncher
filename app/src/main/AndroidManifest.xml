@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher_home"
+        android:icon="@mipmap/ic_launcher"
         android:theme="@style/Theme"
         android:label="@string/home_title">
         <activity
