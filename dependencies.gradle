@@ -17,7 +17,7 @@ ext.libraries = [
         appCompat: "com.android.support:appcompat-v7:${versions.supportLibs}",
         recyclerView: "com.android.support:recyclerview-v7:${versions.supportLibs}",
 
-        rxJava: 'io.reactivex.rxjava2:rxjava:2.1.8',
+        rxJava: 'io.reactivex.rxjava2:rxjava:2.1.9',
         rxAndroid: 'io.reactivex.rxjava2:rxandroid:2.0.1',
         rxBindingKotlin: 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0',
 
