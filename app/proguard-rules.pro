@@ -6,3 +6,7 @@
 -optimizationpasses 4
 -allowaccessmodification
 -dontpreverify
+
+# RxBinding. Until this is released https://github.com/JakeWharton/RxBinding/pull/428
+# AutoValue annotations are retained but dependency is compileOnly.
+-dontwarn com.google.auto.value.AutoValue
