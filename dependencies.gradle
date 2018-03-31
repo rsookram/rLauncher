@@ -1,6 +1,6 @@
 def versions = [
         supportLibs: '27.0.2',
-        kotlin: '1.2.21',
+        kotlin: '1.2.31',
 ]
 
 ext.sdkVersion = [
