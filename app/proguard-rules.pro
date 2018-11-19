@@ -9,7 +9,3 @@
 -assumevalues class android.os.Build$VERSION {
     int SDK_INT return 23..2147483647;
 }
-
-# RxBinding. Until this is released https://github.com/JakeWharton/RxBinding/pull/428
-# AutoValue annotations are retained but dependency is compileOnly.
--dontwarn com.google.auto.value.AutoValue
