@@ -5,7 +5,7 @@ def versions = [
 
 ext.sdkVersion = [
         min: 23,
-        target: 27,
+        target: 28,
 ]
 
 ext.gradlePlugins = [
