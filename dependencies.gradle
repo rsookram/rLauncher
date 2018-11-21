@@ -1,5 +1,5 @@
 def versions = [
-        supportLibs: '27.0.2',
+        supportLibs: '28.0.0',
         kotlin: '1.3.10',
 ]
 
