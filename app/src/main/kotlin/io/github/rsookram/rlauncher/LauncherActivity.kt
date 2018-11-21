@@ -1,7 +1,7 @@
 package io.github.rsookram.rlauncher
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import io.github.rsookram.rlauncher.interactor.installedApps
 import io.github.rsookram.rlauncher.presenter.LauncherPresenter
 import io.github.rsookram.rlauncher.router.AppRouter

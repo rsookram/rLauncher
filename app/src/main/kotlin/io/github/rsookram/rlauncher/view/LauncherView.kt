@@ -1,9 +1,9 @@
 package io.github.rsookram.rlauncher.view
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App

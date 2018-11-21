@@ -1,10 +1,10 @@
 package io.github.rsookram.rlauncher.view
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.clicks
 import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App
