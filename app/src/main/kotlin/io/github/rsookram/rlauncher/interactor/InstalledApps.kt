@@ -8,7 +8,6 @@ import android.content.pm.ResolveInfo
 import io.github.rsookram.rlauncher.entity.App
 import io.github.rsookram.rxbroadcastreceiver.broadcasts
 import io.reactivex.Observable
-import java.util.Collections
 
 /**
  * Returns an [Observable] of the launchable apps installed on the device
@@ -22,14 +21,13 @@ private fun loadInstalledApps(pm: PackageManager): List<App> {
     val mainIntent = Intent(Intent.ACTION_MAIN)
         .addCategory(Intent.CATEGORY_LAUNCHER)
 
-    val apps = pm.queryIntentActivities(mainIntent, 0)
-    Collections.sort(apps, ResolveInfo.DisplayNameComparator(pm))
-
-    return apps.map {
-        val info = it.activityInfo
-        val packageName = info.applicationInfo.packageName
-        App(packageName, info.name, getAppName(pm, packageName))
-    }
+    return pm.queryIntentActivities(mainIntent, 0)
+        .sortedWith(ResolveInfo.DisplayNameComparator(pm))
+        .map {
+            val info = it.activityInfo
+            val packageName = info.applicationInfo.packageName
+            App(packageName, info.name, getAppName(pm, packageName))
+        }
 }
 
 private fun Context.installedAppChanges(): Observable<Unit> =
