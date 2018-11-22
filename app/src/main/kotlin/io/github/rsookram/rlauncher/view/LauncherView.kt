@@ -11,8 +11,8 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.view_searchable_launcher.view.*
 
 class LauncherView(
-        context: Context,
-        private val appAdapter: AppAdapter
+    context: Context,
+    private val appAdapter: AppAdapter
 ) : LinearLayout(context), LauncherUi {
 
     override var apps: List<App>
@@ -31,10 +31,10 @@ class LauncherView(
 
         setOnApplyWindowInsetsListener { v, insets ->
             v.setPadding(
-                    paddingLeft,
-                    paddingTop,
-                    paddingRight,
-                    insets.systemWindowInsetBottom
+                paddingLeft,
+                paddingTop,
+                paddingRight,
+                insets.systemWindowInsetBottom
             )
 
             insets
@@ -48,10 +48,10 @@ class LauncherView(
 
             setOnApplyWindowInsetsListener { v, insets ->
                 v.setPadding(
-                        paddingLeft,
-                        insets.systemWindowInsetTop,
-                        paddingRight,
-                        paddingBottom
+                    paddingLeft,
+                    insets.systemWindowInsetTop,
+                    paddingRight,
+                    paddingBottom
                 )
 
                 insets.consumeSystemWindowInsets()

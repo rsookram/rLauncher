@@ -14,13 +14,13 @@ import java.util.Collections
  * Returns an [Observable] of the launchable apps installed on the device
  */
 fun installedApps(context: Context): Observable<List<App>> =
-        context.installedAppChanges()
-                .startWith(Unit)
-                .map { loadInstalledApps(context.packageManager) }
+    context.installedAppChanges()
+        .startWith(Unit)
+        .map { loadInstalledApps(context.packageManager) }
 
 private fun loadInstalledApps(pm: PackageManager): List<App> {
     val mainIntent = Intent(Intent.ACTION_MAIN)
-            .addCategory(Intent.CATEGORY_LAUNCHER)
+        .addCategory(Intent.CATEGORY_LAUNCHER)
 
     val apps = pm.queryIntentActivities(mainIntent, 0)
     Collections.sort(apps, ResolveInfo.DisplayNameComparator(pm))
@@ -33,15 +33,15 @@ private fun loadInstalledApps(pm: PackageManager): List<App> {
 }
 
 private fun Context.installedAppChanges(): Observable<Unit> =
-        broadcasts(newIntentFilter()).map {}
+    broadcasts(newIntentFilter()).map {}
 
 /** Creates intent filter for when apps are (un)installed */
 private fun newIntentFilter(): IntentFilter =
-        IntentFilter(Intent.ACTION_PACKAGE_ADDED).apply {
-            addAction(Intent.ACTION_PACKAGE_REMOVED)
-            addAction(Intent.ACTION_PACKAGE_CHANGED)
-            addDataScheme("package")
-        }
+    IntentFilter(Intent.ACTION_PACKAGE_ADDED).apply {
+        addAction(Intent.ACTION_PACKAGE_REMOVED)
+        addAction(Intent.ACTION_PACKAGE_CHANGED)
+        addDataScheme("package")
+    }
 
 private fun getAppName(pm: PackageManager, packageName: String): String {
     val info = pm.getApplicationInfo(packageName, 0)

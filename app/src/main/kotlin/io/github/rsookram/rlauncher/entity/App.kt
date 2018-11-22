@@ -8,7 +8,7 @@ package io.github.rsookram.rlauncher.entity
  * @param className The name of the Activity class which can be launched
  */
 data class App(
-        val packageName: String,
-        val className: String,
-        val displayName: String
+    val packageName: String,
+    val className: String,
+    val displayName: String
 )

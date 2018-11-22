@@ -20,10 +20,10 @@ class LauncherActivity : AppCompatActivity() {
         setContentView(view)
 
         LauncherPresenter(
-                view,
-                installedApps(this),
-                destroys.hide(),
-                AppRouter(this)
+            view,
+            installedApps(this),
+            destroys.hide(),
+            AppRouter(this)
         )
     }
 
