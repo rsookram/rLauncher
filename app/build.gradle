@@ -56,6 +56,7 @@ android {
 dependencies {
     implementation libraries.appCompat
     implementation libraries.recyclerView
+    implementation libraries.ktxCore
 
     implementation libraries.rxJava
     implementation libraries.rxAndroid

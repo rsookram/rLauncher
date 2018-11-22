@@ -2,6 +2,7 @@ package io.github.rsookram.rlauncher.view
 
 import android.content.Context
 import android.widget.LinearLayout
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -30,12 +31,7 @@ class LauncherView(
         orientation = VERTICAL
 
         setOnApplyWindowInsetsListener { v, insets ->
-            v.setPadding(
-                paddingLeft,
-                paddingTop,
-                paddingRight,
-                insets.systemWindowInsetBottom
-            )
+            v.updatePadding(bottom = insets.systemWindowInsetBottom)
 
             insets
         }
@@ -47,12 +43,7 @@ class LauncherView(
             adapter = appAdapter
 
             setOnApplyWindowInsetsListener { v, insets ->
-                v.setPadding(
-                    paddingLeft,
-                    insets.systemWindowInsetTop,
-                    paddingRight,
-                    paddingBottom
-                )
+                v.updatePadding(top = insets.systemWindowInsetTop)
 
                 insets.consumeSystemWindowInsets()
             }
