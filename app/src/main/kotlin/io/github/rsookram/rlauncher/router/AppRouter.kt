@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import io.github.rsookram.rlauncher.entity.App
 
-class AppRouter(private val context: Context) : Router {
+typealias RouteTo = (App) -> Unit
 
-    override fun start(app: App) {
+class AppRouter(private val context: Context) {
+
+    fun start(app: App) {
         val intent = newIntent(app)
         context.startActivity(intent)
     }

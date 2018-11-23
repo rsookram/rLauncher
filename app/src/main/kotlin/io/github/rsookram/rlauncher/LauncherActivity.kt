@@ -23,7 +23,7 @@ class LauncherActivity : AppCompatActivity() {
             view,
             installedApps(this),
             destroys.hide(),
-            AppRouter(this)
+            AppRouter(this)::start
         )
     }
 
