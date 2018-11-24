@@ -24,7 +24,7 @@ class LauncherPresenter(
             .combineLatest(installedApps, ui.searches, BiFunction(search))
             .takeUntil(destroys)
             .subscribe {
-                ui.apps = it
+                ui.setApps(it)
 
                 if (it.size == 1) {
                     launchApp(it.first(), ui, routeTo)

@@ -16,12 +16,6 @@ class LauncherView(
     private val appAdapter: AppAdapter
 ) : LinearLayout(context), LauncherUi {
 
-    override var apps: List<App>
-        get() = appAdapter.apps
-        set(value) {
-            appAdapter.apps = value
-        }
-
     override val selects = appAdapter.selects
 
     override val searches: Observable<CharSequence>
@@ -41,6 +35,7 @@ class LauncherView(
         launcher.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
             adapter = appAdapter
+            itemAnimator = null
 
             setOnApplyWindowInsetsListener { v, insets ->
                 v.updatePadding(top = insets.systemWindowInsetTop)
@@ -50,6 +45,10 @@ class LauncherView(
         }
 
         search_box.requestFocus()
+    }
+
+    override fun setApps(apps: List<App>) {
+        appAdapter.submitList(apps)
     }
 
     override fun clearQuery() {

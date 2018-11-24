@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.clicks
 import io.github.rsookram.rlauncher.R
@@ -11,13 +13,7 @@ import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class AppAdapter : RecyclerView.Adapter<Holder>() {
-
-    var apps = emptyList<App>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class AppAdapter : ListAdapter<App, Holder>(Diff()) {
 
     private val selectSubject = PublishSubject.create<App>()
     val selects: Observable<App> = selectSubject.hide()
@@ -31,7 +27,7 @@ class AppAdapter : RecyclerView.Adapter<Holder>() {
         val context = holder.itemView.context
         val pm = context.packageManager
 
-        val app = apps[position]
+        val app = getItem(position)
 
         val info = pm.getApplicationInfo(app.packageName, 0)
         val icon = info.loadIcon(pm)
@@ -46,11 +42,20 @@ class AppAdapter : RecyclerView.Adapter<Holder>() {
         holder.itemView.clicks()
             .subscribe { selectSubject.onNext(app) }
     }
-
-    override fun getItemCount(): Int = apps.size
 }
 
 class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val text = itemView as TextView
+}
+
+private class Diff : DiffUtil.ItemCallback<App>() {
+    override fun areItemsTheSame(oldItem: App, newItem: App): Boolean =
+        oldItem.packageName == newItem.packageName
+
+    // This doesn't handle a change in only the app icon, but that's ok,
+    // because it's an infrequent event, and the user will see the update
+    // when the view for this app is bound next.
+    override fun areContentsTheSame(oldItem: App, newItem: App): Boolean =
+        oldItem.displayName == newItem.displayName
 }

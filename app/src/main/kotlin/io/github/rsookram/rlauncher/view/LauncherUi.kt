@@ -5,10 +5,9 @@ import io.reactivex.Observable
 
 interface LauncherUi {
 
-    var apps: List<App>
-
     val selects: Observable<App>
     val searches: Observable<CharSequence>
 
+    fun setApps(apps: List<App>)
     fun clearQuery()
 }
