@@ -9,7 +9,7 @@ import com.jakewharton.rxbinding2.widget.textChanges
 import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.view_searchable_launcher.view.*
+import kotlinx.android.synthetic.main.view_launcher.view.*
 
 class LauncherView(
     context: Context,
@@ -36,7 +36,7 @@ class LauncherView(
             insets
         }
 
-        inflate(context, R.layout.view_searchable_launcher, this)
+        inflate(context, R.layout.view_launcher, this)
 
         launcher.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
