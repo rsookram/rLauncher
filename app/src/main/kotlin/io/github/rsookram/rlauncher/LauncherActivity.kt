@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.github.rsookram.rlauncher.interactor.installedApps
 import io.github.rsookram.rlauncher.presenter.LauncherPresenter
-import io.github.rsookram.rlauncher.router.AppRouter
+import io.github.rsookram.rlauncher.router.Router
 import io.github.rsookram.rlauncher.view.AppAdapter
 import io.github.rsookram.rlauncher.view.LauncherView
 import io.reactivex.subjects.PublishSubject
@@ -23,7 +23,7 @@ class LauncherActivity : AppCompatActivity() {
             view,
             installedApps(this),
             destroys.hide(),
-            AppRouter(this)::start
+            Router(this)::start
         )
     }
 

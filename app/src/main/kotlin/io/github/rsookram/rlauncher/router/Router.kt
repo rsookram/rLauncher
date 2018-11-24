@@ -7,7 +7,7 @@ import io.github.rsookram.rlauncher.entity.App
 
 typealias RouteTo = (App) -> Unit
 
-class AppRouter(private val context: Context) {
+class Router(private val context: Context) {
 
     fun start(app: App) {
         val intent = newIntent(app)
