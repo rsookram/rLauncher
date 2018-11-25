@@ -57,6 +57,12 @@ class LauncherActivity : AppCompatActivity() {
                 view.setQuery(it)
             }
         })
+
+        vm.scrollsToStart.observe(this, Observer {
+            if (it.getContentIfNotHandled() != null) {
+                view.scrollToStart()
+            }
+        })
     }
 
     override fun onBackPressed() {

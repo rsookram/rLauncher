@@ -20,6 +20,9 @@ class LauncherViewModel(
     private val queryData = MutableLiveData<CharSequence>()
     val queries: LiveData<CharSequence> = queryData
 
+    private val scrollToStartData = MutableLiveData<LiveEvent<Unit>>()
+    val scrollsToStart: LiveData<LiveEvent<Unit>> = scrollToStartData
+
     private var installedApps = emptyList<App>()
 
     fun onAppsChanged(newApps: List<App>) {
@@ -38,6 +41,13 @@ class LauncherViewModel(
             queryData.value = ""
         } else {
             queryData.value = query
+        }
+
+        if (queryData.value.isNullOrEmpty()) {
+            // Without posting, the list would try to scroll to the start of
+            // the filtered list, instead of the original. This is because it
+            // takes time to set the list back to the original.
+            scrollToStartData.postValue(LiveEvent(Unit))
         }
     }
 

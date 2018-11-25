@@ -56,4 +56,8 @@ class LauncherView(
             search_box.setText(query)
         }
     }
+
+    fun scrollToStart() {
+        launcher.scrollToPosition(0)
+    }
 }
