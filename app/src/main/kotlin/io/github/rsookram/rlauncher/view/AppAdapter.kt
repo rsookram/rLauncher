@@ -7,20 +7,26 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jakewharton.rxbinding2.view.clicks
 import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 
-class AppAdapter : ListAdapter<App, Holder>(Diff()) {
-
-    private val selectSubject = PublishSubject.create<App>()
-    val selects: Observable<App> = selectSubject.hide()
+class AppAdapter(
+    private val onAppSelected: (App) -> Unit
+) : ListAdapter<App, Holder>(Diff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = LayoutInflater.from(parent.context)
-        return Holder(inflater.inflate(R.layout.item_app, parent, false))
+        val view = inflater.inflate(R.layout.item_app, parent, false)
+
+        val holder = Holder(view)
+        holder.itemView.setOnClickListener {
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onAppSelected(getItem(position))
+            }
+        }
+
+        return holder
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -38,9 +44,6 @@ class AppAdapter : ListAdapter<App, Holder>(Diff()) {
         holder.text.setCompoundDrawables(icon, null, null, null)
 
         holder.text.text = app.displayName
-
-        holder.itemView.clicks()
-            .subscribe { selectSubject.onNext(app) }
     }
 }
 

@@ -16,8 +16,6 @@ class LauncherView(
     private val appAdapter: AppAdapter
 ) : LinearLayout(context) {
 
-    val selects = appAdapter.selects
-
     val searches: Observable<CharSequence>
         get() = search_box.textChanges()
 

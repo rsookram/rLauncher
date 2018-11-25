@@ -25,7 +25,7 @@ class LauncherActivity : AppCompatActivity() {
         val installedApps = installedApps(this)
         val routeTo = Router(this)::start
 
-        val view = LauncherView(this, AppAdapter())
+        val view = LauncherView(this, AppAdapter(vm::onAppSelected))
         setContentView(view)
 
         installedApps
@@ -35,9 +35,6 @@ class LauncherActivity : AppCompatActivity() {
         view.searches
             .distinctUntilChanged(CharSequence::toString)
             .subscribe(vm::onQueryChanged)
-
-        view.selects
-            .subscribe(vm::onAppSelected)
 
         vm.appLaunches.observe(this, Observer {
             val app = it?.getContentIfNotHandled()
