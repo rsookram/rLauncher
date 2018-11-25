@@ -2,11 +2,15 @@ package io.github.rsookram.rlauncher
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import io.github.rsookram.rlauncher.interactor.installedApps
-import io.github.rsookram.rlauncher.presenter.LauncherPresenter
 import io.github.rsookram.rlauncher.router.Router
 import io.github.rsookram.rlauncher.view.AppAdapter
 import io.github.rsookram.rlauncher.view.LauncherView
+import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
+import io.github.rsookram.rlauncher.viewmodel.ViewModelFactory
 import io.reactivex.subjects.PublishSubject
 
 class LauncherActivity : AppCompatActivity() {
@@ -16,15 +20,43 @@ class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val vm = ViewModelProvider(this, ViewModelFactory()).get<LauncherViewModel>()
+
+        val installedApps = installedApps(this)
+        val routeTo = Router(this)::start
+
         val view = LauncherView(this, AppAdapter())
         setContentView(view)
 
-        LauncherPresenter(
-            view,
-            installedApps(this),
-            destroys.hide(),
-            Router(this)::start
-        )
+        installedApps
+            .takeUntil(destroys)
+            .subscribe(vm::onAppsChanged)
+
+        view.searches
+            .distinctUntilChanged(CharSequence::toString)
+            .subscribe(vm::onQueryChanged)
+
+        view.selects
+            .subscribe(vm::onAppSelected)
+
+        vm.appLaunches.observe(this, Observer {
+            val app = it?.getContentIfNotHandled()
+            if (app != null) {
+                routeTo(app)
+            }
+        })
+
+        vm.apps.observe(this, Observer {
+            if (it != null) {
+                view.setApps(it)
+            }
+        })
+
+        vm.queries.observe(this, Observer {
+            if (it != null) {
+                view.setQuery(it)
+            }
+        })
     }
 
     override fun onBackPressed() {

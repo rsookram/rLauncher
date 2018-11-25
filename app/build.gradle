@@ -61,6 +61,8 @@ dependencies {
     implementation libraries.appCompat
     implementation libraries.recyclerView
     implementation libraries.ktxCore
+    implementation libraries.lifecycleExtensions
+    implementation libraries.ktxViewModel
 
     implementation libraries.rxJava
     implementation libraries.rxAndroid

@@ -14,11 +14,11 @@ import kotlinx.android.synthetic.main.view_launcher.view.*
 class LauncherView(
     context: Context,
     private val appAdapter: AppAdapter
-) : LinearLayout(context), LauncherUi {
+) : LinearLayout(context) {
 
-    override val selects = appAdapter.selects
+    val selects = appAdapter.selects
 
-    override val searches: Observable<CharSequence>
+    val searches: Observable<CharSequence>
         get() = search_box.textChanges()
 
     init {
@@ -47,11 +47,13 @@ class LauncherView(
         search_box.requestFocus()
     }
 
-    override fun setApps(apps: List<App>) {
+    fun setApps(apps: List<App>) {
         appAdapter.submitList(apps)
     }
 
-    override fun clearQuery() {
-        search_box.setText("")
+    fun setQuery(query: CharSequence) {
+        if (query.toString() != search_box.text.toString()) {
+            search_box.setText(query)
+        }
     }
 }
