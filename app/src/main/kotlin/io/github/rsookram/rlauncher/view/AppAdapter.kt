@@ -1,7 +1,6 @@
 package io.github.rsookram.rlauncher.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -16,7 +15,7 @@ class AppAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_app, parent, false)
+        val view = inflater.inflate(R.layout.item_app, parent, false) as TextView
 
         val holder = Holder(view)
         holder.itemView.setOnClickListener {
@@ -41,16 +40,13 @@ class AppAdapter(
             android.R.dimen.app_icon_size
         )
         icon.setBounds(0, 0, size, size)
-        holder.text.setCompoundDrawables(icon, null, null, null)
+        holder.label.setCompoundDrawables(icon, null, null, null)
 
-        holder.text.text = app.displayName
+        holder.label.text = app.displayName
     }
 }
 
-class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    val text = itemView as TextView
-}
+class Holder(val label: TextView) : RecyclerView.ViewHolder(label)
 
 private class Diff : DiffUtil.ItemCallback<App>() {
     override fun areItemsTheSame(oldItem: App, newItem: App): Boolean =
