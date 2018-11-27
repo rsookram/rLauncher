@@ -19,7 +19,6 @@ support for widgets or wallpapers, it does one thing: launch apps.
 ## Libraries
 
 - [RxJava](https://github.com/ReactiveX/RxJava/)
-- [RxAndroid](https://github.com/ReactiveX/RxAndroid/)
 - [RxBinding](https://github.com/JakeWharton/RxBinding/)
 
 

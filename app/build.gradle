@@ -15,7 +15,6 @@ android {
         resConfigs "en"
     }
 
-    // Needed for RxBinding
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -62,10 +61,10 @@ dependencies {
     implementation libraries.recyclerView
     implementation libraries.ktxCore
     implementation libraries.lifecycleExtensions
+    implementation libraries.lifecycleCommon
     implementation libraries.ktxViewModel
 
     implementation libraries.rxJava
-    implementation libraries.rxAndroid
     implementation libraries.rxBindingKotlin
 
     implementation libraries.kotlin
