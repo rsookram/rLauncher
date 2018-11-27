@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import io.github.rsookram.rlauncher.entity.App
 
-typealias RouteTo = (App) -> Unit
-
 class Router(private val context: Context) {
 
     fun start(app: App) {
