@@ -34,7 +34,10 @@
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingEnd="8dp"
+            android:inputType="text"
+            android:hint="@string/search_hint_text"
+            android:importantForAutofill="no">
 
             <requestFocus/>
 
