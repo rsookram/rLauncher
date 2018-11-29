@@ -34,7 +34,11 @@
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="8dp">
+
+            <requestFocus/>
+
+        </EditText>
     </FrameLayout>
 
 </merge>

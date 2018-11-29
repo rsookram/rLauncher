@@ -41,8 +41,6 @@ class LauncherView(
                 insets.consumeSystemWindowInsets()
             }
         }
-
-        search_box.requestFocus()
     }
 
     fun setApps(apps: List<App>) {
