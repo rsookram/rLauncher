@@ -40,7 +40,7 @@ class AppAdapter(
             android.R.dimen.app_icon_size
         )
         icon.setBounds(0, 0, size, size)
-        holder.label.setCompoundDrawables(icon, null, null, null)
+        holder.label.setCompoundDrawablesRelative(icon, null, null, null)
 
         holder.label.text = app.displayName
     }
