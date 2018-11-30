@@ -1,8 +1,7 @@
 package io.github.rsookram.rlauncher.view
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,26 +10,21 @@ import io.github.rsookram.rlauncher.databinding.ViewLauncherBinding
 import io.github.rsookram.rlauncher.entity.App
 import io.reactivex.Observable
 
-class LauncherView(
-    context: Context,
-    private val appAdapter: AppAdapter
-) : LinearLayout(context) {
+class LauncherView(container: ViewGroup, private val appAdapter: AppAdapter) {
 
-    private val binding: ViewLauncherBinding
+    private val binding: ViewLauncherBinding = ViewLauncherBinding.inflate(
+        LayoutInflater.from(container.context), container, true
+    )
 
     val searches: Observable<CharSequence>
         get() = binding.searchBox.textChanges()
 
     init {
-        orientation = VERTICAL
-
-        setOnApplyWindowInsetsListener { v, insets ->
+        binding.root.setOnApplyWindowInsetsListener { v, insets ->
             v.updatePadding(bottom = insets.systemWindowInsetBottom)
 
             insets
         }
-
-        binding = ViewLauncherBinding.inflate(LayoutInflater.from(context), this, true)
 
         binding.launcher.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
