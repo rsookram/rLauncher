@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:layout_width="match_parent"
-    tools:layout_height="match_parent"
-    tools:orientation="vertical"
-    tools:parentTag="android.widget.LinearLayout">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/launcher"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="true"
-        tools:listitem="@layout/item_app"/>
+    <data>
+    </data>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="?android:attr/windowBackground"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:elevation="4dp">
+    <merge
+        tools:layout_width="match_parent"
+        tools:layout_height="match_parent"
+        tools:orientation="vertical"
+        tools:parentTag="android.widget.LinearLayout">
 
-        <EditText
-            android:id="@+id/search_box"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/launcher"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            tools:listitem="@layout/item_app"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?android:attr/windowBackground"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:inputType="text"
-            android:hint="@string/search_hint_text"
-            android:importantForAutofill="no">
+            android:elevation="4dp">
 
-            <requestFocus/>
+            <EditText
+                android:id="@+id/search_box"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:inputType="text"
+                android:hint="@string/search_hint_text"
+                android:importantForAutofill="no">
 
-        </EditText>
-    </FrameLayout>
+                <requestFocus/>
 
-</merge>
+            </EditText>
+        </FrameLayout>
+
+    </merge>
+</layout>
