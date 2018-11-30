@@ -20,8 +20,5 @@ ext.libraries = [
         lifecycleCommon: 'androidx.lifecycle:lifecycle-common-java8:2.0.0',
         ktxViewModel: 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0',
 
-        rxJava: 'io.reactivex.rxjava2:rxjava:2.2.3',
-        rxBindingKotlin: 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0',
-
         kotlin: "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
 ]

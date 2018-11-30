@@ -16,12 +16,6 @@ support for widgets or wallpapers, it does one thing: launch apps.
 <img src="https://raw.githubusercontent.com/rsookram/rLauncher/master/screenshots/screenshot_2.png" width="270" height="480" alt="Filtering apps by typing">
 
 
-## Libraries
-
-- [RxJava](https://github.com/ReactiveX/RxJava/)
-- [RxBinding](https://github.com/JakeWharton/RxBinding/)
-
-
 License
 -------
 

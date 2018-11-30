@@ -5,21 +5,23 @@ import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jakewharton.rxbinding2.widget.textChanges
 import io.github.rsookram.rlauncher.databinding.ViewLauncherBinding
 import io.github.rsookram.rlauncher.entity.App
-import io.reactivex.Observable
+import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
 
-class LauncherView(container: ViewGroup, private val appAdapter: AppAdapter) {
+class LauncherView(
+    container: ViewGroup,
+    vm: LauncherViewModel,
+    private val appAdapter: AppAdapter
+) {
 
     private val binding: ViewLauncherBinding = ViewLauncherBinding.inflate(
         LayoutInflater.from(container.context), container, true
     )
 
-    val searches: Observable<CharSequence>
-        get() = binding.searchBox.textChanges()
-
     init {
+        binding.vm = vm
+
         binding.root.setOnApplyWindowInsetsListener { v, insets ->
             v.updatePadding(bottom = insets.systemWindowInsetBottom)
 

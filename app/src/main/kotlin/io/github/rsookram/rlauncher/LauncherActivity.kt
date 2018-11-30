@@ -23,13 +23,9 @@ class LauncherActivity : AppCompatActivity() {
         val routeTo = Router(this)::start
 
         val contentView = findViewById<ViewGroup>(android.R.id.content)
-        val view = LauncherView(contentView, AppAdapter(vm::onAppSelected))
+        val view = LauncherView(contentView, vm, AppAdapter(vm::onAppSelected))
 
         lifecycle.addObserver(InstalledAppsReceiver(this, vm::onAppsChanged))
-
-        view.searches
-            .distinctUntilChanged(CharSequence::toString)
-            .subscribe(vm::onQueryChanged)
 
         vm.appLaunches.observe(this, Observer {
             val app = it?.getContentIfNotHandled()

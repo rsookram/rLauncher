@@ -67,8 +67,5 @@ dependencies {
     implementation libraries.lifecycleCommon
     implementation libraries.ktxViewModel
 
-    implementation libraries.rxJava
-    implementation libraries.rxBindingKotlin
-
     implementation libraries.kotlin
 }

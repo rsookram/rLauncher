@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable name="vm" type="io.github.rsookram.rlauncher.viewmodel.LauncherViewModel"/>
     </data>
 
     <LinearLayout
@@ -41,7 +42,8 @@
                 android:paddingEnd="8dp"
                 android:inputType="text"
                 android:hint="@string/search_hint_text"
-                android:importantForAutofill="no">
+                android:importantForAutofill="no"
+                android:onTextChanged="@{(query, start, end, count) -> vm.onQueryChanged(query)}">
 
                 <requestFocus/>
 
