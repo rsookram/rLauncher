@@ -3,6 +3,7 @@ package io.github.rsookram.rlauncher.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.rsookram.rlauncher.databinding.ViewLauncherBinding
@@ -12,6 +13,7 @@ import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
 class LauncherView(
     container: ViewGroup,
     vm: LauncherViewModel,
+    lifecycleOwner: LifecycleOwner,
     private val appAdapter: AppAdapter
 ) {
 
@@ -20,6 +22,7 @@ class LauncherView(
     )
 
     init {
+        binding.setLifecycleOwner(lifecycleOwner)
         binding.vm = vm
 
         binding.root.setOnApplyWindowInsetsListener { v, insets ->
@@ -43,12 +46,6 @@ class LauncherView(
 
     fun setApps(apps: List<App>) {
         appAdapter.submitList(apps)
-    }
-
-    fun setQuery(query: CharSequence) {
-        if (query.toString() != binding.searchBox.text.toString()) {
-            binding.searchBox.setText(query)
-        }
     }
 
     fun scrollToStart() {

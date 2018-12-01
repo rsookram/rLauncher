@@ -23,7 +23,7 @@ class LauncherActivity : AppCompatActivity() {
         val routeTo = Router(this)::start
 
         val contentView = findViewById<ViewGroup>(android.R.id.content)
-        val view = LauncherView(contentView, vm, AppAdapter(vm::onAppSelected))
+        val view = LauncherView(contentView, vm, this, AppAdapter(vm::onAppSelected))
 
         lifecycle.addObserver(InstalledAppsReceiver(this, vm::onAppsChanged))
 
@@ -37,12 +37,6 @@ class LauncherActivity : AppCompatActivity() {
         vm.apps.observe(this, Observer {
             if (it != null) {
                 view.setApps(it)
-            }
-        })
-
-        vm.queries.observe(this, Observer {
-            if (it != null) {
-                view.setQuery(it)
             }
         })
 

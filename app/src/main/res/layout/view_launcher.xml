@@ -43,6 +43,7 @@
                 android:inputType="text"
                 android:hint="@string/search_hint_text"
                 android:importantForAutofill="no"
+                android:text="@{vm.queries}"
                 android:onTextChanged="@{(query, start, end, count) -> vm.onQueryChanged(query)}">
 
                 <requestFocus/>
