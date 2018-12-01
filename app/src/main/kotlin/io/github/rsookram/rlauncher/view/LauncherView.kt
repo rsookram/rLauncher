@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.rsookram.rlauncher.databinding.ViewLauncherBinding
 import io.github.rsookram.rlauncher.entity.App
 import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
+import javax.inject.Inject
 
-class LauncherView(
+class LauncherView @Inject constructor(
     container: ViewGroup,
     vm: LauncherViewModel,
     lifecycleOwner: LifecycleOwner,

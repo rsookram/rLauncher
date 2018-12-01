@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion sdkVersion.target
@@ -66,6 +67,9 @@ dependencies {
     implementation libraries.lifecycleExtensions
     implementation libraries.lifecycleCommon
     implementation libraries.ktxViewModel
+
+    implementation libraries.dagger
+    kapt libraries.daggerCompiler
 
     implementation libraries.kotlin
 }

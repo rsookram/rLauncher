@@ -13,7 +13,7 @@ import io.github.rsookram.rlauncher.entity.App
 /** Listens to changes in the launchable apps installed on the device */
 class InstalledAppsReceiver(
     private val context: Context,
-    onAppsChanged: (List<App>) -> Unit
+    private val onAppsChanged: (List<App>) -> Unit
 ) : DefaultLifecycleObserver {
 
     private val receiver = object : BroadcastReceiver() {
@@ -22,7 +22,7 @@ class InstalledAppsReceiver(
         }
     }
 
-    init {
+    override fun onCreate(owner: LifecycleOwner) {
         onAppsChanged(loadInstalledApps())
 
         context.registerReceiver(

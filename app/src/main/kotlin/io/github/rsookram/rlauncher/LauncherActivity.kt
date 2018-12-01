@@ -1,36 +1,28 @@
 package io.github.rsookram.rlauncher
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import io.github.rsookram.rlauncher.interactor.InstalledAppsReceiver
-import io.github.rsookram.rlauncher.router.Router
-import io.github.rsookram.rlauncher.view.AppAdapter
-import io.github.rsookram.rlauncher.view.LauncherView
-import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
-import io.github.rsookram.rlauncher.viewmodel.ViewModelFactory
 
 class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val vm = ViewModelProvider(this, ViewModelFactory()).get<LauncherViewModel>()
+        val component = DaggerLauncherComponent.builder()
+            .activity(this)
+            .build()
 
-        val routeTo = Router(this)::start
+        val vm = component.viewModel()
+        val view = component.view()
+        val router = component.router()
 
-        val contentView = findViewById<ViewGroup>(android.R.id.content)
-        val view = LauncherView(contentView, vm, this, AppAdapter(vm::onAppSelected))
-
-        lifecycle.addObserver(InstalledAppsReceiver(this, vm::onAppsChanged))
+        lifecycle.addObserver(component.installedAppsReceiver())
 
         vm.appLaunches.observe(this, Observer {
             val app = it?.getContentIfNotHandled()
             if (app != null) {
-                routeTo(app)
+                router.start(app)
             }
         })
 

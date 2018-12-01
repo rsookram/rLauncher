@@ -4,8 +4,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import io.github.rsookram.rlauncher.entity.App
+import javax.inject.Inject
 
-class Router(private val context: Context) {
+class Router @Inject constructor(private val context: Context) {
 
     fun start(app: App) {
         val intent = newIntent(app)
