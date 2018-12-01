@@ -2,7 +2,7 @@ package io.github.rsookram.rlauncher
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import io.github.rsookram.lifecycle.observeNonNull
 
 class LauncherActivity : AppCompatActivity() {
 
@@ -19,24 +19,19 @@ class LauncherActivity : AppCompatActivity() {
 
         lifecycle.addObserver(component.installedAppsReceiver())
 
-        vm.appLaunches.observe(this, Observer {
-            val app = it?.getContentIfNotHandled()
-            if (app != null) {
+        vm.appLaunches.observeNonNull(this) {
+            it.getContentIfNotHandled()?.let { app ->
                 router.start(app)
             }
-        })
+        }
 
-        vm.apps.observe(this, Observer {
-            if (it != null) {
-                view.setApps(it)
-            }
-        })
+        vm.apps.observeNonNull(this, view::setApps)
 
-        vm.scrollsToStart.observe(this, Observer {
+        vm.scrollsToStart.observeNonNull(this) {
             if (it.getContentIfNotHandled() != null) {
                 view.scrollToStart()
             }
-        })
+        }
     }
 
     override fun onBackPressed() {
