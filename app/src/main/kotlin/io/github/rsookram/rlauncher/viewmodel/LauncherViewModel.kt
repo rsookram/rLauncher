@@ -11,48 +11,48 @@ class LauncherViewModel(
     private val search: (List<App>, CharSequence) -> List<App> = ::searchFilter
 ) : ViewModel() {
 
-    private val appLaunchData = MutableLiveData<LiveEvent<App>>()
-    val appLaunches: LiveData<LiveEvent<App>> = appLaunchData
+    private val _appLaunches = MutableLiveData<LiveEvent<App>>()
+    val appLaunches: LiveData<LiveEvent<App>> = _appLaunches
 
-    private val appData = MutableLiveData<List<App>>()
-    val apps: LiveData<List<App>> = appData
+    private val _apps = MutableLiveData<List<App>>()
+    val apps: LiveData<List<App>> = _apps
 
-    private val queryData = MutableLiveData<CharSequence>()
-    val queries: LiveData<CharSequence> = queryData
+    private val _queries = MutableLiveData<CharSequence>()
+    val queries: LiveData<CharSequence> = _queries
 
-    private val scrollToStartData = MutableLiveData<LiveEvent<Unit>>()
-    val scrollsToStart: LiveData<LiveEvent<Unit>> = scrollToStartData
+    private val _scrollsToStart = MutableLiveData<LiveEvent<Unit>>()
+    val scrollsToStart: LiveData<LiveEvent<Unit>> = _scrollsToStart
 
     private var installedApps = emptyList<App>()
 
     fun onAppsChanged(newApps: List<App>) {
         installedApps = newApps
 
-        val query = queryData.value ?: ""
-        appData.value = search(installedApps, query)
+        val query = _queries.value ?: ""
+        _apps.value = search(installedApps, query)
     }
 
     fun onQueryChanged(query: CharSequence) {
         val newAppData = search(installedApps, query)
-        appData.value = newAppData
+        _apps.value = newAppData
 
         if (newAppData.size == 1) {
-            appLaunchData.value = LiveEvent(newAppData.first())
-            queryData.value = ""
+            _appLaunches.value = LiveEvent(newAppData.first())
+            _queries.value = ""
         } else {
-            queryData.value = query
+            _queries.value = query
         }
 
-        if (queryData.value.isNullOrEmpty()) {
+        if (_queries.value.isNullOrEmpty()) {
             // Without posting, the list would try to scroll to the start of
             // the filtered list, instead of the original. This is because it
             // takes time to set the list back to the original.
-            scrollToStartData.postValue(LiveEvent(Unit))
+            _scrollsToStart.postValue(LiveEvent(Unit))
         }
     }
 
     fun onAppSelected(app: App) {
-        appLaunchData.value = LiveEvent(app)
-        queryData.value = ""
+        _appLaunches.value = LiveEvent(app)
+        _queries.value = ""
     }
 }
