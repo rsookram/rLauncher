@@ -6,7 +6,7 @@ package io.github.rsookram.lifecycle
  *
  * Based off https://gist.github.com/JoseAlcerreca/5b661f1800e1e654f07cc54fe87441af
  */
-open class LiveEvent<out T>(private val content: T) {
+open class LiveEvent<out T : Any>(private val content: T) {
 
     private var handled = false
 
