@@ -72,4 +72,7 @@ dependencies {
     kapt libraries.daggerCompiler
 
     implementation libraries.kotlin
+
+    testImplementation libraries.coreTesting
+    testImplementation libraries.truth
 }

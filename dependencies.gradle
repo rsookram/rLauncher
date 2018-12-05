@@ -25,4 +25,7 @@ ext.libraries = [
         daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
 
         kotlin: "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+
+        coreTesting: 'android.arch.core:core-testing:1.1.1',
+        truth: 'com.google.truth:truth:0.42',
 ]
