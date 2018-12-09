@@ -10,6 +10,7 @@ import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App
 
 class AppAdapter(
+    private val appIconLoader: AppIconLoader,
     private val onAppSelected: (App) -> Unit
 ) : ListAdapter<App, Holder>(Diff()) {
 
@@ -29,16 +30,11 @@ class AppAdapter(
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val context = holder.itemView.context
-        val pm = context.packageManager
-
         val app = getItem(position)
 
-        val info = pm.getApplicationInfo(app.packageName, 0)
-        val icon = info.loadIcon(pm)
-        val size = context.resources.getDimensionPixelSize(
-            android.R.dimen.app_icon_size
-        )
+        val icon = appIconLoader.load(app)
+        val size = holder.itemView.resources
+            .getDimensionPixelSize(android.R.dimen.app_icon_size)
         icon.setBounds(0, 0, size, size)
         holder.label.setCompoundDrawablesRelative(icon, null, null, null)
 
