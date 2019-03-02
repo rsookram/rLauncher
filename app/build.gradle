@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion sdkVersion.target
+    compileSdkVersion Versions.targetSdk
 
     defaultConfig {
         applicationId "io.github.rsookram.rlauncher"
-        minSdkVersion sdkVersion.min
-        targetSdkVersion sdkVersion.target
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -63,18 +63,18 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    implementation libraries.appCompat
-    implementation libraries.recyclerView
-    implementation libraries.ktxCore
-    implementation libraries.lifecycleExtensions
-    implementation libraries.lifecycleCommon
-    implementation libraries.ktxViewModel
+    implementation Versions.appCompat
+    implementation Versions.recyclerView
+    implementation Versions.ktxCore
+    implementation Versions.lifecycleExtensions
+    implementation Versions.lifecycleCommon
+    implementation Versions.ktxViewModel
 
-    implementation libraries.dagger
-    kapt libraries.daggerCompiler
+    implementation Versions.daggerRuntime
+    kapt Versions.daggerCompiler
 
-    implementation libraries.kotlin
+    implementation Versions.kotlinStdlib
 
-    testImplementation libraries.coreTesting
-    testImplementation libraries.truth
+    testImplementation Versions.coreTesting
+    testImplementation Versions.truth
 }
