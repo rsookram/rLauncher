@@ -23,7 +23,7 @@ class LauncherView @Inject constructor(
     )
 
     init {
-        binding.setLifecycleOwner(lifecycleOwner)
+        binding.lifecycleOwner = lifecycleOwner
         binding.vm = vm
 
         binding.root.setOnApplyWindowInsetsListener { v, insets ->

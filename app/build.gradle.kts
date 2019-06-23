@@ -25,7 +25,7 @@ android {
     }
 
     dataBinding {
-        setEnabled(true)
+        isEnabled = true
     }
 
     signingConfigs {
@@ -39,15 +39,15 @@ android {
 
     buildTypes {
         getByName("debug") {
-            setSigningConfig(signingConfigs.getByName("debug"))
+            signingConfig = signingConfigs.getByName("debug")
         }
         getByName("release") {
-            setShrinkResources(true)
-            setMinifyEnabled(true)
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles("proguard-android.txt", "proguard-rules.pro")
 
             // Just for testing release builds. Not actually distributed.
-            setSigningConfig(signingConfigs.getByName("debug"))
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
