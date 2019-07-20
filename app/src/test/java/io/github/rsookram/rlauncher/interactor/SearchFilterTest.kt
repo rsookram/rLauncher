@@ -23,7 +23,7 @@ class SearchFilterTest {
     fun overspecificQueryResultsInNothing() {
         val result = searchFilter(apps, "there is no app with a name that would match this")
 
-        assertThat(result).isEqualTo(emptyList<App>())
+        assertThat(result).isEmpty()
     }
 
     @Test
