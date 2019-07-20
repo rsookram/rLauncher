@@ -11,7 +11,7 @@ object Versions {
 
     const val appCompat = "androidx.appcompat:appcompat:1.0.2"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
-    const val ktxCore = "androidx.core:core-ktx:1.0.1"
+    const val ktxCore = "androidx.core:core-ktx:1.0.2"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     const val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:2.0.0"
     const val ktxViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
