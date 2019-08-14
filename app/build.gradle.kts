@@ -20,8 +20,8 @@ android {
     }
 
     compileOptions {
-        setSourceCompatibility(JavaVersion.VERSION_1_8)
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     dataBinding {
@@ -44,7 +44,7 @@ android {
         getByName("release") {
             isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles("proguard-android.txt", "proguard-rules.pro")
+            proguardFiles("proguard-rules.pro")
 
             // Just for testing release builds. Not actually distributed.
             signingConfig = signingConfigs.getByName("debug")
