@@ -28,10 +28,9 @@ interface LauncherComponent {
     fun view(): LauncherView
     fun viewModel(): LauncherViewModel
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun activity(activity: AppCompatActivity): Builder
-        fun build(): LauncherComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance activity: AppCompatActivity): LauncherComponent
     }
 }
 

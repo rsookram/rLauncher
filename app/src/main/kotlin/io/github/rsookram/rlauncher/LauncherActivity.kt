@@ -9,9 +9,7 @@ class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = DaggerLauncherComponent.builder()
-            .activity(this)
-            .build()
+        val component = DaggerLauncherComponent.factory().create(this)
 
         val vm = component.viewModel()
         val view = component.view()
