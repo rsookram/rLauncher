@@ -10,7 +10,6 @@ import io.github.rsookram.rlauncher.R
 import io.github.rsookram.rlauncher.entity.App
 
 class AppAdapter(
-    private val appIconLoader: AppIconLoader,
     private val onAppSelected: (App) -> Unit
 ) : ListAdapter<App, Holder>(Diff()) {
 
@@ -30,15 +29,7 @@ class AppAdapter(
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val app = getItem(position)
-
-        val icon = appIconLoader.load(app)
-        val size = holder.itemView.resources
-            .getDimensionPixelSize(android.R.dimen.app_icon_size)
-        icon.setBounds(0, 0, size, size)
-        holder.label.setCompoundDrawablesRelative(icon, null, null, null)
-
-        holder.label.text = app.displayName
+        holder.label.text = getItem(position).displayName
     }
 }
 
@@ -48,9 +39,6 @@ private class Diff : DiffUtil.ItemCallback<App>() {
     override fun areItemsTheSame(oldItem: App, newItem: App): Boolean =
         oldItem.packageName == newItem.packageName
 
-    // This doesn't handle a change in only the app icon, but that's ok,
-    // because it's an infrequent event, and the user will see the update
-    // when the view for this app is bound next.
     override fun areContentsTheSame(oldItem: App, newItem: App): Boolean =
         oldItem.displayName == newItem.displayName
 }
