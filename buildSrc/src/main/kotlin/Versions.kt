@@ -6,7 +6,7 @@ object Versions {
     const val minSdk = 25
     const val targetSdk = 29
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:3.4.2"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:3.5.3"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
 
     const val appCompat = "androidx.appcompat:appcompat:1.0.2"
