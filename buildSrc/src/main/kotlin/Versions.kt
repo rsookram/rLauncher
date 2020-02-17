@@ -22,6 +22,6 @@ object Versions {
 
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
 
-    const val coreTesting = "android.arch.core:core-testing:1.1.1"
+    const val coreTesting = "androidx.arch.core:core-testing:2.1.0"
     const val truth = "com.google.truth:truth:1.0"
 }
