@@ -1,7 +1,7 @@
 object Versions {
 
     private const val kotlin = "1.3.61"
-    private const val dagger = "2.24"
+    private const val dagger = "2.26"
 
     const val minSdk = 25
     const val targetSdk = 28
