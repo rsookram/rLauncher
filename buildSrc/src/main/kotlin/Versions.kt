@@ -2,6 +2,7 @@ object Versions {
 
     private const val kotlin = "1.3.61"
     private const val dagger = "2.26"
+    private const val lifecycle = "2.2.0"
 
     const val minSdk = 25
     const val targetSdk = 29
@@ -12,9 +13,9 @@ object Versions {
     const val appCompat = "androidx.appcompat:appcompat:1.1.0"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
     const val ktxCore = "androidx.core:core-ktx:1.2.0"
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-    const val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:2.0.0"
-    const val ktxViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
+    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+    const val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:$lifecycle"
+    const val ktxViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
     const val daggerRuntime = "com.google.dagger:dagger:$dagger"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$dagger"
