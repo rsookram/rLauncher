@@ -4,7 +4,7 @@ object Versions {
     private const val dagger = "2.26"
 
     const val minSdk = 25
-    const val targetSdk = 28
+    const val targetSdk = 29
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:3.4.2"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
