@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
 import dagger.BindsInstance
 import dagger.Component
@@ -49,7 +48,7 @@ class LauncherModule {
         InstalledAppsReceiver(context, viewModel::onAppsChanged)
 
     @Provides fun viewModelProvider(activity: AppCompatActivity, factory: ViewModelFactory) =
-        ViewModelProviders.of(activity, factory)
+        ViewModelProvider(activity, factory)
 
     @Provides fun viewModel(provider: ViewModelProvider) = provider.get<LauncherViewModel>()
 }
