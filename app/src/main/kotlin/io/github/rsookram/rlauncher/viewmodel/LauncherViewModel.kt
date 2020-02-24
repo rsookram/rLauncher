@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.github.rsookram.lifecycle.LiveEvent
 import io.github.rsookram.rlauncher.entity.App
-import io.github.rsookram.rlauncher.interactor.searchFilter
 
 class LauncherViewModel(
-    private val search: (List<App>, CharSequence) -> List<App> = ::searchFilter
+    private val search: (List<App>, CharSequence) -> List<App>
 ) : ViewModel() {
 
     private val _appLaunches = MutableLiveData<LiveEvent<App>>()
