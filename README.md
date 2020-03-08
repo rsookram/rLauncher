@@ -6,7 +6,7 @@
 Keyboard-based launcher app for Android. Type to filter the list of apps, and
 when only one app matches the query, it will be launched automatically.
 
-rLauncher requires no permissions, and has an APK size of < 1MB. There is no
+rLauncher requires no permissions, and has an APK size of < 200 KB. There is no
 support for widgets or wallpapers, it does one thing: launch apps.
 
 

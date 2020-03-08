@@ -10,7 +10,7 @@ object Versions {
     const val androidGradlePlugin = "com.android.tools.build:gradle:3.6.1"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
 
-    const val appCompat = "androidx.appcompat:appcompat:1.1.0"
+    const val activity = "androidx.activity:activity:1.1.0"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
     const val ktxCore = "androidx.core:core-ktx:1.2.0"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycle"

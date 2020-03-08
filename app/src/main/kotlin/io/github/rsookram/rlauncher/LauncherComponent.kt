@@ -3,7 +3,7 @@ package io.github.rsookram.rlauncher
 import android.content.Context
 import android.content.pm.PackageManager
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -28,18 +28,18 @@ interface LauncherComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance activity: AppCompatActivity): LauncherComponent
+        fun create(@BindsInstance activity: ComponentActivity): LauncherComponent
     }
 }
 
 @Module
 class LauncherModule {
-    @Provides fun context(activity: AppCompatActivity): Context = activity
-    @Provides fun lifecycleOwner(activity: AppCompatActivity): LifecycleOwner = activity
+    @Provides fun context(activity: ComponentActivity): Context = activity
+    @Provides fun lifecycleOwner(activity: ComponentActivity): LifecycleOwner = activity
 
     @Provides fun packageManager(context: Context): PackageManager = context.packageManager
 
-    @Provides fun container(activity: AppCompatActivity): ViewGroup =
+    @Provides fun container(activity: ComponentActivity): ViewGroup =
         activity.findViewById(android.R.id.content)
 
     @Provides fun appAdapter(viewModel: LauncherViewModel) = AppAdapter(viewModel::onAppSelected)
@@ -47,7 +47,7 @@ class LauncherModule {
     @Provides fun installedAppsReceiver(context: Context, viewModel: LauncherViewModel) =
         InstalledAppsReceiver(context, viewModel::onAppsChanged)
 
-    @Provides fun viewModelProvider(activity: AppCompatActivity, factory: ViewModelFactory) =
+    @Provides fun viewModelProvider(activity: ComponentActivity, factory: ViewModelFactory) =
         ViewModelProvider(activity, factory)
 
     @Provides fun viewModel(provider: ViewModelProvider) = provider.get<LauncherViewModel>()

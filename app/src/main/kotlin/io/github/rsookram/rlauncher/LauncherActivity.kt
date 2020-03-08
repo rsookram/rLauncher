@@ -1,10 +1,10 @@
 package io.github.rsookram.rlauncher
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import io.github.rsookram.lifecycle.observeNonNull
 
-class LauncherActivity : AppCompatActivity() {
+class LauncherActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

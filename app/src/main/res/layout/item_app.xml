@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="?selectableItemBackground"
+    android:background="?android:selectableItemBackground"
     android:gravity="center_vertical"
     android:paddingHorizontal="16dp"
-    android:textAppearance="?textAppearanceListItem"
+    android:textAppearance="?android:textAppearanceListItem"
     tools:text="Dialer"/>

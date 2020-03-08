@@ -66,7 +66,7 @@ tasks.withType<KotlinCompile> {
 }
 
 dependencies {
-    implementation(Versions.appCompat)
+    implementation(Versions.activity)
     implementation(Versions.recyclerView)
     implementation(Versions.ktxCore)
     implementation(Versions.lifecycleExtensions)
