@@ -56,6 +56,8 @@ android {
 
     packagingOptions {
         exclude("/kotlin/**")
+        exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/*.version")
     }
 }
 
