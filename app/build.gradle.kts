@@ -23,7 +23,7 @@ android {
         jvmTarget = "1.8"
     }
 
-    dataBinding {
+    viewBinding {
         isEnabled = true
     }
 

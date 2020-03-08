@@ -3,9 +3,11 @@ package io.github.rsookram.rlauncher.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.github.rsookram.lifecycle.observeNonNull
 import io.github.rsookram.rlauncher.databinding.ViewLauncherBinding
 import io.github.rsookram.rlauncher.entity.App
 import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
@@ -18,13 +20,18 @@ class LauncherView @Inject constructor(
     private val appAdapter: AppAdapter
 ) {
 
-    private val binding: ViewLauncherBinding = ViewLauncherBinding.inflate(
+    private val binding = ViewLauncherBinding.inflate(
         LayoutInflater.from(container.context), container, true
     )
 
     init {
-        binding.lifecycleOwner = lifecycleOwner
-        binding.vm = vm
+        vm.queries.observeNonNull(lifecycleOwner) { query ->
+            if (query.toString() != binding.searchBox.text.toString()) {
+                binding.searchBox.setText(query)
+            }
+        }
+
+        binding.searchBox.doOnTextChanged { text, _, _, _ -> vm.onQueryChanged(text ?: "") }
 
         binding.root.setOnApplyWindowInsetsListener { v, insets ->
             v.updatePadding(bottom = insets.systemWindowInsetBottom)
