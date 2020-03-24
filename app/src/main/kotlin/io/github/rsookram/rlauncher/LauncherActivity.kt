@@ -9,13 +9,13 @@ class LauncherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = DaggerLauncherComponent.factory().create(this)
+        val dependencies = Dependencies(this)
 
-        val vm = component.viewModel()
-        val view = component.view()
-        val router = component.router()
+        val vm = dependencies.viewModel
+        val view = dependencies.view
+        val router = dependencies.router
 
-        lifecycle.addObserver(component.installedAppsReceiver())
+        lifecycle.addObserver(dependencies.installedAppsReceiver)
 
         vm.appLaunches.observeNonNull(this) {
             it.getContentIfNotHandled()?.let { app ->

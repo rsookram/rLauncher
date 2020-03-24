@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-kapt")
 }
 
 android {
@@ -72,9 +71,6 @@ dependencies {
     implementation(Versions.lifecycleExtensions)
     implementation(Versions.lifecycleCommon)
     implementation(Versions.ktxViewModel)
-
-    implementation(Versions.daggerRuntime)
-    kapt(Versions.daggerCompiler)
 
     implementation(Versions.kotlinStdlib)
 

@@ -1,7 +1,6 @@
 object Versions {
 
     private const val kotlin = "1.3.71"
-    private const val dagger = "2.26"
     private const val lifecycle = "2.2.0"
 
     const val minSdk = 25
@@ -16,9 +15,6 @@ object Versions {
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     const val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:$lifecycle"
     const val ktxViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
-
-    const val daggerRuntime = "com.google.dagger:dagger:$dagger"
-    const val daggerCompiler = "com.google.dagger:dagger-compiler:$dagger"
 
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
 

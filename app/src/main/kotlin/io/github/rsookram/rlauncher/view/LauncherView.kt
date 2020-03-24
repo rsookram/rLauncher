@@ -11,9 +11,8 @@ import io.github.rsookram.lifecycle.observeNonNull
 import io.github.rsookram.rlauncher.databinding.ViewLauncherBinding
 import io.github.rsookram.rlauncher.entity.App
 import io.github.rsookram.rlauncher.viewmodel.LauncherViewModel
-import javax.inject.Inject
 
-class LauncherView @Inject constructor(
+class LauncherView(
     container: ViewGroup,
     vm: LauncherViewModel,
     lifecycleOwner: LifecycleOwner,
