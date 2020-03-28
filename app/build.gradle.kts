@@ -69,7 +69,6 @@ dependencies {
     implementation(Versions.recyclerView)
     implementation(Versions.ktxCore)
     implementation(Versions.lifecycleCommon)
-    implementation(Versions.ktxViewModel)
 
     implementation(Versions.kotlinStdlib)
 
