@@ -12,7 +12,6 @@ object Versions {
     const val activity = "androidx.activity:activity:1.1.0"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
     const val ktxCore = "androidx.core:core-ktx:1.2.0"
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     const val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:$lifecycle"
     const val ktxViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
