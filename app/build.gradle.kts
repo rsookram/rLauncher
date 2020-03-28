@@ -58,6 +58,18 @@ android {
         exclude("META-INF/*.kotlin_module")
         exclude("META-INF/*.version")
     }
+
+    lintOptions {
+        disable(
+            "GoogleAppIndexingWarning", // This app doesn't need to be indexed
+            "SyntheticAccessor" // R8 handles optimizing these away
+        )
+
+        isCheckGeneratedSources = true
+        isCheckAllWarnings = true
+
+        isWarningsAsErrors = true
+    }
 }
 
 tasks.withType<KotlinCompile> {
