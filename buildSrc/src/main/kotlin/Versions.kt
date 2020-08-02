@@ -1,6 +1,6 @@
 object Versions {
 
-    private const val kotlin = "1.3.71"
+    private const val kotlin = "1.3.72"
     private const val lifecycle = "2.2.0"
 
     const val minSdk = 25
