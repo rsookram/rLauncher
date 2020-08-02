@@ -12,8 +12,8 @@ support for widgets or wallpapers, it does one thing: launch apps.
 
 ## Screenshots
 
-<img src="https://raw.githubusercontent.com/rsookram/rLauncher/master/screenshots/screenshot.png" width="270" height="480" alt="App on startup" align="left">
-<img src="https://raw.githubusercontent.com/rsookram/rLauncher/master/screenshots/screenshot_2.png" width="270" height="480" alt="Filtering apps by typing">
+<img src="screenshots/screenshot.png" width="270" height="480" alt="App on startup" align="left">
+<img src="screenshots/screenshot_2.png" width="270" height="480" alt="Filtering apps by typing">
 
 
 License
@@ -32,4 +32,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
