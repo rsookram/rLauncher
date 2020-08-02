@@ -22,8 +22,8 @@ android {
         jvmTarget = "1.8"
     }
 
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     signingConfigs {
