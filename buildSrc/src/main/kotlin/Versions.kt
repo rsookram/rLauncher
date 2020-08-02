@@ -11,7 +11,7 @@ object Versions {
 
     const val activity = "androidx.activity:activity:1.1.0"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
-    const val ktxCore = "androidx.core:core-ktx:1.2.0"
+    const val ktxCore = "androidx.core:core-ktx:1.3.1"
     const val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:$lifecycle"
 
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
