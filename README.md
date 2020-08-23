@@ -1,4 +1,4 @@
-![App icon](https://raw.githubusercontent.com/rsookram/rLauncher/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+![App icon](app/src/main/res/mipmap-xxhdpi/ic_launcher.png)
 
 
 # rLauncher
