@@ -84,8 +84,6 @@ dependencies {
     implementation(Versions.ktxCore)
     implementation(Versions.lifecycleCommon)
 
-    implementation(Versions.kotlinStdlib)
-
     testImplementation(Versions.coreTesting)
     testImplementation(Versions.truth)
 }
