@@ -43,7 +43,7 @@ class LauncherViewModelTest {
         vm.onQueryChanged("Camera")
 
         assertThat(vm.apps.value).isEqualTo(listOf(appCamera))
-        assertThat(vm.appLaunches.value?.getContentIfNotHandled()).isEqualTo(appCamera)
+        assertThat(vm.appLaunches.value).isEqualTo(appCamera)
         assertThat(vm.queries.value).isEqualTo("")
     }
 
@@ -51,7 +51,7 @@ class LauncherViewModelTest {
     fun appSelectionTriggersAnEventAndClearsQuery() {
         vm.onAppSelected(appBrowser)
 
-        assertThat(vm.appLaunches.value?.getContentIfNotHandled()).isEqualTo(appBrowser)
+        assertThat(vm.appLaunches.value).isEqualTo(appBrowser)
         assertThat(vm.queries.value).isEqualTo("")
     }
 }

@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import io.github.rsookram.lifecycle.observeNonNull
 
+/**
+ * The entry point into the app
+ */
 class LauncherActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,18 +20,12 @@ class LauncherActivity : ComponentActivity() {
 
         lifecycle.addObserver(dependencies.installedAppsReceiver)
 
-        vm.appLaunches.observeNonNull(this) {
-            it.getContentIfNotHandled()?.let { app ->
-                router.start(app)
-            }
-        }
+        vm.appLaunches.observeNonNull(this, router::start)
 
         vm.apps.observeNonNull(this, view::setApps)
 
         vm.scrollsToStart.observeNonNull(this) {
-            if (it.getContentIfNotHandled() != null) {
-                view.scrollToStart()
-            }
+            view.scrollToStart()
         }
     }
 
